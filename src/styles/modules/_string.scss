@@ -1,0 +1,8 @@
+.one-line {
+  // NOTE you should also
+  // 1. set "display: block";
+  // 2. set "width" on current element or "overflow: hidden" on parent element;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

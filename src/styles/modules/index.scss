@@ -1,0 +1,29 @@
+@use "../variables" as *;
+
+@use "./app-classes";
+@use "./scrollbar";
+@use "./string";
+@use "./input-type-file";
+
+* {
+  box-sizing: border-box;
+  //outline: none;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}

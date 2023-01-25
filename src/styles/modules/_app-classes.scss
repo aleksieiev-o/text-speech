@@ -1,0 +1,10 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+.app-modal-wrapper {
+  max-width: calc(100% - 32px);
+
+  @include breakpoint($tablet-size) {
+    max-width: 600px;
+  }
+}
