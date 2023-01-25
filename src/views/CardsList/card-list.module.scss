@@ -1,0 +1,14 @@
+@use 'src/styles/variables' as *;
+@use 'src/styles/mixins' as *;
+
+.cardList {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: $spacing * 2;
+  flex-flow: column nowrap;
+  @include flex-layout(flex-start, flex-start);
+  @include between-children {
+    margin-bottom: $spacing * 2;
+  }
+}

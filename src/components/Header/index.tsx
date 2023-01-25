@@ -1,8 +1,11 @@
 import React, { FC, ReactElement } from 'react';
+import styles from './header.module.scss';
 
 const Header: FC = (): ReactElement => {
   return (
-    <div>Header</div>
+    <div className={styles.header}>
+      <p>Text speech</p>
+    </div>
   );
 };
 
