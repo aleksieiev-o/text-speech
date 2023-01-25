@@ -1,9 +1,6 @@
-@use "src/styles/mixins/index" as *;
+@use 'src/styles/variables' as *;
 
-.wrapper {
+.app {
   height: 100%;
-  width: 100%;
   overflow: hidden;
-  flex-flow: column nowrap;
-  @include flex-layout();
 }

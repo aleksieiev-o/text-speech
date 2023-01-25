@@ -1,0 +1,8 @@
+@use 'src/styles/variables' as *;
+
+.header {
+  overflow: hidden;
+  height: 60px;
+  padding: 0 $spacing * 2;
+  box-shadow: 0 5px 5px -3px rgb(#000, 20%);
+}
