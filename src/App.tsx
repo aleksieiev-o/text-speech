@@ -1,14 +1,14 @@
 import React, { FC, ReactElement } from 'react';
 import styles from './app.module.scss';
-import Header from './components/Header';
-import CollectionsList from './views/CollectionsList';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './Router';
 
 const App: FC = (): ReactElement => {
   return (
     <div className={styles.app}>
-      <Header/>
-
-      <CollectionsList/>
+      <BrowserRouter>
+        <Router/>
+      </BrowserRouter>
     </div>
     );
 };
