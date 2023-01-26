@@ -1,5 +1,6 @@
-import firebase from 'firebase/compat';
-import 'firebase/database';
+import { initializeApp, FirebaseApp, FirebaseOptions } from 'firebase/app';
+import { getAuth, Auth } from 'firebase/auth';
+import { getDatabase, Database } from 'firebase/database';
 
 const {
   REACT_APP_API_KEY,
@@ -12,7 +13,7 @@ const {
   // REACT_APP_MEASUREMENT_ID,
 } = process.env;
 
-firebase.initializeApp({
+const firebaseConfig: FirebaseOptions = {
   apiKey: REACT_APP_API_KEY,
   authDomain: REACT_APP_AUTH_DOMAIN,
   databaseURL: REACT_APP_DATABASE_URL,
@@ -21,4 +22,11 @@ firebase.initializeApp({
   messagingSenderId: REACT_APP_MESSAGING_SENDER_ID,
   appId: REACT_APP_APP_ID,
   // measurementId: REACT_APP_MEASUREMENT_ID,
-});
+};
+
+const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
+
+const firebaseAuth: Auth = getAuth(firebaseApp);
+const firebaseDataBase: Database = getDatabase(firebaseApp);
+
+export { firebaseAuth, firebaseDataBase };
