@@ -5,16 +5,16 @@ import { User } from '@firebase/auth';
 import { AuthorizationStoreService } from './service';
 
 export interface IAuthorizationStore {
-  service: AuthorizationStoreService;
+  authorizationStoreService: AuthorizationStoreService;
   user: User;
 }
 
 export class AuthorizationStore implements IAuthorizationStore {
-  service: AuthorizationStoreService = {} as AuthorizationStoreService;
+  authorizationStoreService: AuthorizationStoreService = {} as AuthorizationStoreService;
   user = {} as User;
 
   constructor() {
-    this.service = new AuthorizationStoreService();
+    this.authorizationStoreService = new AuthorizationStoreService();
     makeAutoObservable(this);
 
     onAuthStateChanged(firebaseAuth, (user) => {
@@ -26,13 +26,13 @@ export class AuthorizationStore implements IAuthorizationStore {
 
   @action
   async signInEmailPassword(email: string, password: string) {
-    const user = await this.service.signInEmailPassword(email, password);
+    const user = await this.authorizationStoreService.signInEmailPassword(email, password);
     this.setUser(user);
   }
 
   @action
   async singUpEmailAndPassword(email: string, password: string) {
-    const user = await this.service.singUpEmailAndPassword(email, password);
+    const user = await this.authorizationStoreService.singUpEmailAndPassword(email, password);
     this.setUser(user);
   }
 
