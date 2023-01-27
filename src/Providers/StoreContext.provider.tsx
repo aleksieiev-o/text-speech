@@ -1,18 +1,15 @@
 import React, { createContext, FC, ReactElement } from 'react';
 import { RootStore } from '../store';
-import { useStore } from '../store/hooks';
 
 interface Props {
   children: ReactElement;
 }
 
-export const StoreContext = createContext<RootStore>(new RootStore());
+export const StoreContext = createContext<RootStore>({} as RootStore);
 
 const StoreContextProvider: FC<Props> = ({children}): ReactElement => {
-  const rootStore = useStore();
-
   return (
-    <StoreContext.Provider value={rootStore}>
+    <StoreContext.Provider value={new RootStore()}>
       {children}
     </StoreContext.Provider>
   );

@@ -6,14 +6,14 @@ import StoreContextProvider from './Providers/StoreContext.provider';
 
 const App: FC = (): ReactElement => {
   return (
-    <StoreContextProvider>
-      <div className={styles.app}>
+    <div className={styles.app}>
+      <StoreContextProvider>
         <BrowserRouter>
           <Router/>
         </BrowserRouter>
-      </div>
-    </StoreContextProvider>
-    );
+      </StoreContextProvider>
+    </div>
+  );
 };
 
 export default App;
