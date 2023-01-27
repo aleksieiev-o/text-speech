@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../../Router/PublicRouter';
 
 const Header: FC = observer((): ReactElement => {
-  const { singOutEmailAndPassword } = useStore().authorizationStore;
+  const { singOutEmailAndPassword, isAuth } = useStore().authorizationStore;
   const navigate = useNavigate();
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     try {
-      singOutEmailAndPassword();
+      await singOutEmailAndPassword();
       navigate(PublicRoutes.SIGN_IN);
     } catch (e) {
       console.warn(e);
@@ -25,7 +25,9 @@ const Header: FC = observer((): ReactElement => {
         {APP_NAME}
       </p>
 
-      <button onClick={logoutHandler}>Logout</button>
+      {
+        isAuth && <button onClick={logoutHandler}>Logout</button>
+      }
     </div>
   );
 });

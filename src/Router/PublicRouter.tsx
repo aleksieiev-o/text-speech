@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import {  Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import SignIn from '../views/Authorization/SignIn';
 import SignUp from '../views/Authorization/SignUp';
 
@@ -14,7 +14,7 @@ const PublicRouter: FC = (): ReactElement => {
       <Route path={PublicRoutes.SIGN_IN} element={<SignIn/>}/>
       <Route path={PublicRoutes.SIGN_UP} element={<SignUp/>}/>
 
-      {/*<Route path="*" element={<Navigate to={PublicRoutes.SIGN_IN} replace={true}/>}/>*/}
+      <Route path="*" element={<Navigate to={PublicRoutes.SIGN_IN} replace={true}/>}/>
     </Routes>
   );
 };

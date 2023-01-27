@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, FormEvent, ReactElement, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../../store/hooks';
 import { inputChangeHandler } from '../../utils/inputChangeHandler';
@@ -13,7 +13,9 @@ const SignUp: FC = observer((): ReactElement => {
   const [password, setPassword] = useState<string>('');
   const navigate = useNavigate();
 
-  const submitHandler =  async () => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     try {
       await singUpEmailAndPassword(email, password);
       navigate(ProtectedRoutes.COLLECTIONS);
@@ -26,7 +28,7 @@ const SignUp: FC = observer((): ReactElement => {
     <div>
       <p>Sign Up</p>
 
-      <form onSubmit={submitHandler}>
+      <form onSubmit={(e) => submitHandler(e)}>
         <input value={email} onChange={(e) => inputChangeHandler(e, setEmail)} name={'email'} type="email" autoFocus/>
         <input value={password} onChange={(e) => inputChangeHandler(e, setPassword)} name={'password'} type="password"/>
 

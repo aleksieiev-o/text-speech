@@ -1,11 +1,11 @@
 import { AuthorizationStore, IAuthorizationStore } from './AuthorizationStore';
 
-export interface IRootStore {
+interface IRootStore {
   authorizationStore: IAuthorizationStore;
 }
 
 export class RootStore implements IRootStore {
-  authorizationStore: IAuthorizationStore;
+  authorizationStore: AuthorizationStore;
 
   constructor() {
     this.authorizationStore = new AuthorizationStore();
