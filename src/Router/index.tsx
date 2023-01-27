@@ -1,20 +1,19 @@
 import React, { FC, ReactElement } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
 import Header from '../components/Header';
-import CollectionsList from '../views/CollectionsList';
-import CardsList from '../views/CardsList';
+import { useStore } from '../store/hooks';
+import ProtectedRouter from './ProtectedRouter';
+import PublicRouter from './PublicRouter';
 
 const Router: FC = (): ReactElement => {
+  const { isAuth } = useStore().authorizationStore;
+
   return (
     <>
       <Header/>
 
-      <Routes>
-        <Route path={'collections'} element={<CollectionsList/>}/>
-        <Route path={'collections/:id'} element={<CardsList/>}/>
-
-        <Route path="*" element={<Navigate to={'collections'} replace={true}/>}/>
-      </Routes>
+      {
+        isAuth ? <ProtectedRouter/> : <PublicRouter/>
+      }
     </>
   );
 };
