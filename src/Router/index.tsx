@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import CollectionsList from '../views/CollectionsList';
 import CardsList from '../views/CardsList';
+import Card from '../views/Card';
 import SignIn from '../views/Authorization/SignIn';
 import SignUp from '../views/Authorization/SignUp';
 
@@ -14,7 +15,8 @@ export enum PublicRoutes {
 
 export enum ProtectedRoutes {
   COLLECTIONS = '/collections',
-  COLLECTIONS_ID = '/collections/:id',
+  COLLECTION_ID = '/collections/:collectionId',
+  CARD_ID = '/collections/:collectionId/:cardId',
 }
 
 const publicRoutes = createBrowserRouter([
@@ -25,7 +27,8 @@ const publicRoutes = createBrowserRouter([
 
 const protectedRoutes = createBrowserRouter([
   { path: ProtectedRoutes.COLLECTIONS, element: <CollectionsList/> },
-  { path: ProtectedRoutes.COLLECTIONS_ID, element: <CardsList/> },
+  { path: ProtectedRoutes.COLLECTION_ID, element: <CardsList/> },
+  { path: ProtectedRoutes.CARD_ID, element: <Card/> },
   { path: '*', element: <Navigate to={ProtectedRoutes.COLLECTIONS} replace={true}/> },
 ]);
 
