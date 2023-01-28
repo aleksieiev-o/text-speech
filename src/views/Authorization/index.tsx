@@ -1,5 +1,6 @@
 import React, { FC, ReactElement } from 'react';
 import { useAuthRouteCondition } from './useAuthRouteCondition';
+import Header from '../../components/Header';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 
@@ -7,11 +8,13 @@ const Authorization: FC = (): ReactElement => {
   const isSignInRoute = useAuthRouteCondition();
 
   return (
-    <div>
+    <>
+      <Header/>
+
       {
         isSignInRoute ? <SignIn/> : <SignUp/>
       }
-    </div>
+    </>
   );
 };
 

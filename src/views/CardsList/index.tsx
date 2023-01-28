@@ -1,26 +1,31 @@
 import React, { FC, ReactElement } from 'react';
+import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
 
 const CardsList: FC = (): ReactElement => {
   return (
-    <div>
-      <ListHeader
-      createButtonTitle={'Create card'}
-      removeButtonTitle={'Remove all cards'}/>
+    <>
+      <Header/>
 
-      <ul>
-        <li>
-          <span>1</span>
-          <button>Edit</button>
-          <button>Remove</button>
-        </li>
-        <li>
-          <span>2</span>
-          <button>Edit</button>
-          <button>Remove</button>
-        </li>
-      </ul>
-    </div>
+      <div>
+        <ListHeader
+          createButtonTitle={'Create card'}
+          removeButtonTitle={'Remove all cards'}/>
+
+        <ul>
+          <li>
+            <span>1</span>
+            <button>Edit</button>
+            <button>Remove</button>
+          </li>
+          <li>
+            <span>2</span>
+            <button>Edit</button>
+            <button>Remove</button>
+          </li>
+        </ul>
+      </div>
+    </>
   );
 };
 

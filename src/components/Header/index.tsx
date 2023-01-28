@@ -4,7 +4,7 @@ import { APP_NAME } from '../../utils/constants';
 import { useAuthorizationStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { PublicRoutes } from '../../Router/PublicRouter';
+import { PublicRoutes } from '../../Router';
 
 const Header: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();

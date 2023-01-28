@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthorizationStore } from '../../store/hooks';
 import { inputChangeHandler } from '../../utils/inputChangeHandler';
 import { observer } from 'mobx-react-lite';
-import { ProtectedRoutes } from '../../Router/ProtectedRouter';
-import { PublicRoutes } from '../../Router/PublicRouter';
+import { ProtectedRoutes, PublicRoutes } from '../../Router';
 
 const SignUp: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
