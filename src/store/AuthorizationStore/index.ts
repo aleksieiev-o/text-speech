@@ -7,6 +7,9 @@ import { authorizationStoreService } from './service';
 export interface IAuthorizationStore {
   user: User;
   isAuth: boolean;
+  signInEmailPassword: (email: string, password: string) => void;
+  singUpEmailAndPassword: (email: string, password: string) => void;
+  singOutEmailAndPassword: () => void;
 }
 
 export class AuthorizationStore implements IAuthorizationStore {
