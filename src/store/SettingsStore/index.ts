@@ -1,9 +1,10 @@
 import { makeAutoObservable } from 'mobx';
-import { settingsStoreService } from './service';
+import { SettingsStoreService } from './service';
+import { RootStore } from '../index';
 
 export enum Locale {
-  EN_US = 'en-us',
-  RU_RU = 'ru_ru',
+  EN_US = 'en-US',
+  RU_RU = 'ru-RU',
 }
 
 export enum Theme {
@@ -17,6 +18,8 @@ export interface Settings {
 }
 
 export interface ISettingsStore {
+  rootStore: RootStore;
+  settingsStoreService: SettingsStoreService;
   locale: Locale;
   theme: Theme;
   loadSettings: () => void;
@@ -25,17 +28,21 @@ export interface ISettingsStore {
 }
 
 export class SettingsStore implements ISettingsStore {
+  rootStore: RootStore;
+  settingsStoreService: SettingsStoreService;
   locale: Locale = Locale.EN_US;
   theme: Theme = Theme.LIGHT;
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+    this.settingsStoreService = new SettingsStoreService(this);
+
     makeAutoObservable(this);
-    this.loadSettings();
   }
 
   async loadSettings() {
     try {
-      const settings = await settingsStoreService.loadSettings();
+      const settings = await this.settingsStoreService.loadSettings();
       this.locale = settings.locale;
       this.theme = settings.theme;
     } catch (e) {
@@ -44,10 +51,27 @@ export class SettingsStore implements ISettingsStore {
   }
 
   async updateLocale(locale: Locale) {
-    this.locale = await settingsStoreService.updateLocale(locale);
+    this.locale = await this.settingsStoreService.updateLocale(locale);
   }
 
   async updateTheme(theme: Theme) {
-    this.theme = await settingsStoreService.updateTheme(theme);
+    this.theme = await this.settingsStoreService.updateTheme(theme);
+  }
+
+  async setDefaultSettings() {
+    await this.updateLocale(Locale.EN_US);
+    await this.updateTheme(Theme.LIGHT);
+  }
+
+  get userUid(): string {
+    return this.rootStore.authorizationStore.userUid;
+  }
+
+  get localePath(): string {
+    return `${this.userUid}/settings/locale`;
+  }
+
+  get themePath(): string {
+    return `${this.userUid}/settings/theme`;
   }
 }

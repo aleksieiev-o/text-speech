@@ -10,7 +10,7 @@ export class RootStore implements IRootStore {
   settingsStore: SettingsStore;
 
   constructor() {
-    this.authorizationStore = new AuthorizationStore();
-    this.settingsStore = new SettingsStore();
+    this.authorizationStore = new AuthorizationStore(this);
+    this.settingsStore = new SettingsStore(this);
   }
 }

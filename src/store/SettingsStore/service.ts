@@ -1,13 +1,25 @@
-import { Locale, Settings, Theme } from './index';
+import { ref, set, get, child, DataSnapshot } from 'firebase/database';
+import { Locale, Settings, SettingsStore, Theme } from './index';
+import { firebaseDataBase } from '../../firebase';
 
 interface ISettingsStoreService {
-  loadSettings: () => Promise<Settings>,
-  updateLocale: (locale: Locale) => Promise<Locale>,
-  updateTheme: (theme: Theme) => Promise<Theme>,
+  settingsStore: SettingsStore;
+  loadSettings: () => Promise<Settings>;
+  updateLocale: (locale: Locale) => Promise<Locale>;
+  updateTheme: (theme: Theme) => Promise<Theme>;
 }
 
-class SettingsStoreService implements ISettingsStoreService {
+export class SettingsStoreService implements ISettingsStoreService {
+  settingsStore: SettingsStore;
+
+  constructor(settingsStore: SettingsStore) {
+    this.settingsStore = settingsStore;
+  }
+
   async loadSettings(): Promise<Settings> {
+    await this.loadLocalOnce();
+    await this.loadThemeOnce();
+
     return Promise.resolve({
       locale: Locale.EN_US,
       theme: Theme.LIGHT,
@@ -15,14 +27,30 @@ class SettingsStoreService implements ISettingsStoreService {
   }
 
   async updateLocale(locale: Locale): Promise<Locale> {
-    console.warn(locale);
-    return Promise.resolve(Locale.EN_US);
+    await set(ref(firebaseDataBase, this.settingsStore.localePath), locale);
+    return await this.loadLocalOnce();
   }
 
   async updateTheme(theme: Theme): Promise<Theme> {
-    console.warn(theme);
-    return Promise.resolve(Theme.LIGHT);
+    await set(ref(firebaseDataBase, this.settingsStore.themePath), theme);
+    return await this.loadThemeOnce();
+  }
+
+  private async loadLocalOnce(): Promise<Locale> {
+    const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), this.settingsStore.localePath));
+    // TODO complete the check
+    // if (snapshot.exists()) {
+    //   return snapshot.val();
+    // }
+    return snapshot.val();
+  }
+
+  private async loadThemeOnce(): Promise<Theme> {
+    const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), this.settingsStore.themePath));
+    // TODO complete the check
+    // if (snapshot.exists()) {
+    //   return snapshot.val();
+    // }
+    return snapshot.val();
   }
 }
-
-export const settingsStoreService = new SettingsStoreService();

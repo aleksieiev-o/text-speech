@@ -2,9 +2,12 @@ import { makeAutoObservable } from 'mobx';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../firebase';
 import { User } from '@firebase/auth';
-import { authorizationStoreService } from './service';
+import { AuthorizationStoreService } from './service';
+import { RootStore } from '../index';
 
 export interface IAuthorizationStore {
+  rootStore: RootStore;
+  authorizationStoreService: AuthorizationStoreService;
   user: User;
   isAuth: boolean;
   signInEmailPassword: (email: string, password: string) => void;
@@ -13,36 +16,56 @@ export interface IAuthorizationStore {
 }
 
 export class AuthorizationStore implements IAuthorizationStore {
+  rootStore: RootStore;
+  authorizationStoreService: AuthorizationStoreService;
   user: User = {} as User;
   isAuth = false;
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+    this.authorizationStoreService = new AuthorizationStoreService(this);
+
     makeAutoObservable(this);
 
-    onAuthStateChanged(firebaseAuth, (user) => {
-      if (user) {
+    onAuthStateChanged(firebaseAuth, async (user) => {
+      if (user && user.uid) {
         this.setUser(user);
+
+        await this.rootStore.settingsStore.loadSettings();
+
         this.setAuth(true);
+      } else {
+        this.setAuth(false);
       }
     });
   }
 
   async signInEmailPassword(email: string, password: string) {
-    const user = await authorizationStoreService.signInEmailPassword(email, password);
+    const user = await this.authorizationStoreService.signInEmailPassword(email, password);
     this.setUser(user);
+
+    await this.rootStore.settingsStore.loadSettings();
+
     this.setAuth(true);
   }
 
   async singUpEmailAndPassword(email: string, password: string) {
-    const user = await authorizationStoreService.singUpEmailAndPassword(email, password);
+    const user = await this.authorizationStoreService.singUpEmailAndPassword(email, password);
     this.setUser(user);
+
+    await this.rootStore.settingsStore.setDefaultSettings();
+
     this.setAuth(true);
   }
 
   async singOutEmailAndPassword() {
-    await authorizationStoreService.singOutEmailAndPassword();
+    await this.authorizationStoreService.singOutEmailAndPassword();
     this.setUser({} as User);
     this.setAuth(false);
+  }
+
+  get userUid(): string {
+    return this.user.uid;
   }
 
   private setUser(user: User): void {
