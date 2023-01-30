@@ -17,13 +17,10 @@ export class SettingsStoreService implements ISettingsStoreService {
   }
 
   async loadSettings(): Promise<Settings> {
-    await this.loadLocalOnce();
-    await this.loadThemeOnce();
+    const locale = await this.loadLocalOnce();
+    const theme = await this.loadThemeOnce();
 
-    return Promise.resolve({
-      locale: Locale.EN_US,
-      theme: Theme.LIGHT,
-    });
+    return Promise.resolve({ locale, theme });
   }
 
   async updateLocale(locale: Locale): Promise<Locale> {

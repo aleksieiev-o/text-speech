@@ -34,8 +34,10 @@ export class AuthorizationStore implements IAuthorizationStore {
         await this.rootStore.settingsStore.loadSettings();
 
         this.setAuth(true);
+
+        await this.rootStore.collectionsStore.loadAllCollections();
       } else {
-        this.setAuth(false);
+        this.resetLocalData();
       }
     });
   }
@@ -60,8 +62,6 @@ export class AuthorizationStore implements IAuthorizationStore {
 
   async singOutEmailAndPassword() {
     await this.authorizationStoreService.singOutEmailAndPassword();
-    this.setUser({} as User);
-    this.setAuth(false);
   }
 
   get userUid(): string {
@@ -74,5 +74,11 @@ export class AuthorizationStore implements IAuthorizationStore {
 
   private setAuth(status: boolean): void {
     this.isAuth = status;
+  }
+
+  private resetLocalData(): void {
+    this.setUser({} as User);
+    this.rootStore.collectionsStore.clearLocalCollections();
+    this.setAuth(false);
   }
 }

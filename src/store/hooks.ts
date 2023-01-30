@@ -3,6 +3,7 @@ import { RootStore } from './index';
 import { StoreContext } from '../Providers/StoreContext.provider';
 import { AuthorizationStore } from './AuthorizationStore';
 import { SettingsStore } from './SettingsStore';
+import { CollectionsStore } from './CollectionsStore';
 
 export const useRootStore = (): RootStore => {
   const context = useContext(StoreContext);
@@ -20,4 +21,9 @@ export const useAuthorizationStore = (): AuthorizationStore => {
 export const useSettingsStore = (): SettingsStore => {
   const { settingsStore } = useRootStore();
   return settingsStore;
+};
+
+export const useCollectionsStore = (): CollectionsStore => {
+  const { collectionsStore } = useRootStore();
+  return collectionsStore;
 };
