@@ -15,8 +15,9 @@ const CollectionsList: FC = observer((): ReactElement => {
 
       <div className={styles.collectionList}>
         <ListHeader
-          createButtonTitle={'Create collection'}
-          removeButtonTitle={'Remove all collections'}/>
+        createButtonTitle={'Create collection'}
+        removeButtonTitle={'Remove all collections'}
+        removeButtonHandler={collectionsStore.removeAllCollections}/>
 
         {
           collectionsStore.collections.length
@@ -27,7 +28,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                   return <li key={collection.id}>
                     <span>{collection.title}</span>
                     <button>Edit</button>
-                    <button>Remove</button>
+                    <button onClick={() => collectionsStore.removeCollection(collection.id)}>Remove</button>
                   </li>;
                 })
               }

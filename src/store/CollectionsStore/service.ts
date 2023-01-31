@@ -1,5 +1,5 @@
-import { Collection, CollectionsStore } from './index';
-import { child, DataSnapshot, get, ref, set, push } from 'firebase/database';
+import { Collection, CollectionsStore, UpdateCollectionPayload } from './index';
+import { child, DataSnapshot, get, ref, set, push, remove, update } from 'firebase/database';
 import { firebaseDataBase } from '../../firebase';
 
 interface ICollectionsStoreService {
@@ -7,6 +7,9 @@ interface ICollectionsStoreService {
   loadAllCollectionsOnce: () => Promise<Array<Collection>>;
   loadCollectionByIdOnce: (id: string) => Promise<Collection>;
   createCollection: (title: string) => Promise<Collection>;
+  removeCollection: (id: string) => Promise<string>;
+  removeAllCollections: () => Promise<boolean>;
+  updateCollection: (id: string, payload: UpdateCollectionPayload) => Promise<Collection>;
 }
 
 export class CollectionsStoreService implements ICollectionsStoreService {
@@ -54,5 +57,20 @@ export class CollectionsStoreService implements ICollectionsStoreService {
     await set(collectionRef, collection);
 
     return await this.loadCollectionByIdOnce(collectionKey);
+  }
+
+  async removeCollection(id: string): Promise<string> {
+    await remove(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`));
+    return Promise.resolve(id);
+  }
+
+  async removeAllCollections(): Promise<boolean> {
+    await set(ref(firebaseDataBase, this.collectionsStore.collectionsPath), null);
+    return Promise.resolve(true);
+  }
+
+  async updateCollection(id: string, payload: UpdateCollectionPayload): Promise<Collection> {
+    await update(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`), { title: payload.title });
+    return await this.loadCollectionByIdOnce(id);
   }
 }

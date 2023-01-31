@@ -3,6 +3,11 @@ import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
 
 const CardsList: FC = (): ReactElement => {
+  const removeAllCards = () => {
+    // eslint-disable-next-line no-console
+    console.log(111);
+  };
+
   return (
     <>
       <Header/>
@@ -10,7 +15,8 @@ const CardsList: FC = (): ReactElement => {
       <div>
         <ListHeader
           createButtonTitle={'Create card'}
-          removeButtonTitle={'Remove all cards'}/>
+          removeButtonTitle={'Remove all cards'}
+          removeButtonHandler={removeAllCards}/>
 
         <ul>
           <li>
