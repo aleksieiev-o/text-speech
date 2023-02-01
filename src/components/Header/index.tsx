@@ -1,10 +1,11 @@
 import React, { FC, ReactElement } from 'react';
-import styles from './header.module.scss';
 import { APP_NAME } from '../../utils/constants';
 import { useAuthorizationStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../../Router';
+import { Button, Heading, Icon, Stack } from '@chakra-ui/react';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Header: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
@@ -20,15 +21,26 @@ const Header: FC = observer((): ReactElement => {
   };
 
   return (
-    <div className={styles.header}>
-      <p>
+    <Stack
+    direction={'row'}
+    w={'100%'}
+    h={'60px'}
+    alignItems={'center'}
+    justifyContent={'space-between'}
+    p={4}>
+      <Heading>
         {APP_NAME}
-      </p>
+      </Heading>
 
       {
-        authorizationStore.isAuth && <button onClick={logoutHandler}>Logout</button>
+        authorizationStore.isAuth
+        && <Button
+        rightIcon={<Icon as={LogoutIcon}/>}
+        onClick={logoutHandler}>
+          Logout
+        </Button>
       }
-    </div>
+    </Stack>
   );
 });
 

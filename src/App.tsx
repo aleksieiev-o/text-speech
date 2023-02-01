@@ -1,15 +1,21 @@
 import React, { FC, ReactElement } from 'react';
-import styles from './app.module.scss';
 import Router from './Router';
+import { ChakraProvider, Stack } from '@chakra-ui/react';
 import StoreContextProvider from './Providers/StoreContext.provider';
+import { theme } from './theme';
 
 const App: FC = (): ReactElement => {
   return (
-    <div className={styles.app}>
+    <ChakraProvider resetCSS={true} theme={theme} portalZIndex={1}>
       <StoreContextProvider>
-        <Router/>
+        <Stack
+        direction={'column'}
+        w={'100%'}
+        h={'100%'}>
+          <Router/>
+        </Stack>
       </StoreContextProvider>
-    </div>
+    </ChakraProvider>
   );
 };
 
