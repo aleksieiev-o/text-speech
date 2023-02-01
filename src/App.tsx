@@ -9,6 +9,7 @@ const App: FC = (): ReactElement => {
     <ChakraProvider resetCSS={true} theme={theme} portalZIndex={1}>
       <StoreContextProvider>
         <Stack
+        as={'section'}
         direction={'column'}
         w={'100%'}
         h={'100%'}>

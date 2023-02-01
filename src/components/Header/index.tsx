@@ -22,19 +22,19 @@ const Header: FC = observer((): ReactElement => {
 
   return (
     <Stack
+    as={'header'}
     direction={'row'}
     w={'100%'}
-    h={'60px'}
     alignItems={'center'}
     justifyContent={'space-between'}
     p={4}>
-      <Heading>
+      <Heading as={'h4'}>
         {APP_NAME}
       </Heading>
 
       {
-        authorizationStore.isAuth
-        && <Button
+        authorizationStore.isAuth &&
+        <Button
         rightIcon={<Icon as={LogoutIcon}/>}
         onClick={logoutHandler}>
           Logout

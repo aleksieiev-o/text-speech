@@ -4,9 +4,8 @@ import { observer } from 'mobx-react-lite';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import CollectionsList from '../views/CollectionsList';
 import CardsList from '../views/CardsList';
-import Card from '../views/Card';
-import SignIn from '../views/Authorization/SignIn';
-import SignUp from '../views/Authorization/SignUp';
+import CollectionCard from '../views/CollectionCard';
+import Authorization from '../views/Authorization';
 
 export enum PublicRoutes {
   SIGN_IN = '/sign-in',
@@ -20,15 +19,15 @@ export enum ProtectedRoutes {
 }
 
 const publicRoutes = createBrowserRouter([
-  { path: PublicRoutes.SIGN_IN, element: <SignIn/> },
-  { path: PublicRoutes.SIGN_UP, element: <SignUp/> },
+  { path: PublicRoutes.SIGN_IN, element: <Authorization/> },
+  { path: PublicRoutes.SIGN_UP, element: <Authorization/> },
   { path: '*', element: <Navigate to={PublicRoutes.SIGN_IN} replace={true}/> },
 ]);
 
 const protectedRoutes = createBrowserRouter([
   { path: ProtectedRoutes.COLLECTIONS, element: <CollectionsList/> },
   { path: ProtectedRoutes.COLLECTION_ID, element: <CardsList/> },
-  { path: ProtectedRoutes.CARD_ID, element: <Card/> },
+  { path: ProtectedRoutes.CARD_ID, element: <CollectionCard/> },
   { path: '*', element: <Navigate to={ProtectedRoutes.COLLECTIONS} replace={true}/> },
 ]);
 

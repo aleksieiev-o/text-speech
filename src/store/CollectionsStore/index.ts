@@ -10,7 +10,7 @@ export interface Collection {
   updatedDate: string;
 }
 
-export interface Card {
+export interface CollectionCard {
   id: string;
   title: string;
   text: string;

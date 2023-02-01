@@ -15,6 +15,8 @@ const CardsList: FC = (): ReactElement => {
       <div>
         <ListHeader
           createButtonTitle={'Create card'}
+          inputLabel={'CollectionCard name'}
+          inputPlaceholder={'Enter card name'}
           removeButtonTitle={'Remove all cards'}
           removeButtonHandler={removeAllCards}/>
 
