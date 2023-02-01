@@ -10,15 +10,6 @@ export interface Collection {
   updatedDate: string;
 }
 
-export interface CollectionCard {
-  id: string;
-  title: string;
-  text: string;
-  author: string;
-  createdDate: string;
-  updatedDate: string;
-}
-
 export type UpdateCollectionPayload = { title: string };
 
 export interface ICollectionsStore {

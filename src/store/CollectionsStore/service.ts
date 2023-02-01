@@ -44,10 +44,10 @@ export class CollectionsStoreService implements ICollectionsStoreService {
   async createCollection(title: string): Promise<Collection> {
     const collectionRef = push(ref(firebaseDataBase, this.collectionsStore.collectionsPath));
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const collectionKey = collectionRef.key!;
+    const collectionId = collectionRef.key!;
 
     const collection: Collection = {
-      id: collectionKey,
+      id: collectionId,
       title,
       author: this.collectionsStore.userUid,
       createdDate: new Date().toJSON(),
@@ -56,7 +56,7 @@ export class CollectionsStoreService implements ICollectionsStoreService {
 
     await set(collectionRef, collection);
 
-    return await this.loadCollectionByIdOnce(collectionKey);
+    return await this.loadCollectionByIdOnce(collectionId);
   }
 
   async removeCollection(id: string): Promise<string> {
@@ -70,7 +70,7 @@ export class CollectionsStoreService implements ICollectionsStoreService {
   }
 
   async updateCollection(id: string, payload: UpdateCollectionPayload): Promise<Collection> {
-    await update(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`), { title: payload.title });
+    await update(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`), payload);
     return await this.loadCollectionByIdOnce(id);
   }
 }
