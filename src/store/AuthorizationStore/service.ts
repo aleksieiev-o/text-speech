@@ -1,12 +1,12 @@
 import { User } from '@firebase/auth';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, UserCredential } from 'firebase/auth';
 import { firebaseAuth } from '../../firebase';
-import { AuthorizationStore } from './index';
+import { AuthorizationStore, AuthRequestDto } from './index';
 
 interface IAuthorizationStoreService {
   authorizationStore: AuthorizationStore;
-  signInEmailPassword: (email: string, password: string) => Promise<User>;
-  singUpEmailAndPassword: (email: string, password: string) => Promise<User>;
+  signInEmailPassword: (payload: AuthRequestDto) => Promise<User>;
+  singUpEmailAndPassword: (payload: AuthRequestDto) => Promise<User>;
   singOutEmailAndPassword: () => Promise<void>;
 }
 
@@ -17,12 +17,14 @@ export class AuthorizationStoreService implements IAuthorizationStoreService {
     this.authorizationStore = authorizationStore;
   }
 
-  async signInEmailPassword(email: string, password: string): Promise<User> {
+  async signInEmailPassword(payload: AuthRequestDto): Promise<User> {
+    const { email, password } = payload;
     const userCredential: UserCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
     return userCredential.user;
   }
 
-  async singUpEmailAndPassword(email: string, password: string): Promise<User> {
+  async singUpEmailAndPassword(payload: AuthRequestDto): Promise<User> {
+    const { email, password } = payload;
     const userCredential: UserCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
     return userCredential.user;
   }
