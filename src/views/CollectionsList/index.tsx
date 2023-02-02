@@ -20,7 +20,7 @@ const CollectionsList: FC = observer((): ReactElement => {
       direction={'column'}
       alignItems={'flex-start'}
       justifyContent={'flex-start'}
-      p={4}>
+      h={'100%'}>
         <ListHeader
         createButtonTitle={'Create collection'}
         inputLabel={'Collection name'}
@@ -36,6 +36,9 @@ const CollectionsList: FC = observer((): ReactElement => {
             alignItems={'flex-start'}
             justifyContent={'flex-start'}
             w={'100%'}
+            h={'100%'}
+            p={4}
+            overflow={'auto'}
             divider={<StackDivider/>}>
               {
                 collectionsStore.collections.map((collection: Collection) => {

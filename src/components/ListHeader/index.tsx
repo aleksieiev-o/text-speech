@@ -33,7 +33,8 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
     w={'100%'}
     alignItems={'flex-end'}
     justifyContent={'flex-start'}
-    mb={4}>
+    mb={4}
+    p={4}>
       <form onSubmit={createCollectionSubmitHandler}>
         <FormControl>
           <FormLabel>
