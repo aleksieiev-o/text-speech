@@ -11,8 +11,8 @@ const App: FC = (): ReactElement => {
         <Stack
         as={'section'}
         direction={'column'}
-        w={'100%'}
-        h={'100%'}>
+        w={'full'}
+        h={'full'}>
           <Router/>
         </Stack>
       </StoreContextProvider>

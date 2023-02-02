@@ -24,9 +24,10 @@ const Header: FC = observer((): ReactElement => {
     <Stack
     as={'header'}
     direction={'row'}
-    w={'100%'}
+    w={'full'}
     alignItems={'center'}
     justifyContent={'space-between'}
+    boxShadow={'md'}
     p={4}>
       <Heading as={'h4'}>
         {APP_NAME}

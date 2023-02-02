@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useAuthRouteCondition } from './useAuthRouteCondition';
 import { ProtectedRoutes, PublicRoutes } from '../../Router';
 import Header from '../../components/Header';
-import { Button, Container, FormControl, FormLabel, Heading, Icon, Input, InputGroup, InputRightElement, Link, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Heading, Icon, IconButton, Input, InputGroup, InputRightElement, Link, Stack, Text } from '@chakra-ui/react';
 import { inputChangeHandler } from '../../utils/inputChangeHandler';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -40,77 +40,86 @@ const Authorization: FC = observer((): ReactElement => {
 
       <Stack
       as={'section'}
-      w={'100%'}
-      h={'100%'}
+      w={'full'}
+      h={'full'}
       direction={'column'}
       alignItems={'center'}
-      justifyContent={'center'}>
-        <Container>
-          <Heading as={'h6'} mb={8}>
+      justifyContent={'center'}
+      p={4}
+      spacing={8}>
+        <Box p={4} boxShadow={'xl'} maxW={'lg'} w={'full'}>
+          <Heading as={'h6'} mb={6}>
             {isSignInRoute ? 'Sign In' : 'Sign Up'}
           </Heading>
 
           <form onSubmit={(e) => submitHandler(e)}>
-            <FormControl mb={4}>
-              <FormLabel>
-                E-mail
-              </FormLabel>
-
-              <Input
-              onChange={(e) => inputChangeHandler(e, setEmail)}
-              value={email}
-              placeholder={'Enter E-mail'}
-              type="email"
-              name={'email'}
-              autoFocus={true}/>
-            </FormControl>
-
-            <FormControl mb={4}>
-              <FormLabel>
-                Password
-              </FormLabel>
-
-              <InputGroup>
-                <Input
-                onChange={(e) => inputChangeHandler(e, setPassword)}
-                value={password}
-                placeholder={'Enter password'}
-                type={showPassword ? 'text' : 'password'}
-                name={'password'}/>
-
-                <InputRightElement>
-                  <Button
-                  onClick={() => setShowPassword(!showPassword)}
-                  variant={'link'}
-                  leftIcon={<Icon as={showPassword ? VisibilityOffIcon : VisibilityIcon}/>}
-                  iconSpacing={0}/>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-
             <Stack
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'center'}
-            mb={8}>
-              <Text mr={2}>
-                {isSignInRoute ? `I don't have an account.` : `I already have an account.`}
-              </Text>
+              w={'full'}
+              h={'full'}
+              direction={'column'}
+              alignItems={'center'}
+              justifyContent={'center'}
+              spacing={4}>
+              <FormControl>
+                <FormLabel>
+                  E-mail
+                </FormLabel>
 
-              <Link
-              as={RouterLink}
-              to={isSignInRoute ? PublicRoutes.SIGN_UP : PublicRoutes.SIGN_IN}>
-                {isSignInRoute ? 'Sign Up' : 'Sign In'}
-              </Link>
+                <Input
+                  onChange={(e) => inputChangeHandler(e, setEmail)}
+                  value={email}
+                  placeholder={'Enter E-mail'}
+                  type="email"
+                  name={'email'}
+                  autoFocus={true}/>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>
+                  Password
+                </FormLabel>
+
+                <InputGroup>
+                  <Input
+                    onChange={(e) => inputChangeHandler(e, setPassword)}
+                    value={password}
+                    placeholder={'Enter password'}
+                    type={showPassword ? 'text' : 'password'}
+                    name={'password'}/>
+
+                  <InputRightElement>
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      variant={'link'}
+                      icon={<Icon as={showPassword ? VisibilityOffIcon : VisibilityIcon}/>}
+                      aria-label={'password visibility'}/>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                justifyContent={'center'}>
+                <Text mr={2}>
+                  {isSignInRoute ? `I don't have an account.` : `I already have an account.`}
+                </Text>
+
+                <Link
+                  as={RouterLink}
+                  to={isSignInRoute ? PublicRoutes.SIGN_UP : PublicRoutes.SIGN_IN}>
+                  {isSignInRoute ? 'Sign Up' : 'Sign In'}
+                </Link>
+              </Stack>
+
+              <Button
+                type={'submit'}
+                w={'full'}>
+                {isSignInRoute ? 'Sign In' : 'Sign Up'}
+              </Button>
             </Stack>
-
-            <Button
-            type={'submit'}
-            w={'100%'}>
-              {isSignInRoute ? 'Sign In' : 'Sign Up'}
-            </Button>
           </form>
-        </Container>
+        </Box>
       </Stack>
     </>
   );

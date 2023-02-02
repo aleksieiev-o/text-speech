@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Card, CardBody, Heading, Icon, Stack, StackDivider, Text } from '@chakra-ui/react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 
 const CollectionsList: FC = observer((): ReactElement => {
   const collectionsStore = useCollectionsStore();
@@ -20,7 +21,7 @@ const CollectionsList: FC = observer((): ReactElement => {
       direction={'column'}
       alignItems={'flex-start'}
       justifyContent={'flex-start'}
-      h={'100%'}>
+      h={'full'}>
         <ListHeader
         createButtonTitle={'Create collection'}
         inputLabel={'Collection name'}
@@ -35,14 +36,20 @@ const CollectionsList: FC = observer((): ReactElement => {
             direction={'column'}
             alignItems={'flex-start'}
             justifyContent={'flex-start'}
-            w={'100%'}
-            h={'100%'}
+            w={'full'}
+            h={'full'}
             p={4}
             overflow={'auto'}
             divider={<StackDivider/>}>
               {
                 collectionsStore.collections.map((collection: Collection) => {
-                  return <Card as={'li'} key={collection.id} w={'100%'} cursor={'pointer'} title={collection.title}>
+                  return <Card
+                    key={collection.id}
+                    as={'li'}
+                    w={'full'}
+                    title={collection.title}
+                    cursor={'pointer'}
+                    boxShadow={'md'}>
                     <CardBody>
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
                         <Heading as={'h6'} mr={10} noOfLines={1}>
@@ -70,12 +77,19 @@ const CollectionsList: FC = observer((): ReactElement => {
             </Stack>
             :
             <Stack
+            w={'full'}
+            h={'full'}
             direction={'column'}
             alignItems={'center'}
             justifyContent={'center'}>
               <Text mb={4}>
                 Collections list is empty
               </Text>
+
+              <Button
+              leftIcon={<Icon as={AddIcon}/>}>
+                Create collection
+              </Button>
             </Stack>
         }
       </Stack>

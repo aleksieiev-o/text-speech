@@ -30,11 +30,12 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
     <Stack
     as={'section'}
     direction={'row'}
-    w={'100%'}
+    w={'full'}
     alignItems={'flex-end'}
     justifyContent={'flex-start'}
     mb={4}
-    p={4}>
+    p={4}
+    boxShadow={'md'}>
       <form onSubmit={createCollectionSubmitHandler}>
         <FormControl>
           <FormLabel>
