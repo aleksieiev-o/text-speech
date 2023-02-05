@@ -24,8 +24,6 @@ const CollectionsList: FC = observer((): ReactElement => {
       h={'full'}>
         <ListHeader
         createButtonTitle={'Create collection'}
-        inputLabel={'Collection name'}
-        inputPlaceholder={'Enter collection name'}
         removeButtonTitle={'Remove all collections'}
         removeButtonHandler={collectionsStore.removeAllCollections}/>
 
@@ -59,12 +57,14 @@ const CollectionsList: FC = observer((): ReactElement => {
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
                           <Button
                           leftIcon={<Icon as={EditIcon}/>}
+                          colorScheme={'twitter'}
                           mr={4}>
                             Edit
                           </Button>
 
                           <Button
                           onClick={() => collectionsStore.removeCollection(collection.id)}
+                          colorScheme={'red'}
                           leftIcon={<Icon as={DeleteIcon}/>}>
                             Remove
                           </Button>

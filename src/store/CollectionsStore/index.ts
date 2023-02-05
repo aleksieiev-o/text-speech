@@ -1,5 +1,5 @@
 import { RootStore } from '../index';
-import { CollectionsStoreService } from './service';
+import { CollectionRequestDto, CollectionsStoreService } from './service';
 import { makeAutoObservable } from 'mobx';
 
 export interface Collection {
@@ -17,7 +17,7 @@ export interface ICollectionsStore {
   collectionsStoreService: CollectionsStoreService;
   collections: Array<Collection>;
   loadAllCollections: () => void;
-  createCollection: (title: string) => void;
+  createCollection: (payload: CollectionRequestDto) => void;
   removeCollection: (id: string) => void;
   removeAllCollections: () => void;
   updateCollection: (id: string, payload: UpdateCollectionPayload) => void;
@@ -41,8 +41,8 @@ export class CollectionsStore implements ICollectionsStore {
     this.collections = await this.collectionsStoreService.loadAllCollectionsOnce();
   }
 
-  async createCollection(title: string) {
-    const collection = await this.collectionsStoreService.createCollection(title);
+  async createCollection(payload: CollectionRequestDto) {
+    const collection = await this.collectionsStoreService.createCollection({ title: payload.title });
     this.collections.push(collection);
   }
 

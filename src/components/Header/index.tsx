@@ -29,17 +29,11 @@ const Header: FC = observer((): ReactElement => {
     justifyContent={'space-between'}
     boxShadow={'md'}
     p={4}>
-      <Heading as={'h4'}>
-        {APP_NAME}
-      </Heading>
+      <Heading as={'h4'}>{APP_NAME}</Heading>
 
       {
         authorizationStore.isAuth &&
-        <Button
-        rightIcon={<Icon as={LogoutIcon}/>}
-        onClick={logoutHandler}>
-          Logout
-        </Button>
+        <Button onClick={logoutHandler} colorScheme={'orange'} rightIcon={<Icon as={LogoutIcon}/>}>Logout</Button>
       }
     </Stack>
   );

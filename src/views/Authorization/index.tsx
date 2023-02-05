@@ -11,6 +11,7 @@ import { FormikHelpers, useFormik } from 'formik';
 import { AuthRequestDto } from '../../store/AuthorizationStore';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useLoading } from '../../hooks/useLoading';
 
 const initialValues: AuthRequestDto = {
   email: '',
@@ -25,7 +26,7 @@ const validationSchema = object().shape({
 const Authorization: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isLoading, setIsLoading } = useLoading();
   const isSignInRoute = useAuthRouteCondition();
   const navigate = useNavigate();
 
