@@ -4,13 +4,15 @@ import Header from '../../components/Header';
 import { useCollectionsStore } from '../../store/hooks';
 import { Collection } from '../../store/CollectionsStore';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, CardBody, Heading, Icon, Stack, StackDivider, Text } from '@chakra-ui/react';
+import { Button, Card, CardBody, Heading, Icon, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import CreateCollectionModal from '../../components/ListHeader/CreateCollection.modal';
 
 const CollectionsList: FC = observer((): ReactElement => {
   const collectionsStore = useCollectionsStore();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -24,9 +26,10 @@ const CollectionsList: FC = observer((): ReactElement => {
       h={'full'}
       overflow={'hidden'}>
         <ListHeader
+        onOpen={onOpen}
+        removeButtonHandler={collectionsStore.removeAllCollections}
         createButtonTitle={'Create collection'}
-        removeButtonTitle={'Remove all collections'}
-        removeButtonHandler={collectionsStore.removeAllCollections}/>
+        removeButtonTitle={'Remove all collections'}/>
 
         {
           collectionsStore.collections.length ?
@@ -88,6 +91,7 @@ const CollectionsList: FC = observer((): ReactElement => {
               </Text>
 
               <Button
+              onClick={onOpen}
               colorScheme={'facebook'}
               leftIcon={<Icon as={AddIcon}/>}>
                 Create collection
@@ -95,6 +99,8 @@ const CollectionsList: FC = observer((): ReactElement => {
             </Stack>
         }
       </Stack>
+
+      {isOpen && <CreateCollectionModal isOpen={isOpen} onClose={onClose}/>}
     </>
   );
 });
