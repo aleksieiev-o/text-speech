@@ -29,7 +29,7 @@ const Header: FC = observer((): ReactElement => {
     justifyContent={'space-between'}
     boxShadow={'md'}
     p={4}>
-      <Heading as={'h4'}>{APP_NAME}</Heading>
+      <Heading as={'h4'} color={'facebook.600'}>{APP_NAME}</Heading>
 
       {
         authorizationStore.isAuth &&

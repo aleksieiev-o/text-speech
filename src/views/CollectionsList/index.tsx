@@ -88,6 +88,7 @@ const CollectionsList: FC = observer((): ReactElement => {
               </Text>
 
               <Button
+              colorScheme={'facebook'}
               leftIcon={<Icon as={AddIcon}/>}>
                 Create collection
               </Button>
