@@ -21,7 +21,8 @@ const CollectionsList: FC = observer((): ReactElement => {
       direction={'column'}
       alignItems={'flex-start'}
       justifyContent={'flex-start'}
-      h={'full'}>
+      h={'full'}
+      overflow={'hidden'}>
         <ListHeader
         createButtonTitle={'Create collection'}
         removeButtonTitle={'Remove all collections'}
