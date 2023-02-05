@@ -1,10 +1,11 @@
 import React, { FC, ReactElement, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import ListHeader from '../../components/ListHeader';
 import Header from '../../components/Header';
 import { useCollectionsStore } from '../../store/hooks';
 import { Collection } from '../../store/CollectionsStore';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, CardBody, Heading, Icon, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Card, CardBody, Heading, Icon, Link, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -72,9 +73,11 @@ const CollectionsList: FC = observer((): ReactElement => {
                     boxShadow={'md'}>
                     <CardBody>
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                        <Heading as={'h6'} mr={10} noOfLines={1}>
-                          {collection.title}
-                        </Heading>
+                        <Link as={RouterLink} to={collection.id}>
+                          <Heading as={'h6'} mr={10} noOfLines={1}>
+                            {collection.title}
+                          </Heading>
+                        </Link>
 
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
                           <Button

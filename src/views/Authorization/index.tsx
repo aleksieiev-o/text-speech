@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useState } from 'react';
 import { useAuthorizationStore } from '../../store/hooks';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { useAuthRouteCondition } from './useAuthRouteCondition';
+import { useAuthRouteCondition } from '../../hooks/useAuthRouteCondition';
 import { ProtectedRoutes, PublicRoutes } from '../../Router';
 import Header from '../../components/Header';
 import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Icon, IconButton, Input, InputGroup, InputRightElement, Link, Stack, Text } from '@chakra-ui/react';
