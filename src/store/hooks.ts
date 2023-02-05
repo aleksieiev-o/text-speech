@@ -4,6 +4,7 @@ import { StoreContext } from '../Providers/StoreContext.provider';
 import { AuthorizationStore } from './AuthorizationStore';
 import { SettingsStore } from './SettingsStore';
 import { CollectionsStore } from './CollectionsStore';
+import { CardsStore } from './CardsStore';
 
 export const useRootStore = (): RootStore => {
   const context = useContext(StoreContext);
@@ -26,4 +27,9 @@ export const useSettingsStore = (): SettingsStore => {
 export const useCollectionsStore = (): CollectionsStore => {
   const { collectionsStore } = useRootStore();
   return collectionsStore;
+};
+
+export const useCardsStore = (): CardsStore => {
+  const { cardsStore } = useRootStore();
+  return cardsStore;
 };

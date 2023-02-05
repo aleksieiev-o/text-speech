@@ -18,8 +18,6 @@ const CardsList: FC = (): ReactElement => {
       <div>
         <ListHeader
           onOpen={onOpen}
-          createButtonTitle={'Create card'}
-          removeButtonTitle={'Remove all cards'}
           removeButtonHandler={removeAllCards}/>
 
         <ul>

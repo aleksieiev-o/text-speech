@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useRef } from 'react';
 import {
   Button,
   FormControl,
@@ -37,6 +37,7 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
   const collectionsStore = useCollectionsStore();
   const { isOpen, onClose } = props;
   const { isLoading, setIsLoading } = useLoading();
+  const titleRef = useRef(null);
 
   const submitHandler = async (payload: CollectionRequestDto, formikHelpers: FormikHelpers<CollectionRequestDto>) => {
     setIsLoading(true);
@@ -61,7 +62,7 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
   const { touched, dirty, errors, getFieldProps } = formik;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={titleRef}>
       <ModalOverlay/>
 
       <ModalContent>
@@ -74,7 +75,7 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
             <FormControl>
               <FormLabel>Create collection</FormLabel>
 
-              <Input placeholder={'Enter collection name'} type="text"{...getFieldProps('title')}/>
+              <Input ref={titleRef} placeholder={'Enter collection name'} type="text"{...getFieldProps('title')}/>
 
               {touched.title && dirty && Boolean(errors.title) && <FormErrorMessage>{touched.title && dirty && errors.title}</FormErrorMessage>}
             </FormControl>

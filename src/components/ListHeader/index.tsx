@@ -1,6 +1,6 @@
-import React, { FC, ReactElement } from 'react';
+import React, { FC, ReactElement, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCollectionsStore } from '../../store/hooks';
+import { useCardsStore, useCollectionsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, Stack, useDisclosure } from '@chakra-ui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -11,20 +11,25 @@ import { ProtectedRoutes } from '../../Router';
 
 interface Props {
   onOpen: () => void;
-  createButtonTitle: string;
-  removeButtonTitle: string;
   removeButtonHandler: () => void;
 }
 
 const ListHeader: FC<Props> = observer((props): ReactElement => {
-  const {createButtonTitle, removeButtonTitle, onOpen} = props;
+  const { onOpen } = props;
   const { isOpen, onOpen: onOpenConfirmModal, onClose } = useDisclosure();
   const collectionsStore = useCollectionsStore();
+  const cardsStore = useCardsStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const removeAllCollectionsHandler = async () => {
-    await collectionsStore.removeAllCollections();
+  const isCollectionsListPath = useMemo(() => pathname === ProtectedRoutes.COLLECTIONS, [pathname]);
+
+  const removeAllItemsHandler = async () => {
+    if (isCollectionsListPath) {
+      await collectionsStore.removeAllCollections();
+    } else {
+      await cardsStore.removeAllCards();
+    }
     onClose();
   };
 
@@ -40,7 +45,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
         p={4}
         boxShadow={'md'}>
         {
-          pathname !== ProtectedRoutes.COLLECTIONS &&
+          !isCollectionsListPath &&
           <Button
             onClick={() => navigate(-1)}
             mr={'auto'}
@@ -59,27 +64,29 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
             onClick={onOpen}
             colorScheme={'facebook'}
             leftIcon={<Icon as={AddIcon}/>}>
-            {createButtonTitle}
+            {isCollectionsListPath ? 'Create collection' : 'Create card'}
           </Button>
 
-          <Button
-            onClick={onOpenConfirmModal}
-            colorScheme={'red'}
-            leftIcon={<Icon as={DeleteIcon}/>}>
-            {removeButtonTitle}
-          </Button>
+          {(isCollectionsListPath ? collectionsStore.collections.length : cardsStore.cards.length) &&
+            <Button
+              onClick={onOpenConfirmModal}
+              colorScheme={'red'}
+              leftIcon={<Icon as={DeleteIcon}/>}>
+              {isCollectionsListPath ? 'Remove all collections' : 'Remove all cards'}
+            </Button>
+          }
         </Stack>
       </Stack>
 
       {
         isOpen &&
         <ActionConfirmationModal
-          actionHandler={removeAllCollectionsHandler}
+          actionHandler={removeAllItemsHandler}
           isOpen={isOpen}
           onClose={onClose}
           modalType={ActionConfirmationModalType.DANGER}
-          modalTitle={'Remove all collections confirmation'}
-          modalBodyDescription={'You are about to remove all collection.'}
+          modalTitle={isCollectionsListPath ? 'Remove all collections confirmation' : 'Remove all cards confirmation'}
+          modalBodyDescription={isCollectionsListPath ? 'You are about to remove all collection.' : 'You are about to remove all cards.'}
           modalBodyQuestion={'Are you cure?'}
           buttonText={'Remove'}/>
       }

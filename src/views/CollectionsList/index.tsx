@@ -46,9 +46,7 @@ const CollectionsList: FC = observer((): ReactElement => {
       overflow={'hidden'}>
         <ListHeader
         onOpen={onOpenCreateCollectionModal}
-        removeButtonHandler={collectionsStore.removeAllCollections}
-        createButtonTitle={'Create collection'}
-        removeButtonTitle={'Remove all collections'}/>
+        removeButtonHandler={collectionsStore.removeAllCollections}/>
 
         {
           collectionsStore.collections.length ?
