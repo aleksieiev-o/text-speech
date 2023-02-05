@@ -2,6 +2,18 @@ import { RootStore } from '../index';
 import { CardsStoreService } from './service';
 import { makeAutoObservable } from 'mobx';
 
+export interface CreateCardRequestDto {
+  parentId: string,
+  title: string,
+  text: string
+}
+
+export interface UpdateCardRequestDto {
+  parentId: string,
+  title?: string,
+  text?: string
+}
+
 export interface Card {
   id: string;
   parentId: string;
@@ -12,18 +24,15 @@ export interface Card {
   updatedDate: string;
 }
 
-export type CreateCardPayload = { parentId: string, title: string, text: string };
-export type UpdateCardPayload = { parentId: string, title?: string, text?: string };
-
 export interface ICardsStore {
   rootStore: RootStore;
   cardsStoreService: CardsStoreService;
   cards: Array<Card>;
   loadAllCards: (parentId: string) => void;
-  createCard: (payload: CreateCardPayload) => void;
+  createCard: (payload: CreateCardRequestDto) => void;
   removeCard: (id: string, parentId: string) => void;
   removeAllCards: () => void;
-  updateCard: (id: string, payload: UpdateCardPayload) => void;
+  updateCard: (id: string, payload: UpdateCardRequestDto) => void;
   clearLocalCards: () => void;
 }
 
@@ -44,7 +53,7 @@ export class CardsStore implements ICardsStore {
     this.cards = await this.cardsStoreService.loadAllCardsOnce(parentId);
   }
 
-  async createCard(payload: CreateCardPayload) {
+  async createCard(payload: CreateCardRequestDto) {
     const collection = await this.cardsStoreService.createCard(payload);
     this.cards.push(collection);
   }
@@ -60,7 +69,7 @@ export class CardsStore implements ICardsStore {
     this.cards = [];
   }
 
-  async updateCard(id: string, payload: UpdateCardPayload) {
+  async updateCard(id: string, payload: UpdateCardRequestDto) {
     const updatedCard: Card = await this.cardsStoreService.updateCard(id, payload);
     const updatedIdx = this.cards.findIndex((item) => item.id === id);
     this.cards[updatedIdx] = updatedCard;

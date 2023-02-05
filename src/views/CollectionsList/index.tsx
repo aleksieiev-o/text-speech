@@ -16,7 +16,7 @@ const CollectionsList: FC = observer((): ReactElement => {
   const collectionsStore = useCollectionsStore();
   const [tempCollection, setTempCollection] = useState<Collection>({} as Collection);
   const { isOpen: isOpenCreateCollectionModal, onOpen: onOpenCreateCollectionModal, onClose: onCloseCreateCollectionModal } = useDisclosure();
-  const { isOpen: isOpenCRemoveCollectionModal, onOpen: onOpenCRemoveCollectionModal, onClose: onCloseRemoveCCollectionModal } = useDisclosure();
+  const { isOpen: isOpenRemoveCollectionModal, onOpen: onOpenCRemoveCollectionModal, onClose: onCloseRemoveCollectionModal } = useDisclosure();
 
   const prepareToRemoveCollection = (collection: Collection) => {
     setTempCollection(collection);
@@ -24,7 +24,7 @@ const CollectionsList: FC = observer((): ReactElement => {
   };
 
   const closeRemoveCollectionModalHandler = () => {
-    onCloseRemoveCCollectionModal();
+    onCloseRemoveCollectionModal();
     setTempCollection({} as Collection);
   };
 
@@ -122,10 +122,10 @@ const CollectionsList: FC = observer((): ReactElement => {
       {isOpenCreateCollectionModal && <CreateCollectionModal isOpen={isOpenCreateCollectionModal} onClose={onCloseCreateCollectionModal}/>}
 
       {
-        isOpenCRemoveCollectionModal &&
+        isOpenRemoveCollectionModal &&
         <ActionConfirmationModal
           actionHandler={actionRemoveCollectionModalHandler}
-          isOpen={isOpenCRemoveCollectionModal}
+          isOpen={isOpenRemoveCollectionModal}
           onClose={closeRemoveCollectionModalHandler}
           modalType={ActionConfirmationModalType.DANGER}
           modalTitle={'Remove collection confirmation'}

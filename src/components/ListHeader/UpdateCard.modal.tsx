@@ -11,39 +11,46 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
+  ModalOverlay, Textarea,
 } from '@chakra-ui/react';
 import { CollectionRequestDto } from '../../store/CollectionsStore/service';
 import { object, string } from 'yup';
 import { useLoading } from '../../hooks/useLoading';
 import { FormikHelpers, useFormik } from 'formik';
-import { useCollectionsStore } from '../../store/hooks';
+import { useCardsStore, useCollectionsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
+import { CreateCardRequestDto } from '../../store/CardsStore';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const initialValues: CollectionRequestDto = {
+const initialValues: CreateCardRequestDto = {
+  parentId: '',
   title: '',
+  text: '',
 };
 
 const validationSchema = object().shape({
   title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(30, 'E-mail must be maximum 30 characters'),
+  text: string().required('Text is required').min(1, 'Text must be at least 1 character'),
 });
 
-const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
+const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const collectionsStore = useCollectionsStore();
+  const cardsStore = useCardsStore();
   const { isOpen, onClose } = props;
   const { isLoading, setIsLoading } = useLoading();
   const titleRef = useRef(null);
 
-  const submitHandler = async (payload: CollectionRequestDto, formikHelpers: FormikHelpers<CollectionRequestDto>) => {
+  const submitHandler = async (payload: CreateCardRequestDto, formikHelpers: FormikHelpers<CreateCardRequestDto>) => {
     setIsLoading(true);
+    // eslint-disable-next-line no-console
+    console.log(payload);
 
     try {
-      await collectionsStore.createCollection(payload);
+      // await cardsStore.createCard(payload);
       formikHelpers.setSubmitting(false);
       onClose();
     } catch (e) {
@@ -66,24 +73,32 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
       <ModalOverlay/>
 
       <ModalContent>
-        <ModalHeader>Create collection</ModalHeader>
+        <ModalHeader>Create card</ModalHeader>
 
         <ModalCloseButton/>
 
         <ModalBody>
-          <form id={'create-collection-form'} onSubmit={formik.handleSubmit}>
+          <form id={'create-card-form'} onSubmit={formik.handleSubmit}>
             <FormControl>
               <FormLabel>Title</FormLabel>
 
-              <Input ref={titleRef} placeholder={'Enter collection title'} type="text" {...getFieldProps('title')}/>
+              <Input ref={titleRef} placeholder={'Enter card title'} type="text" {...getFieldProps('title')}/>
 
               {touched.title && dirty && Boolean(errors.title) && <FormErrorMessage>{touched.title && dirty && errors.title}</FormErrorMessage>}
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Text</FormLabel>
+
+              <Textarea placeholder={'Enter card text'} rows={7} {...getFieldProps('text')}/>
+
+              {touched.text && dirty && Boolean(errors.text) && <FormErrorMessage>{touched.text && dirty && errors.text}</FormErrorMessage>}
             </FormControl>
           </form>
         </ModalBody>
 
         <ModalFooter>
-          <Button form={'create-collection-form'} isLoading={isLoading} colorScheme={'facebook'} type={'submit'} mr={4}>Create</Button>
+          <Button form={'create-card-form'} isLoading={isLoading} colorScheme={'facebook'} type={'submit'} mr={4}>Create</Button>
 
           <Button onClick={onClose}>Close</Button>
         </ModalFooter>
@@ -92,4 +107,4 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
   );
 });
 
-export default CreateCollectionModal;
+export default UpdateCardModal;

@@ -1,4 +1,4 @@
-import { Card, CardsStore, CreateCardPayload, UpdateCardPayload } from './index';
+import { Card, CardsStore, CreateCardRequestDto, UpdateCardRequestDto } from './index';
 import { child, DataSnapshot, get, push, ref, remove, set, update } from 'firebase/database';
 import { firebaseDataBase } from '../../firebase';
 
@@ -6,10 +6,10 @@ interface ICardsStoreService {
   cardsStore: CardsStore;
   loadAllCardsOnce: (parentId: string) => Promise<Array<Card>>;
   loadCardByIdOnce: (id: string, parentId: string) => Promise<Card>;
-  createCard: (payload: CreateCardPayload) => Promise<Card>;
+  createCard: (payload: CreateCardRequestDto) => Promise<Card>;
   removeCard: (id: string, parentId: string) => Promise<string>;
   removeAllCards: () => Promise<boolean>;
-  updateCard: (id: string, payload: UpdateCardPayload) => Promise<Card>;
+  updateCard: (id: string, payload: UpdateCardRequestDto) => Promise<Card>;
 }
 
 export class CardsStoreService implements ICardsStoreService {
@@ -41,7 +41,7 @@ export class CardsStoreService implements ICardsStoreService {
     return snapshot.val();
   }
 
-  async createCard(payload: CreateCardPayload): Promise<Card> {
+  async createCard(payload: CreateCardRequestDto): Promise<Card> {
     const { parentId, title, text } = payload;
     const cardRef = push(ref(firebaseDataBase, `${this.cardsStore.cardsPath}/${parentId}`));
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -72,7 +72,7 @@ export class CardsStoreService implements ICardsStoreService {
     return Promise.resolve(true);
   }
 
-  async updateCard(id: string, payload: UpdateCardPayload): Promise<Card> {
+  async updateCard(id: string, payload: UpdateCardRequestDto): Promise<Card> {
     await update(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}/${payload.parentId}/${id}`), payload);
     return await this.loadCardByIdOnce(id, payload.parentId);
   }
