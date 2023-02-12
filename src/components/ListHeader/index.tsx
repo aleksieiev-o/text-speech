@@ -25,7 +25,6 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
   const { pathname } = useLocation();
 
   const isCollectionsListPath = useMemo(() => pathname === ProtectedRoutes.COLLECTIONS, [pathname]);
-  const controlsVisibility = useMemo(() => isCollectionsListPath ? collectionsStore.collections.length : cardsStore.cards.length, [isCollectionsListPath]);
 
   const removeAllItemsHandler = async () => {
     if (isCollectionsListPath) {
@@ -59,7 +58,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
           </Button>
         }
 
-        {controlsVisibility &&
+        {(isCollectionsListPath ? collectionsStore.collections.length : cardsStore.cards.length) &&
           <Stack
           direction={'row'}
           w={'full'}
