@@ -4,9 +4,10 @@ import { useAuthorizationStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../../Router';
-import { Button, Heading, Icon, Stack, useDisclosure } from '@chakra-ui/react';
+import { Heading, Icon, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../ActionConfirmation.modal';
+import HeaderUserInfo from './HeaderUserInfo';
 
 const Header: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
@@ -36,7 +37,17 @@ const Header: FC = observer((): ReactElement => {
 
         {
           authorizationStore.isAuth &&
-          <Button onClick={onOpen} colorScheme={'gray'} variant={'outline'} rightIcon={<Icon as={LogoutIcon}/>}>Logout</Button>
+          <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={6}>
+            <HeaderUserInfo/>
+
+            <IconButton
+              onClick={onOpen}
+              colorScheme={'gray'}
+              variant={'outline'}
+              title={'Log out'}
+              aria-label={'Log out'}
+              icon={<Icon as={LogoutIcon}/>}/>
+          </Stack>
         }
       </Stack>
 
