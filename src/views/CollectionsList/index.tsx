@@ -5,7 +5,7 @@ import Header from '../../components/Header';
 import { useCollectionsStore } from '../../store/hooks';
 import { Collection } from '../../store/CollectionsStore';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, CardBody, Heading, Icon, Link, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react';
+import { Button, Card, CardBody, Heading, Icon, IconButton, Link, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -60,7 +60,7 @@ const CollectionsList: FC = observer((): ReactElement => {
             w={'full'}
             h={'full'}
             p={4}
-            overflow={'auto'}
+            overflowY={'auto'}
             divider={<StackDivider/>}>
               {
                 collectionsStore.collections.map((collection: Collection) => {
@@ -69,7 +69,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                     as={'li'}
                     w={'full'}
                     title={collection.title}
-                    cursor={'pointer'}
+                    cursor={'default'}
                     boxShadow={'md'}>
                     <CardBody>
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
@@ -80,21 +80,21 @@ const CollectionsList: FC = observer((): ReactElement => {
                         </Link>
 
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                          <Button
-                          leftIcon={<Icon as={EditIcon}/>}
+                          <IconButton
                           colorScheme={'twitter'}
+                          aria-label={'Edit collection'}
+                          title={'Edit collection'}
                           variant={'outline'}
-                          mr={4}>
-                            Edit
-                          </Button>
+                          icon={<Icon as={EditIcon}/>}
+                          mr={4}/>
 
-                          <Button
+                          <IconButton
                           onClick={() => prepareToRemoveCollection(collection)}
                           colorScheme={'red'}
+                          aria-label={'Remove collection'}
+                          title={'Remove collection'}
                           variant={'outline'}
-                          leftIcon={<Icon as={DeleteIcon}/>}>
-                            Remove
-                          </Button>
+                          icon={<Icon as={DeleteIcon}/>}/>
                         </Stack>
                       </Stack>
                     </CardBody>
