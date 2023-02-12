@@ -73,21 +73,20 @@ const CollectionsList: FC = observer((): ReactElement => {
                     cursor={'default'}
                     boxShadow={'md'}>
                     <CardBody>
-                      <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+                      <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
                         <Link as={RouterLink} to={collection.id}>
-                          <Heading as={'h6'} mr={10} noOfLines={1}>
+                          <Heading as={'h6'} noOfLines={1}>
                             {collection.title}
                           </Heading>
                         </Link>
 
-                        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+                        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
                           <IconButton
                           colorScheme={'twitter'}
                           aria-label={'Edit collection'}
                           title={'Edit collection'}
                           variant={'outline'}
-                          icon={<Icon as={EditIcon}/>}
-                          mr={4}/>
+                          icon={<Icon as={EditIcon}/>}/>
 
                           <IconButton
                           onClick={() => prepareToRemoveCollection(collection)}

@@ -97,7 +97,7 @@ const CardsList: FC = observer((): ReactElement => {
                             </Heading>
                           </Link>
 
-                          <Text overflow={'hidden'}>
+                          <Text overflow={'hidden'} maxH={'72px'}>
                             {card.text || 'No text'}
                           </Text>
                         </Stack>
@@ -142,25 +142,6 @@ const CardsList: FC = observer((): ReactElement => {
                 })
               }
             </Stack>
-            /*<Grid as={'ul'} templateColumns={'repeat(3, 1fr)'} gap={4} p={4} w={'full'} overflowY={'auto'}>
-              {
-                cardsStore.cards.map((card: Card) => {
-                  return <GridItem
-                    key={card.id}
-                    as={'li'}
-                    overflow={'hidden'}
-                    boxShadow={'md'}
-                    minH={'220px'}>
-                    <ChakraCard
-                    title={card.title}
-                    cursor={'default'}
-                    h={'full'}>
-
-                    </ChakraCard>
-                  </GridItem>;
-                })
-              }
-            </Grid>*/
             :
             <EmptyList
             emptyListMessage={'Cards list is empty'}
