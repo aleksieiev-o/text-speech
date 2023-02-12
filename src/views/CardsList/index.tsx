@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
-import { CardBody, Heading, Icon, Link, Stack, Text, Card as ChakraCard, useDisclosure, Grid, GridItem, IconButton } from '@chakra-ui/react';
+import { CardBody, Heading, Icon, Link, Stack, Text, Card as ChakraCard, useDisclosure, IconButton, StackDivider } from '@chakra-ui/react';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
 import { observer } from 'mobx-react-lite';
 import { useCardsStore } from '../../store/hooks';
@@ -63,7 +63,86 @@ const CardsList: FC = observer((): ReactElement => {
 
         {
           cardsStore.cards.length ?
-            <Grid as={'ul'} templateColumns={'repeat(3, 1fr)'} gap={4} p={4} w={'full'} overflowY={'auto'}>
+            <Stack
+              as={'ul'}
+              direction={'column'}
+              alignItems={'flex-start'}
+              justifyContent={'flex-start'}
+              w={'full'}
+              h={'full'}
+              p={4}
+              overflowY={'auto'}
+              divider={<StackDivider/>}>
+              {
+                cardsStore.cards.map((card: Card) => {
+                  return <ChakraCard
+                    key={card.id}
+                    as={'li'}
+                    w={'full'}
+                    title={card.title}
+                    cursor={'default'}
+                    boxShadow={'md'}>
+                    <CardBody>
+                      <Stack
+                        direction={'row'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                        overflow={'hidden'}
+                        h={'full'}
+                        spacing={4}>
+                        <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
+                          <Link as={RouterLink} to={card.id}>
+                            <Heading as={'h6'} noOfLines={1}>
+                              {card.title || 'No title'}
+                            </Heading>
+                          </Link>
+
+                          <Text overflow={'hidden'}>
+                            {card.text || 'No text'}
+                          </Text>
+                        </Stack>
+
+                        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+                            <IconButton
+                              colorScheme={'twitter'}
+                              aria-label={'Play'}
+                              title={'Play'}
+                              icon={<Icon as={PlayArrowIcon}/>}
+                              variant={'outline'}/>
+
+                            <IconButton
+                              colorScheme={'twitter'}
+                              aria-label={'Stop'}
+                              title={'Stop'}
+                              icon={<Icon as={StopIcon}/>}
+                              variant={'outline'}/>
+                          </Stack>
+
+                          <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+                            <IconButton
+                              colorScheme={'twitter'}
+                              aria-label={'Edit card'}
+                              title={'Edit card'}
+                              icon={<Icon as={EditIcon}/>}
+                              variant={'outline'}/>
+
+                            <IconButton
+                              onClick={() => prepareToRemoveCard(card)}
+                              colorScheme={'red'}
+                              aria-label={'Delete card'}
+                              title={'Delete card'}
+                              variant={'outline'}
+                              icon={<Icon as={DeleteIcon}/>}/>
+                          </Stack>
+                        </Stack>
+                      </Stack>
+                    </CardBody>
+                  </ChakraCard>;
+                })
+              }
+            </Stack>
+            /*<Grid as={'ul'} templateColumns={'repeat(3, 1fr)'} gap={4} p={4} w={'full'} overflowY={'auto'}>
               {
                 cardsStore.cards.map((card: Card) => {
                   return <GridItem
@@ -76,69 +155,12 @@ const CardsList: FC = observer((): ReactElement => {
                     title={card.title}
                     cursor={'default'}
                     h={'full'}>
-                      <CardBody>
-                        <Stack
-                          direction={'column'}
-                          alignItems={'flex-start'}
-                          justifyContent={'space-between'}
-                          overflow={'hidden'}
-                          h={'full'}>
-                          <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={4} mb={6}>
-                            <Link as={RouterLink} to={card.id}>
-                              <Heading as={'h6'} mr={10} noOfLines={1}>
-                                {card.title}
-                              </Heading>
-                            </Link>
 
-                            <Text h={'48px'} maxH={'48px'} overflow={'hidden'}>
-                              {card.text}
-                            </Text>
-                          </Stack>
-
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4} w={'full'}>
-                            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                              <IconButton
-                                colorScheme={'twitter'}
-                                aria-label={'Play'}
-                                title={'Play'}
-                                icon={<Icon as={PlayArrowIcon}/>}
-                                variant={'outline'}
-                                mr={4}/>
-
-                              <IconButton
-                                colorScheme={'twitter'}
-                                aria-label={'Stop'}
-                                title={'Stop'}
-                                icon={<Icon as={StopIcon}/>}
-                                variant={'outline'}
-                                mr={4}/>
-                            </Stack>
-
-                            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
-                              <IconButton
-                                colorScheme={'twitter'}
-                                aria-label={'Edit card'}
-                                title={'Edit card'}
-                                icon={<Icon as={EditIcon}/>}
-                                variant={'outline'}
-                                mr={4}/>
-
-                              <IconButton
-                                onClick={() => prepareToRemoveCard(card)}
-                                colorScheme={'red'}
-                                aria-label={'Delete card'}
-                                title={'Delete card'}
-                                variant={'outline'}
-                                icon={<Icon as={DeleteIcon}/>}/>
-                            </Stack>
-                          </Stack>
-                        </Stack>
-                      </CardBody>
                     </ChakraCard>
                   </GridItem>;
                 })
               }
-            </Grid>
+            </Grid>*/
             :
             <EmptyList
             emptyListMessage={'Cards list is empty'}
