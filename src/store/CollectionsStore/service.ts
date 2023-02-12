@@ -69,7 +69,9 @@ export class CollectionsStoreService implements ICollectionsStoreService {
   }
 
   async removeAllCollections(): Promise<boolean> {
+    // TODO change to firebase transaction
     await set(ref(firebaseDataBase, this.collectionsStore.collectionsPath), null);
+    await set(ref(firebaseDataBase, this.collectionsStore.rootStore.cardsStore.cardsPath), null);
     return Promise.resolve(true);
   }
 

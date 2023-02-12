@@ -13,13 +13,13 @@ import {
   ModalHeader,
   ModalOverlay, Textarea,
 } from '@chakra-ui/react';
-import { CollectionRequestDto } from '../../store/CollectionsStore/service';
 import { object, string } from 'yup';
 import { useLoading } from '../../hooks/useLoading';
 import { FormikHelpers, useFormik } from 'formik';
-import { useCardsStore, useCollectionsStore } from '../../store/hooks';
+import { useCardsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { CreateCardRequestDto } from '../../store/CardsStore';
+import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 
 interface Props {
   isOpen: boolean;
@@ -38,19 +38,21 @@ const validationSchema = object().shape({
 });
 
 const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
-  const collectionsStore = useCollectionsStore();
   const cardsStore = useCardsStore();
+  const currentCollectionId = useCurrentCollectionId();
   const { isOpen, onClose } = props;
   const { isLoading, setIsLoading } = useLoading();
   const titleRef = useRef(null);
 
   const submitHandler = async (payload: CreateCardRequestDto, formikHelpers: FormikHelpers<CreateCardRequestDto>) => {
     setIsLoading(true);
-    // eslint-disable-next-line no-console
-    console.log(payload);
 
     try {
-      // await cardsStore.createCard(payload);
+      await cardsStore.createCard({
+        parentId: currentCollectionId,
+        title: payload.title,
+        text: payload.text,
+      });
       formikHelpers.setSubmitting(false);
       onClose();
     } catch (e) {

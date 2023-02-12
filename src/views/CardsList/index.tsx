@@ -1,28 +1,35 @@
-import React, { FC, ReactElement, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
 import { Button, CardBody, Heading, Icon, Link, Stack, StackDivider, Text, Card as ChakraCard, useDisclosure } from '@chakra-ui/react';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
-import { Collection } from '../../store/CollectionsStore';
 import { observer } from 'mobx-react-lite';
-import { useCardsStore, useCollectionsStore } from '../../store/hooks';
+import { useCardsStore } from '../../store/hooks';
 import { Card } from '../../store/CardsStore';
 import UpdateCardModal from '../../components/ListHeader/UpdateCard.modal';
 import { Link as RouterLink } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 
 const CardsList: FC = observer((): ReactElement => {
-  const collectionsStore = useCollectionsStore();
   const cardStore = useCardsStore();
-  const [tempCollection, setTempCollection] = useState<Collection>({} as Collection);
+  const currentCollectionId = useCurrentCollectionId();
   const [tempCard, setTempCard] = useState<Card>({} as Card);
   const { isOpen: isOpenUpdateCardModal, onOpen: onOpenUpdateCardModal, onClose: onCloseUpdateCardModal } = useDisclosure();
   const { isOpen: isOpenRemoveCardModal, onOpen: onOpenCRemoveCardModal, onClose: onCloseRemoveCardModal } = useDisclosure();
 
-  const prepareToRemoveCard = (collection: Card) => {
-    setTempCard(collection);
+  const loadCardList = async () => {
+    await cardStore.loadAllCards(currentCollectionId);
+  };
+
+  useEffect(() => {
+    loadCardList();
+  }, []);
+
+  const prepareToRemoveCard = (card: Card) => {
+    setTempCard(card);
     onOpenCRemoveCardModal();
   };
 
@@ -32,13 +39,8 @@ const CardsList: FC = observer((): ReactElement => {
   };
 
   const actionRemoveCardModalHandler = async () => {
-    await cardStore.removeCard(tempCard.id, tempCollection.id);
+    await cardStore.removeCard(tempCard.id, currentCollectionId);
     closeRemoveCardModalHandler();
-  };
-
-  const removeAllCards = () => {
-    // eslint-disable-next-line no-console
-    console.log(111);
   };
 
   return (
@@ -54,7 +56,7 @@ const CardsList: FC = observer((): ReactElement => {
       overflow={'hidden'}>
         <ListHeader
           onOpen={onOpenUpdateCardModal}
-          removeButtonHandler={removeAllCards}/>
+          removeButtonHandler={() => cardStore.removeAllCards(currentCollectionId)}/>
 
         {
           cardStore.cards.length ?

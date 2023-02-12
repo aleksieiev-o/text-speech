@@ -8,7 +8,7 @@ interface ICardsStoreService {
   loadCardByIdOnce: (id: string, parentId: string) => Promise<Card>;
   createCard: (payload: CreateCardRequestDto) => Promise<Card>;
   removeCard: (id: string, parentId: string) => Promise<string>;
-  removeAllCards: () => Promise<boolean>;
+  removeAllCards: (parentId: string) => Promise<boolean>;
   updateCard: (id: string, payload: UpdateCardRequestDto) => Promise<Card>;
 }
 
@@ -33,7 +33,7 @@ export class CardsStoreService implements ICardsStoreService {
   }
 
   async loadCardByIdOnce(id: string, parentId: string): Promise<Card> {
-    const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}${parentId}/${id}`));
+    const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}/${parentId}/${id}`));
     // TODO complete the check
     // if (snapshot.exists()) {
     //   return snapshot.val();
@@ -63,12 +63,12 @@ export class CardsStoreService implements ICardsStoreService {
   }
 
   async removeCard(id: string, parentId: string): Promise<string> {
-    await remove(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}${parentId}/${id}`));
+    await remove(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}/${parentId}/${id}`));
     return Promise.resolve(id);
   }
 
-  async removeAllCards(): Promise<boolean> {
-    await set(ref(firebaseDataBase, this.cardsStore.cardsPath), null);
+  async removeAllCards(parentId: string): Promise<boolean> {
+    await set(ref(firebaseDataBase, `${this.cardsStore.cardsPath}/${parentId}`), null);
     return Promise.resolve(true);
   }
 

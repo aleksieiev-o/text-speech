@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../ActionConfirmation.modal';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { ProtectedRoutes } from '../../Router';
+import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 
 interface Props {
   onOpen: () => void;
@@ -18,6 +19,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
   const { onOpen } = props;
   const { isOpen, onOpen: onOpenConfirmModal, onClose } = useDisclosure();
   const collectionsStore = useCollectionsStore();
+  const currentCollectionId = useCurrentCollectionId();
   const cardsStore = useCardsStore();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -28,7 +30,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
     if (isCollectionsListPath) {
       await collectionsStore.removeAllCollections();
     } else {
-      await cardsStore.removeAllCards();
+      await cardsStore.removeAllCards(currentCollectionId);
     }
     onClose();
   };

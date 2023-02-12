@@ -31,7 +31,7 @@ export interface ICardsStore {
   loadAllCards: (parentId: string) => void;
   createCard: (payload: CreateCardRequestDto) => void;
   removeCard: (id: string, parentId: string) => void;
-  removeAllCards: () => void;
+  removeAllCards: (parentId: string) => void;
   updateCard: (id: string, payload: UpdateCardRequestDto) => void;
   clearLocalCards: () => void;
 }
@@ -64,8 +64,8 @@ export class CardsStore implements ICardsStore {
     this.cards.splice(deletedIdx, 1);
   }
 
-  async removeAllCards() {
-    await this.cardsStoreService.removeAllCards();
+  async removeAllCards(parentId: string) {
+    await this.cardsStoreService.removeAllCards(parentId);
     this.cards = [];
   }
 
