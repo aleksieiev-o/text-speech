@@ -64,14 +64,14 @@ export class CollectionsStoreService implements ICollectionsStoreService {
   }
 
   async removeCollection(id: string): Promise<string> {
+    await remove(child(ref(firebaseDataBase), `${this.collectionsStore.rootStore.cardsStore.cardsPath}/${id}`));
     await remove(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`));
     return Promise.resolve(id);
   }
 
   async removeAllCollections(): Promise<boolean> {
-    // TODO change to firebase transaction
-    await set(ref(firebaseDataBase, this.collectionsStore.collectionsPath), null);
     await set(ref(firebaseDataBase, this.collectionsStore.rootStore.cardsStore.cardsPath), null);
+    await set(ref(firebaseDataBase, this.collectionsStore.collectionsPath), null);
     return Promise.resolve(true);
   }
 

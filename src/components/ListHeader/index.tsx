@@ -25,6 +25,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
   const { pathname } = useLocation();
 
   const isCollectionsListPath = useMemo(() => pathname === ProtectedRoutes.COLLECTIONS, [pathname]);
+  const controlsVisibility = useMemo(() => isCollectionsListPath ? collectionsStore.collections.length : cardsStore.cards.length, [isCollectionsListPath]);
 
   const removeAllItemsHandler = async () => {
     if (isCollectionsListPath) {
@@ -58,20 +59,20 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
           </Button>
         }
 
-        <Stack
+        {controlsVisibility &&
+          <Stack
           direction={'row'}
           w={'full'}
           alignItems={'center'}
           justifyContent={'flex-end'}>
-          <Button
-            onClick={onOpen}
-            colorScheme={'facebook'}
-            variant={'outline'}
-            leftIcon={<Icon as={AddIcon}/>}>
-            {isCollectionsListPath ? 'Create collection' : 'Create card'}
-          </Button>
+            <Button
+              onClick={onOpen}
+              colorScheme={'facebook'}
+              variant={'outline'}
+              leftIcon={<Icon as={AddIcon}/>}>
+              {isCollectionsListPath ? 'Create collection' : 'Create card'}
+            </Button>
 
-          {(isCollectionsListPath ? collectionsStore.collections.length : cardsStore.cards.length) &&
             <Button
               onClick={onOpenConfirmModal}
               colorScheme={'red'}
@@ -79,8 +80,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
               leftIcon={<Icon as={DeleteIcon}/>}>
               {isCollectionsListPath ? 'Remove all collections' : 'Remove all cards'}
             </Button>
-          }
-        </Stack>
+        </Stack>}
       </Stack>
 
       {

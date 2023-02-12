@@ -44,9 +44,11 @@ const CollectionsList: FC = observer((): ReactElement => {
       justifyContent={'flex-start'}
       h={'full'}
       overflow={'hidden'}>
-        <ListHeader
-        onOpen={onOpenCreateCollectionModal}
-        removeButtonHandler={collectionsStore.removeAllCollections}/>
+        {collectionsStore.collections.length &&
+          <ListHeader
+          onOpen={onOpenCreateCollectionModal}
+          removeButtonHandler={collectionsStore.removeAllCollections}/>
+        }
 
         {
           collectionsStore.collections.length ?

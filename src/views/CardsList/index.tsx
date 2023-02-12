@@ -14,14 +14,14 @@ import AddIcon from '@mui/icons-material/Add';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 
 const CardsList: FC = observer((): ReactElement => {
-  const cardStore = useCardsStore();
+  const cardsStore = useCardsStore();
   const currentCollectionId = useCurrentCollectionId();
   const [tempCard, setTempCard] = useState<Card>({} as Card);
   const { isOpen: isOpenUpdateCardModal, onOpen: onOpenUpdateCardModal, onClose: onCloseUpdateCardModal } = useDisclosure();
   const { isOpen: isOpenRemoveCardModal, onOpen: onOpenCRemoveCardModal, onClose: onCloseRemoveCardModal } = useDisclosure();
 
   const loadCardList = async () => {
-    await cardStore.loadAllCards(currentCollectionId);
+    await cardsStore.loadAllCards(currentCollectionId);
   };
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const CardsList: FC = observer((): ReactElement => {
   };
 
   const actionRemoveCardModalHandler = async () => {
-    await cardStore.removeCard(tempCard.id, currentCollectionId);
+    await cardsStore.removeCard(tempCard.id, currentCollectionId);
     closeRemoveCardModalHandler();
   };
 
@@ -55,11 +55,11 @@ const CardsList: FC = observer((): ReactElement => {
       h={'full'}
       overflow={'hidden'}>
         <ListHeader
-          onOpen={onOpenUpdateCardModal}
-          removeButtonHandler={() => cardStore.removeAllCards(currentCollectionId)}/>
+        onOpen={onOpenUpdateCardModal}
+        removeButtonHandler={() => cardsStore.removeAllCards(currentCollectionId)}/>
 
         {
-          cardStore.cards.length ?
+          cardsStore.cards.length ?
             <Stack
               as={'ul'}
               direction={'column'}
@@ -71,7 +71,7 @@ const CardsList: FC = observer((): ReactElement => {
               overflow={'auto'}
               divider={<StackDivider/>}>
               {
-                cardStore.cards.map((collection: Card) => {
+                cardsStore.cards.map((collection: Card) => {
                   return <ChakraCard
                     key={collection.id}
                     as={'li'}
