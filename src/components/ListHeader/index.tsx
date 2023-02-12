@@ -49,7 +49,8 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
           <Button
             onClick={() => navigate(-1)}
             mr={'auto'}
-            colorScheme={'blackAlpha'}
+            colorScheme={'gray'}
+            variant={'outline'}
             leftIcon={<Icon as={ArrowBackIosIcon}/>}>
             Back
           </Button>
@@ -63,6 +64,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
           <Button
             onClick={onOpen}
             colorScheme={'facebook'}
+            variant={'outline'}
             leftIcon={<Icon as={AddIcon}/>}>
             {isCollectionsListPath ? 'Create collection' : 'Create card'}
           </Button>
@@ -71,6 +73,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
             <Button
               onClick={onOpenConfirmModal}
               colorScheme={'red'}
+              variant={'outline'}
               leftIcon={<Icon as={DeleteIcon}/>}>
               {isCollectionsListPath ? 'Remove all collections' : 'Remove all cards'}
             </Button>

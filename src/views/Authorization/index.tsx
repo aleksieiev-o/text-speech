@@ -106,7 +106,7 @@ const Authorization: FC = observer((): ReactElement => {
                 </Link>
               </Stack>
 
-              <Button type={'submit'} isLoading={isLoading} colorScheme={isSignInRoute ? 'twitter' : 'facebook'} w={'full'}>
+              <Button type={'submit'} isLoading={isLoading} colorScheme={isSignInRoute ? 'twitter' : 'facebook'} variant={'outline'} w={'full'}>
                 {isSignInRoute ? 'Sign In' : 'Sign Up'}
               </Button>
             </Stack>

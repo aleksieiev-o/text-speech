@@ -89,6 +89,7 @@ const CardsList: FC = observer((): ReactElement => {
                           <Button
                             leftIcon={<Icon as={EditIcon}/>}
                             colorScheme={'twitter'}
+                            variant={'outline'}
                             mr={4}>
                             Edit
                           </Button>
@@ -96,6 +97,7 @@ const CardsList: FC = observer((): ReactElement => {
                           <Button
                             onClick={() => prepareToRemoveCard(collection)}
                             colorScheme={'red'}
+                            variant={'outline'}
                             leftIcon={<Icon as={DeleteIcon}/>}>
                             Remove
                           </Button>
@@ -120,6 +122,7 @@ const CardsList: FC = observer((): ReactElement => {
               <Button
                 onClick={onOpenUpdateCardModal}
                 colorScheme={'facebook'}
+                variant={'outline'}
                 leftIcon={<Icon as={AddIcon}/>}>
                 Create card
               </Button>

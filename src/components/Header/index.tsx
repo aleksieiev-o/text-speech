@@ -36,7 +36,7 @@ const Header: FC = observer((): ReactElement => {
 
         {
           authorizationStore.isAuth &&
-          <Button onClick={onOpen} colorScheme={'orange'} rightIcon={<Icon as={LogoutIcon}/>}>Logout</Button>
+          <Button onClick={onOpen} colorScheme={'gray'} variant={'outline'} rightIcon={<Icon as={LogoutIcon}/>}>Logout</Button>
         }
       </Stack>
 

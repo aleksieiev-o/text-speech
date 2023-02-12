@@ -81,6 +81,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                           <Button
                           leftIcon={<Icon as={EditIcon}/>}
                           colorScheme={'twitter'}
+                          variant={'outline'}
                           mr={4}>
                             Edit
                           </Button>
@@ -88,6 +89,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                           <Button
                           onClick={() => prepareToRemoveCollection(collection)}
                           colorScheme={'red'}
+                          variant={'outline'}
                           leftIcon={<Icon as={DeleteIcon}/>}>
                             Remove
                           </Button>
@@ -112,6 +114,7 @@ const CollectionsList: FC = observer((): ReactElement => {
               <Button
               onClick={onOpenCreateCollectionModal}
               colorScheme={'facebook'}
+              variant={'outline'}
               leftIcon={<Icon as={AddIcon}/>}>
                 Create collection
               </Button>

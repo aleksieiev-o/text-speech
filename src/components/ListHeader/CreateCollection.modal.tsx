@@ -83,9 +83,9 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
         </ModalBody>
 
         <ModalFooter>
-          <Button form={'create-collection-form'} isLoading={isLoading} colorScheme={'facebook'} type={'submit'} mr={4}>Create</Button>
+          <Button form={'create-collection-form'} isLoading={isLoading} colorScheme={'facebook'} variant={'outline'} type={'submit'} mr={4}>Create</Button>
 
-          <Button onClick={onClose}>Close</Button>
+          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'}>Close</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -59,9 +59,9 @@ const ActionConfirmationModal: FC<Props> = observer((props): ReactElement => {
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={buttonActionHandler} isLoading={isLoading} colorScheme={actionButtonColorScheme} mr={4}>{buttonText}</Button>
+          <Button onClick={buttonActionHandler} isLoading={isLoading} colorScheme={actionButtonColorScheme} variant={'outline'} mr={4}>{buttonText}</Button>
 
-          <Button onClick={onClose}>Close</Button>
+          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'}>Close</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
