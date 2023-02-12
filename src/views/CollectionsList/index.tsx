@@ -5,12 +5,13 @@ import Header from '../../components/Header';
 import { useCollectionsStore } from '../../store/hooks';
 import { Collection } from '../../store/CollectionsStore';
 import { observer } from 'mobx-react-lite';
-import { Button, Card, CardBody, Heading, Icon, IconButton, Link, Stack, StackDivider, Text, useDisclosure } from '@chakra-ui/react';
+import { Card, CardBody, Heading, Icon, IconButton, Link, Stack, StackDivider, useDisclosure } from '@chakra-ui/react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CreateCollectionModal from '../../components/ListHeader/CreateCollection.modal';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
+import EmptyList from '../EmptyList';
 
 const CollectionsList: FC = observer((): ReactElement => {
   const collectionsStore = useCollectionsStore();
@@ -103,24 +104,11 @@ const CollectionsList: FC = observer((): ReactElement => {
               }
             </Stack>
             :
-            <Stack
-            w={'full'}
-            h={'full'}
-            direction={'column'}
-            alignItems={'center'}
-            justifyContent={'center'}>
-              <Text mb={4}>
-                Collections list is empty
-              </Text>
-
-              <Button
-              onClick={onOpenCreateCollectionModal}
-              colorScheme={'facebook'}
-              variant={'outline'}
-              leftIcon={<Icon as={AddIcon}/>}>
-                Create collection
-              </Button>
-            </Stack>
+            <EmptyList
+            emptyListMessage={'Collections list is empty'}
+            buttonHandler={onOpenCreateCollectionModal}
+            buttonText={'Create collection'}
+            buttonIcon={AddIcon}/>
         }
       </Stack>
 

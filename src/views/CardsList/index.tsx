@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
-import { Button, CardBody, Heading, Icon, Link, Stack, Text, Card as ChakraCard, useDisclosure, Grid, GridItem, IconButton } from '@chakra-ui/react';
+import { CardBody, Heading, Icon, Link, Stack, Text, Card as ChakraCard, useDisclosure, Grid, GridItem, IconButton } from '@chakra-ui/react';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
 import { observer } from 'mobx-react-lite';
 import { useCardsStore } from '../../store/hooks';
@@ -14,6 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
+import EmptyList from '../EmptyList';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();
@@ -139,24 +140,11 @@ const CardsList: FC = observer((): ReactElement => {
               }
             </Grid>
             :
-            <Stack
-              w={'full'}
-              h={'full'}
-              direction={'column'}
-              alignItems={'center'}
-              justifyContent={'center'}>
-              <Text mb={4}>
-                Cards list is empty
-              </Text>
-
-              <Button
-                onClick={onOpenUpdateCardModal}
-                colorScheme={'facebook'}
-                variant={'outline'}
-                leftIcon={<Icon as={AddIcon}/>}>
-                Create card
-              </Button>
-            </Stack>
+            <EmptyList
+            emptyListMessage={'Cards list is empty'}
+            buttonHandler={onOpenUpdateCardModal}
+            buttonText={'Create card'}
+            buttonIcon={AddIcon}/>
         }
       </Stack>
 
