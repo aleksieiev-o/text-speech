@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import { useAuthorizationStore, useGlobalLoaderStore } from '../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import GlobalLoader from '../components/GlobalLoader';
+import AppLoader from '../components/AppLoader';
 import Authorization from '../views/Authorization';
 import CollectionsList from '../views/CollectionsList';
 import CardsList from '../views/CardsList';
@@ -40,7 +40,7 @@ const Router: FC = observer((): ReactElement => {
     <>
       {
         globalLoaderStore.isGlobalLoading ?
-          <GlobalLoader/>
+          <AppLoader/>
           :
           <RouterProvider router={authorizationStore.isAuth ? protectedRoutes : publicRoutes}/>
       }
