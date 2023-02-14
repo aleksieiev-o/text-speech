@@ -1,11 +1,12 @@
 import React, { FC, ReactElement } from 'react';
-import { useAuthorizationStore } from '../store/hooks';
+import { useAuthorizationStore, useGlobalLoaderStore } from '../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import GlobalLoader from '../components/GlobalLoader';
+import Authorization from '../views/Authorization';
 import CollectionsList from '../views/CollectionsList';
 import CardsList from '../views/CardsList';
 import CollectionCard from '../views/CollectionCard';
-import Authorization from '../views/Authorization';
 
 export enum PublicRoutes {
   SIGN_IN = '/sign-in',
@@ -33,9 +34,17 @@ const protectedRoutes = createBrowserRouter([
 
 const Router: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
+  const globalLoaderStore = useGlobalLoaderStore();
 
   return (
-    <RouterProvider router={authorizationStore.isAuth ? protectedRoutes : publicRoutes}/>
+    <>
+      {
+        globalLoaderStore.isGlobalLoading ?
+          <GlobalLoader/>
+          :
+          <RouterProvider router={authorizationStore.isAuth ? protectedRoutes : publicRoutes}/>
+      }
+    </>
   );
 });
 

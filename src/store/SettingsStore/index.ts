@@ -17,7 +17,7 @@ export interface Settings {
   theme: Theme;
 }
 
-export interface ISettingsStore {
+interface ISettingsStore {
   rootStore: RootStore;
   settingsStoreService: SettingsStoreService;
   locale: Locale;

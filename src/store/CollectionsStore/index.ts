@@ -12,7 +12,7 @@ export interface Collection {
 
 export type UpdateCollectionPayload = { title: string };
 
-export interface ICollectionsStore {
+interface ICollectionsStore {
   rootStore: RootStore;
   collectionsStoreService: CollectionsStoreService;
   collections: Array<Collection>;

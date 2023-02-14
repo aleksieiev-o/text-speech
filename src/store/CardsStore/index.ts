@@ -24,7 +24,7 @@ export interface Card {
   updatedDate: string;
 }
 
-export interface ICardsStore {
+interface ICardsStore {
   rootStore: RootStore;
   cardsStoreService: CardsStoreService;
   cards: Array<Card>;

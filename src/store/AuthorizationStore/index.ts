@@ -10,7 +10,7 @@ export interface AuthRequestDto {
   password: string;
 }
 
-export interface IAuthorizationStore {
+interface IAuthorizationStore {
   rootStore: RootStore;
   authorizationStoreService: AuthorizationStoreService;
   user: User;
@@ -23,6 +23,7 @@ export interface IAuthorizationStore {
 export class AuthorizationStore implements IAuthorizationStore {
   rootStore: RootStore;
   authorizationStoreService: AuthorizationStoreService;
+
   user: User = {} as User;
   isAuth = false;
 
@@ -33,16 +34,22 @@ export class AuthorizationStore implements IAuthorizationStore {
     makeAutoObservable(this);
 
     onAuthStateChanged(firebaseAuth, async (user) => {
+      this.rootStore.globalLoaderStore.setGlobalLoading(true);
+
       if (user && user.uid) {
         this.setUser(user);
 
-        await this.rootStore.settingsStore.loadSettings();
-
         this.setAuth(true);
 
+        await this.rootStore.settingsStore.loadSettings();
+
         await this.rootStore.collectionsStore.loadAllCollections();
+
+        this.rootStore.globalLoaderStore.setGlobalLoading(false);
       } else {
         this.resetLocalData();
+
+        this.rootStore.globalLoaderStore.setGlobalLoading(false);
       }
     });
   }

@@ -5,6 +5,7 @@ import { AuthorizationStore } from './AuthorizationStore';
 import { SettingsStore } from './SettingsStore';
 import { CollectionsStore } from './CollectionsStore';
 import { CardsStore } from './CardsStore';
+import { GlobalLoaderStore } from './GlobalLoaderStore';
 
 export const useRootStore = (): RootStore => {
   const context = useContext(StoreContext);
@@ -32,4 +33,9 @@ export const useCollectionsStore = (): CollectionsStore => {
 export const useCardsStore = (): CardsStore => {
   const { cardsStore } = useRootStore();
   return cardsStore;
+};
+
+export const useGlobalLoaderStore = (): GlobalLoaderStore => {
+  const { globalLoaderStore } = useRootStore();
+  return globalLoaderStore;
 };
