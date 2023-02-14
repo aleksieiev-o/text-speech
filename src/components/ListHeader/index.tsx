@@ -58,7 +58,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
           </Button>
         }
 
-        {(isCollectionsListPath ? collectionsStore.collections.length : cardsStore.cards.length) &&
+        {(isCollectionsListPath ? collectionsStore.collections.length : cardsStore.currentCardsList.length) &&
           <Stack
           direction={'row'}
           w={'full'}

@@ -62,7 +62,7 @@ const CardsList: FC = observer((): ReactElement => {
         removeButtonHandler={() => cardsStore.removeAllCards(currentCollectionId)}/>
 
         {
-          cardsStore.cards.length ?
+          cardsStore.currentCardsListSize ?
             <Stack
               as={'ul'}
               direction={'column'}
@@ -74,7 +74,7 @@ const CardsList: FC = observer((): ReactElement => {
               overflowY={'auto'}
               divider={<StackDivider/>}>
               {
-                cardsStore.cards.map((card: Card) => {
+                cardsStore.currentCardsList.map((card: Card) => {
                   return <ChakraCard
                     key={card.id}
                     as={'li'}
