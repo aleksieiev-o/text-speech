@@ -3,15 +3,17 @@ import { CardsStoreService } from './service';
 import { makeAutoObservable } from 'mobx';
 
 export interface CreateCardRequestDto {
-  parentId: string,
-  title: string,
-  text: string
+  parentId: string;
+  title: string;
+  text: string;
+  textLang: string;
 }
 
 export interface UpdateCardRequestDto {
-  parentId: string,
-  title?: string,
-  text?: string
+  parentId: string;
+  title?: string;
+  text?: string;
+  textLang?: string;
 }
 
 export interface Card {
@@ -20,6 +22,7 @@ export interface Card {
   title: string;
   text: string;
   author: string;
+  textLang: string;
   createdDate: string;
   updatedDate: string;
 }

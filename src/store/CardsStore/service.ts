@@ -42,7 +42,7 @@ export class CardsStoreService implements ICardsStoreService {
   }
 
   async createCard(payload: CreateCardRequestDto): Promise<Card> {
-    const { parentId, title, text } = payload;
+    const { parentId, title, text, textLang } = payload;
     const cardRef = push(ref(firebaseDataBase, `${this.cardsStore.cardsPath}/${parentId}`));
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const cardId = cardRef.key!;
@@ -52,6 +52,7 @@ export class CardsStoreService implements ICardsStoreService {
       parentId,
       title,
       text,
+      textLang,
       author: this.cardsStore.userUid,
       createdDate: new Date().toJSON(),
       updatedDate: new Date().toJSON(),

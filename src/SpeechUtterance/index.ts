@@ -10,7 +10,7 @@ class SpeechUtterance {
     this.speech.onvoiceschanged = () => {
       this.voices = this.speech.getVoices();
       // eslint-disable-next-line no-console
-      // console.log(111, this.voices);
+      console.log(111, this.voices);
     };
 
     this.voices = this.speech.getVoices();

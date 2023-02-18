@@ -72,7 +72,7 @@ const CreateCollectionModal: FC<Props> = observer((props): ReactElement => {
 
         <ModalBody>
           <form id={'create-collection-form'} onSubmit={formik.handleSubmit}>
-            <FormControl>
+            <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.title && dirty && Boolean(errors.title)}>
               <FormLabel>Title</FormLabel>
 
               <Input ref={titleRef} placeholder={'Enter collection title'} type="text" {...getFieldProps('title')}/>
