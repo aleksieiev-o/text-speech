@@ -14,22 +14,6 @@ const Header: FC = observer((): ReactElement => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  // const startSpeech = () => {
-  //   speechUtterance.start('Du musstest auf sie noch warten und nirgendwohin gehen, weil sie vor einer Stunde am Bahnhof angekommen war.');
-  // };
-  //
-  // const pauseSpeech = () => {
-  //   speechUtterance.pause();
-  // };
-  //
-  // const resumeSpeech = () => {
-  //   speechUtterance.resume();
-  // };
-  //
-  // const cancelSpeech = () => {
-  //   speechUtterance.stop();
-  // };
-
   const logoutHandler = async () => {
     try {
       await authorizationStore.singOutEmailAndPassword();
@@ -50,10 +34,6 @@ const Header: FC = observer((): ReactElement => {
         boxShadow={'md'}
         p={4}>
         <Heading as={'h4'} color={'facebook.600'} cursor={'default'}>{APP_NAME}</Heading>
-        {/*<Button onClick={startSpeech}>speech</Button>*/}
-        {/*<Button onClick={pauseSpeech}>pause</Button>*/}
-        {/*<Button onClick={resumeSpeech}>resume</Button>*/}
-        {/*<Button onClick={cancelSpeech}>cancel</Button>*/}
 
         {
           authorizationStore.isAuth &&

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useRef } from 'react';
+import React, { FC, ReactElement, useContext, useRef } from 'react';
 import {
   Button,
   FormControl,
@@ -20,7 +20,7 @@ import { useCardsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { CreateCardRequestDto } from '../../store/CardsStore';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
-import { speechUtterance } from '../../SpeechUtterance';
+import { SpeechUtteranceContext } from '../../Providers/SpeechUtteranceContext.provider';
 
 interface Props {
   isOpen: boolean;
@@ -36,17 +36,17 @@ const initialValues: CreateCardRequestDto = {
 
 const validationSchema = object().shape({
   title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(30, 'E-mail must be maximum 30 characters'),
-  text: string().required('Text is required').min(1, 'Text must be at least 1 character'),
+  text: string().required('Text is required').min(1, 'Text must be at least 1 character').max(240, 'Text must be maximum 200 characters'),
   textLang: string().required('Card text language is required'),
 });
 
 const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const cardsStore = useCardsStore();
   const currentCollectionId = useCurrentCollectionId();
+  const { voicesList } = useContext(SpeechUtteranceContext);
   const { isOpen, onClose } = props;
   const { isLoading, setIsLoading } = useLoading();
   const titleRef = useRef(null);
-  const availableCardTextLangList = speechUtterance.getVoices;
 
   const submitHandler = async (payload: CreateCardRequestDto, formikHelpers: FormikHelpers<CreateCardRequestDto>) => {
     setIsLoading(true);
@@ -99,7 +99,7 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
 
               <Select placeholder={'Select card text language'} {...getFieldProps('textLang')}>
                 {
-                  availableCardTextLangList.map((voice) => <option value={voice.lang} key={voice.voiceURI}>{voice.name}</option>)
+                  voicesList.map((voice) => <option value={voice.lang} key={voice.voiceURI}>{voice.name}</option>)
                 }
               </Select>
 

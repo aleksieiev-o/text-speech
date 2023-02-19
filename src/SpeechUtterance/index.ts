@@ -9,14 +9,16 @@ class SpeechUtterance {
 
     this.speech.onvoiceschanged = () => {
       this.voices = this.speech.getVoices();
-      // eslint-disable-next-line no-console
-      console.log(111, this.voices);
     };
 
     this.voices = this.speech.getVoices();
   }
 
   start(text: string): void {
+    if (this.isSpeaking) {
+      this.stop();
+    }
+
     this.utterance = new SpeechSynthesisUtterance();
 
     this.initializeHandlers();
@@ -43,29 +45,34 @@ class SpeechUtterance {
     this.speech.resume();
   }
 
-  get getVoices(): Array<SpeechSynthesisVoice> {
+  get voicesList(): Array<SpeechSynthesisVoice> {
     return this.voices;
   }
 
+  get isSpeaking(): boolean {
+    return this.speech.speaking;
+  }
+
+  get isPaused(): boolean {
+    return this.speech.paused;
+  }
+
   private initializeHandlers(): void {
-    this.utterance.onstart = () => {
-      console.warn('onstart');
-    };
-    this.utterance.onend = () => {
-      console.warn('onend');
-    };
-    this.utterance.onerror = (err) => {
-      console.warn('onerror', err);
-    };
-    this.utterance.onpause = () => {
-      console.warn('onpause');
-    };
-    this.utterance.onresume = () => {
-      console.warn('onresume');
-    };
-    this.utterance.onmark = () => {
-      console.warn('onmark');
-    };
+    this.utterance.addEventListener('start', () => {
+      console.warn('start');
+    });
+    this.utterance.addEventListener('end', () => {
+      console.warn('end');
+    });
+    this.utterance.addEventListener('error', (err) => {
+      console.warn('error', err, this.speech);
+    });
+    this.utterance.addEventListener('pause', () => {
+      console.warn('pause');
+    });
+    this.utterance.addEventListener('resume', () => {
+      console.warn('resume');
+    });
   }
 }
 

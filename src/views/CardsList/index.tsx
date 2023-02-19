@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useMemo, useState } from 'react';
 import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
 import { CardBody, Heading, Icon, Link, Stack, Text, Card as ChakraCard, useDisclosure, IconButton, StackDivider } from '@chakra-ui/react';
@@ -15,10 +15,12 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import EmptyList from '../EmptyList';
+import { SpeechUtteranceContext } from '../../Providers/SpeechUtteranceContext.provider';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();
   const currentCollectionId = useCurrentCollectionId();
+  const { start, stop } = useContext(SpeechUtteranceContext);
   const [tempCard, setTempCard] = useState<Card>({} as Card);
   const { isOpen: isOpenUpdateCardModal, onOpen: onOpenUpdateCardModal, onClose: onCloseUpdateCardModal } = useDisclosure();
   const { isOpen: isOpenRemoveCardModal, onOpen: onOpenCRemoveCardModal, onClose: onCloseRemoveCardModal } = useDisclosure();
@@ -30,6 +32,42 @@ const CardsList: FC = observer((): ReactElement => {
   useEffect(() => {
     loadCardList();
   }, []);
+
+  const playControlHandler = (text: string): void => {
+    start(text);
+    // if (speechUtterance.isSpeaking && !speechUtterance.isPaused) {
+    //   speechUtterance.pause();
+    // } else if (speechUtterance.isSpeaking && speechUtterance.isPaused) {
+    //   speechUtterance.resume();
+    // } else {
+    //   speechUtterance.start(text);
+    // }
+  };
+
+  const playControlButtonProps = useMemo((): { title: string, ariaLabel: string, icon: ReactElement } => {
+    // if (speechUtterance.isSpeaking && !speechUtterance.isPaused) {
+    //   return {
+    //     title: 'Pause',
+    //     ariaLabel: 'Pause',
+    //     icon: <Icon as={PauseIcon}/>,
+    //   };
+    // } else if (speechUtterance.isSpeaking && speechUtterance.isPaused) {
+    //   return {
+    //     title: 'Resume',
+    //     ariaLabel: 'Resume',
+    //     icon: <Icon as={PlayArrowIcon}/>,
+    //   };
+    // }
+    return {
+      title: 'Play',
+      ariaLabel: 'Play',
+      icon: <Icon as={PlayArrowIcon}/>,
+    };
+  }, [/*speechUtterance.isSpeaking, speechUtterance.isPaused*/]);
+
+  const stopPlaying = (): void => {
+    stop();
+  };
 
   const prepareToRemoveCard = (card: Card) => {
     setTempCard(card);
@@ -105,13 +143,15 @@ const CardsList: FC = observer((): ReactElement => {
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
                           <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
                             <IconButton
+                              onClick={() => playControlHandler(card.text)}
                               colorScheme={'twitter'}
-                              aria-label={'Play'}
-                              title={'Play'}
-                              icon={<Icon as={PlayArrowIcon}/>}
+                              aria-label={playControlButtonProps.ariaLabel}
+                              title={playControlButtonProps.title}
+                              icon={playControlButtonProps.icon}
                               variant={'outline'}/>
 
                             <IconButton
+                              onClick={() => stopPlaying()}
                               colorScheme={'twitter'}
                               aria-label={'Stop'}
                               title={'Stop'}
