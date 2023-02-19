@@ -15,7 +15,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import EmptyList from '../EmptyList';
-import { SpeechUtteranceContext } from '../../Providers/SpeechUtteranceContext.provider';
+import { SpeechUtteranceContext, StartPlayingDto } from '../../Providers/SpeechUtteranceContext.provider';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();
@@ -33,8 +33,8 @@ const CardsList: FC = observer((): ReactElement => {
     loadCardList();
   }, []);
 
-  const playControlHandler = (text: string): void => {
-    start(text);
+  const playControlHandler = (payload: StartPlayingDto): void => {
+    start(payload);
     // if (speechUtterance.isSpeaking && !speechUtterance.isPaused) {
     //   speechUtterance.pause();
     // } else if (speechUtterance.isSpeaking && speechUtterance.isPaused) {
@@ -143,7 +143,7 @@ const CardsList: FC = observer((): ReactElement => {
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
                           <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
                             <IconButton
-                              onClick={() => playControlHandler(card.text)}
+                              onClick={() => playControlHandler({ text: card.text, lang: card.textLang })}
                               colorScheme={'twitter'}
                               aria-label={playControlButtonProps.ariaLabel}
                               title={playControlButtonProps.title}
