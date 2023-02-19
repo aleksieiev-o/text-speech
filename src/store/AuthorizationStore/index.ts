@@ -1,13 +1,23 @@
 import { makeAutoObservable } from 'mobx';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../firebase';
-import { User } from '@firebase/auth';
+import { User as FirebaseUser } from '@firebase/auth';
 import { AuthorizationStoreService } from './service';
 import { RootStore } from '../index';
 
 export interface AuthRequestDto {
   email: string;
   password: string;
+}
+
+export interface User {
+  uid: string;
+  displayName: string | null
+  email: string | null
+  phoneNumber: string | null;
+  photoURL: string | null;
+  emailVerified: boolean;
+  isAnonymous: boolean;
 }
 
 interface IAuthorizationStore {
@@ -33,7 +43,7 @@ export class AuthorizationStore implements IAuthorizationStore {
 
     makeAutoObservable(this);
 
-    onAuthStateChanged(firebaseAuth, async (user) => {
+    onAuthStateChanged(firebaseAuth, async (user: FirebaseUser | null) => {
       this.rootStore.globalLoaderStore.setGlobalLoading(true);
 
       if (user && user.uid) {
@@ -80,8 +90,16 @@ export class AuthorizationStore implements IAuthorizationStore {
     return this.user.uid;
   }
 
-  private setUser(user: User): void {
-    this.user = user;
+  private setUser(fbUser: FirebaseUser): void {
+    this.user = {
+      uid: fbUser.uid,
+      displayName: fbUser.displayName,
+      email: fbUser.email,
+      phoneNumber: fbUser.phoneNumber,
+      photoURL: fbUser.photoURL,
+      emailVerified: fbUser.emailVerified,
+      isAnonymous: fbUser.isAnonymous,
+    };
   }
 
   private setAuth(status: boolean): void {
@@ -89,7 +107,7 @@ export class AuthorizationStore implements IAuthorizationStore {
   }
 
   private resetLocalData(): void {
-    this.setUser({} as User);
+    this.setUser({} as FirebaseUser);
     this.rootStore.collectionsStore.clearLocalCollections();
     this.setAuth(false);
   }
