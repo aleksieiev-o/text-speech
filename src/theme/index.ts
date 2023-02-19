@@ -1,9 +1,14 @@
-import { extendTheme } from '@chakra-ui/react';
+import { extendTheme, type ThemeConfig } from '@chakra-ui/react';
 
-const colors = {
-  primary: {},
+export enum ColorMode {
+  LIGHT = 'light',
+  DARK = 'dark',
+  SYSTEM = 'system',
+}
+
+const config: ThemeConfig = {
+  initialColorMode: ColorMode.SYSTEM,
+  useSystemColorMode: true,
 };
 
-export const theme = extendTheme({
-  colors,
-});
+export const theme = extendTheme({ config });

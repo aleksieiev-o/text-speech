@@ -4,14 +4,18 @@ import { useAuthorizationStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { PublicRoutes } from '../../Router';
-import { Heading, Icon, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
+import { Heading, Icon, IconButton, Stack, useDisclosure, useColorMode } from '@chakra-ui/react';
 import LogoutIcon from '@mui/icons-material/Logout';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../ActionConfirmation.modal';
 import HeaderUserInfo from './HeaderUserInfo';
+import { ColorMode } from '../../theme';
 
 const Header: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
@@ -39,6 +43,14 @@ const Header: FC = observer((): ReactElement => {
           authorizationStore.isAuth &&
           <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={6}>
             <HeaderUserInfo/>
+
+            <IconButton
+              onClick={toggleColorMode}
+              colorScheme={'gray'}
+              variant={'outline'}
+              title={colorMode === ColorMode.LIGHT ? 'Set dark theme' : 'Set light theme'}
+              aria-label={colorMode === ColorMode.LIGHT ? 'Set dark theme' : 'Set light theme'}
+              icon={<Icon as={colorMode === ColorMode.LIGHT ? DarkModeIcon : LightModeIcon}/>}/>
 
             <IconButton
               onClick={onOpen}
