@@ -1,16 +1,16 @@
 {
-  "name": "text-speech",
-  "description": "Text speech UI",
+  "name": "text-to-speech",
+  "description": "Text to speech application",
   "version": "0.0.1",
   "license": "MIT",
   "author": "Oleksandr Aleksieiev",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:aleksieiev-o/text-speech.git"
+    "url": "git+ssh://git@github.com:aleksieiev-o/text-to-speech.git"
   },
   "bugs": {
-    "url": "https://github.com/aleksieiev-o/text-speech/issues"
+    "url": "https://github.com/aleksieiev-o/text-to-speech/issues"
   },
   "homepage": ".",
   "scripts": {
