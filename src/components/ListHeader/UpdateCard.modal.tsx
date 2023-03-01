@@ -20,7 +20,7 @@ import { useCardsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { CreateCardRequestDto } from '../../store/CardsStore';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
-import { SpeechUtteranceContext } from '../../Providers/SpeechUtteranceContext.provider';
+import { SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
 
 interface Props {
   isOpen: boolean;

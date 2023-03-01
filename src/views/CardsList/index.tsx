@@ -15,7 +15,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StopIcon from '@mui/icons-material/Stop';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import EmptyList from '../EmptyList';
-import { SpeechUtteranceContext, StartPlayingDto } from '../../Providers/SpeechUtteranceContext.provider';
+import { SpeechUtteranceContext, StartPlayingDto } from '../../providers/SpeechUtteranceContext.provider';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();

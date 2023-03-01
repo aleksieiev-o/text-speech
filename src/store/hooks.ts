@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { RootStore } from './index';
-import { StoreContext } from '../Providers/StoreContext.provider';
+import { StoreContext } from '../providers/StoreContext.provider';
 import { AuthorizationStore } from './AuthorizationStore';
 import { SettingsStore } from './SettingsStore';
 import { CollectionsStore } from './CollectionsStore';

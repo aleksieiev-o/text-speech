@@ -2,8 +2,8 @@ import React, { FC, ReactElement } from 'react';
 import Router from './Router';
 import { ChakraProvider, Stack } from '@chakra-ui/react';
 import { theme } from './theme';
-import StoreContextProvider from './Providers/StoreContext.provider';
-import SpeechUtteranceContextProvider from './Providers/SpeechUtteranceContext.provider';
+import StoreContextProvider from './providers/StoreContext.provider';
+import SpeechUtteranceContextProvider from './providers/SpeechUtteranceContext.provider';
 
 const App: FC = (): ReactElement => {
   return (
