@@ -10,11 +10,7 @@ const App: FC = (): ReactElement => {
     <ChakraProvider resetCSS={true} theme={theme} portalZIndex={1}>
       <StoreContextProvider>
         <SpeechUtteranceContextProvider>
-          <Stack
-            as={'section'}
-            direction={'column'}
-            w={'full'}
-            h={'full'}>
+          <Stack as={'section'} direction={'column'} w={'full'} h={'full'}>
             <Router/>
           </Stack>
         </SpeechUtteranceContextProvider>

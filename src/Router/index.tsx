@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import { useAuthorizationStore, useGlobalLoaderStore } from '../store/hooks';
+import { useAuthorizationStore, useGlobalLoaderStore, useRootStore } from '../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import AppLoader from '../components/AppLoader';
@@ -7,6 +7,7 @@ import Authorization from '../views/Authorization';
 import CollectionsList from '../views/CollectionsList';
 import CardsList from '../views/CardsList';
 import CollectionCard from '../views/CollectionCard';
+import { Stack, Text } from '@chakra-ui/react';
 
 export enum PublicRoutes {
   SIGN_IN = '/sign-in',
@@ -35,14 +36,27 @@ const protectedRoutes = createBrowserRouter([
 const Router: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
   const globalLoaderStore = useGlobalLoaderStore();
+  const {bowserBrowser} = useRootStore();
+
+  const isSupportedBrowser = (): boolean => bowserBrowser.name === 'Chrome';
 
   return (
     <>
       {
-        globalLoaderStore.isGlobalLoading ?
-          <AppLoader/>
+        isSupportedBrowser() ?
+          <>
+            {
+              globalLoaderStore.isGlobalLoading ?
+                <AppLoader/>
+                :
+                <RouterProvider router={authorizationStore.isAuth ? protectedRoutes : publicRoutes}/>
+            }
+          </>
           :
-          <RouterProvider router={authorizationStore.isAuth ? protectedRoutes : publicRoutes}/>
+          <Stack as={'section'} direction={'column'} spacing={2} alignItems={'center'} justifyContent={'center'} w={'full'} h={'full'}>
+            <Text fontSize={20}>This browser is not supported.</Text>
+            <Text fontSize={20}>Please, use only Chrome.</Text>
+          </Stack>
       }
     </>
   );
