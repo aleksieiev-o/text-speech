@@ -1,28 +1,49 @@
-import React, { createContext, FC, ReactElement, useEffect, useState } from 'react';
+import React, { createContext, Dispatch, FC, ReactElement, SetStateAction, useEffect, useState } from 'react';
 
 interface Props {
   children: ReactElement;
 }
 
+export enum PlayingStatus {
+  STOPPED = 'STOPPED',
+  SPEAKING = 'SPEAKING',
+  PAUSED = 'PAUSED',
+}
+
+interface UseAppPlayingStatus {
+  appPlayingStatus: PlayingStatus;
+  setAppPlayingStatus: Dispatch<SetStateAction<PlayingStatus>>;
+}
+
 export interface StartPlayingDto {
+  id: string;
   text: string;
   lang: string;
 }
 
 interface SpeechUtteranceContextState {
   voicesList: Array<SpeechSynthesisVoice>;
-  isSpeaking: boolean;
-  isPause: boolean;
+  appPlayingStatus: PlayingStatus;
+  playingCardId: string;
   start: (payload: StartPlayingDto) => void;
   stop: () => void;
   pause: () => void;
   resume: () => void;
 }
 
+const useAppPlayingStatus = (): UseAppPlayingStatus => {
+  const [appPlayingStatus, setAppPlayingStatus] = useState<PlayingStatus>(PlayingStatus.STOPPED);
+
+  return {
+    appPlayingStatus,
+    setAppPlayingStatus,
+  };
+};
+
 export const SpeechUtteranceContext = createContext<SpeechUtteranceContextState>({
   voicesList: [],
-  isSpeaking: false,
-  isPause: false,
+  appPlayingStatus: PlayingStatus.STOPPED,
+  playingCardId: '',
   start: () => undefined,
   stop: () => undefined,
   pause: () => undefined,
@@ -32,8 +53,8 @@ export const SpeechUtteranceContext = createContext<SpeechUtteranceContextState>
 const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement => {
   const speech: SpeechSynthesis = window.speechSynthesis;
   const [voicesList, setVoicesList] = useState<Array<SpeechSynthesisVoice>>([]);
-  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
-  const [isPause, setIsPause] = useState<boolean>(false);
+  const [ playingCardId, setPlayingCardId ] = useState<string>('');
+  const { appPlayingStatus, setAppPlayingStatus } = useAppPlayingStatus();
 
   useEffect(() => {
     speech.onvoiceschanged = () => {
@@ -44,33 +65,20 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
   }, []);
 
   const initializeHandlers = (utterance: SpeechSynthesisUtterance): void => {
-    utterance.addEventListener('start', () => {
-      console.warn('start');
-      setIsSpeaking(true);
-      setIsPause(false);
-    });
+    // utterance.addEventListener('start', () => {});
     utterance.addEventListener('end', () => {
-      console.warn('end');
-      setIsSpeaking(false);
-      setIsPause(false);
+      setAppPlayingStatus(PlayingStatus.STOPPED);
+      setPlayingCardId('');
     });
-    utterance.addEventListener('error', (err) => {
-      console.warn('error', err, speech);
-      setIsSpeaking(false);
-      setIsPause(false);
-    });
-    utterance.addEventListener('pause', () => {
-      console.warn('pause');
-      setIsPause(true);
-    });
-    utterance.addEventListener('resume', () => {
-      console.warn('resume');
-      setIsPause(false);
-    });
+    // utterance.addEventListener('error', (err) => {});
+    // utterance.addEventListener('pause', () => {});
+    // utterance.addEventListener('resume', () => {});
   };
 
   const stop = (): void => {
     speech.cancel();
+    setAppPlayingStatus(PlayingStatus.STOPPED);
+    setPlayingCardId('');
   };
 
   const start = (payload: StartPlayingDto): void => {
@@ -78,7 +86,7 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const voice: SpeechSynthesisVoice = voicesList.find((voice) => voice.lang === lang)!;
 
-    if (isSpeaking) {
+    if (appPlayingStatus === PlayingStatus.SPEAKING) {
       stop();
     }
 
@@ -94,14 +102,19 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
     utterance.pitch = 1; // TODO add to StartPlayingDto
 
     speech.speak(utterance);
+
+    setAppPlayingStatus(PlayingStatus.SPEAKING);
+    setPlayingCardId(payload.id);
   };
 
   const pause = (): void => {
     speech.pause();
+    setAppPlayingStatus(PlayingStatus.PAUSED);
   };
 
   const resume = (): void => {
     speech.resume();
+    setAppPlayingStatus(PlayingStatus.SPEAKING);
   };
 
   const themeContext: SpeechUtteranceContextState = {
@@ -110,8 +123,8 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
     stop,
     pause,
     resume,
-    isSpeaking,
-    isPause,
+    appPlayingStatus,
+    playingCardId,
   };
 
   return (

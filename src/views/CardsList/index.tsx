@@ -1,26 +1,20 @@
-import React, { FC, ReactElement, useContext, useEffect, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
-import { CardBody, Heading, Icon, Link, Stack, Text, Card as ChakraCard, useDisclosure, IconButton, StackDivider } from '@chakra-ui/react';
+import { Stack, useDisclosure, StackDivider } from '@chakra-ui/react';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
 import { observer } from 'mobx-react-lite';
 import { useCardsStore } from '../../store/hooks';
 import { Card } from '../../store/CardsStore';
 import UpdateCardModal from '../../components/ListHeader/UpdateCard.modal';
-import { Link as RouterLink } from 'react-router-dom';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import EmptyList from '../EmptyList';
-import { SpeechUtteranceContext, StartPlayingDto } from '../../providers/SpeechUtteranceContext.provider';
+import CardListItem from './CardListItem';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();
   const currentCollectionId = useCurrentCollectionId();
-  const { start, stop } = useContext(SpeechUtteranceContext);
   const [tempCard, setTempCard] = useState<Card>({} as Card);
   const { isOpen: isOpenUpdateCardModal, onOpen: onOpenUpdateCardModal, onClose: onCloseUpdateCardModal } = useDisclosure();
   const { isOpen: isOpenRemoveCardModal, onOpen: onOpenCRemoveCardModal, onClose: onCloseRemoveCardModal } = useDisclosure();
@@ -32,42 +26,6 @@ const CardsList: FC = observer((): ReactElement => {
   useEffect(() => {
     loadCardList();
   }, []);
-
-  const playControlHandler = (payload: StartPlayingDto): void => {
-    start(payload);
-    // if (speechUtterance.isSpeaking && !speechUtterance.isPaused) {
-    //   speechUtterance.pause();
-    // } else if (speechUtterance.isSpeaking && speechUtterance.isPaused) {
-    //   speechUtterance.resume();
-    // } else {
-    //   speechUtterance.start(text);
-    // }
-  };
-
-  const playControlButtonProps = useMemo((): { title: string, ariaLabel: string, icon: ReactElement } => {
-    // if (speechUtterance.isSpeaking && !speechUtterance.isPaused) {
-    //   return {
-    //     title: 'Pause',
-    //     ariaLabel: 'Pause',
-    //     icon: <Icon as={PauseIcon}/>,
-    //   };
-    // } else if (speechUtterance.isSpeaking && speechUtterance.isPaused) {
-    //   return {
-    //     title: 'Resume',
-    //     ariaLabel: 'Resume',
-    //     icon: <Icon as={PlayArrowIcon}/>,
-    //   };
-    // }
-    return {
-      title: 'Play',
-      ariaLabel: 'Play',
-      icon: <Icon as={PlayArrowIcon}/>,
-    };
-  }, [/*speechUtterance.isSpeaking, speechUtterance.isPaused*/]);
-
-  const stopPlaying = (): void => {
-    stop();
-  };
 
   const prepareToRemoveCard = (card: Card) => {
     setTempCard(card);
@@ -113,72 +71,10 @@ const CardsList: FC = observer((): ReactElement => {
               divider={<StackDivider/>}>
               {
                 cardsStore.currentCardsList.map((card: Card) => {
-                  return <ChakraCard
+                  return <CardListItem
                     key={card.id}
-                    as={'li'}
-                    w={'full'}
-                    title={card.title}
-                    cursor={'default'}
-                    boxShadow={'md'}>
-                    <CardBody>
-                      <Stack
-                        direction={'row'}
-                        alignItems={'center'}
-                        justifyContent={'space-between'}
-                        overflow={'hidden'}
-                        h={'full'}
-                        spacing={4}>
-                        <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
-                          <Link as={RouterLink} to={card.id}>
-                            <Heading as={'h6'} noOfLines={1}>
-                              {card.title || 'No title'}
-                            </Heading>
-                          </Link>
-
-                          <Text overflow={'hidden'} maxH={'72px'}>
-                            {card.text || 'No text'}
-                          </Text>
-                        </Stack>
-
-                        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
-                            <IconButton
-                              onClick={() => playControlHandler({ text: card.text, lang: card.textLang })}
-                              colorScheme={'twitter'}
-                              aria-label={playControlButtonProps.ariaLabel}
-                              title={playControlButtonProps.title}
-                              icon={playControlButtonProps.icon}
-                              variant={'outline'}/>
-
-                            <IconButton
-                              onClick={() => stopPlaying()}
-                              colorScheme={'twitter'}
-                              aria-label={'Stop'}
-                              title={'Stop'}
-                              icon={<Icon as={StopIcon}/>}
-                              variant={'outline'}/>
-                          </Stack>
-
-                          <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
-                            <IconButton
-                              colorScheme={'twitter'}
-                              aria-label={'Edit card'}
-                              title={'Edit card'}
-                              icon={<Icon as={EditIcon}/>}
-                              variant={'outline'}/>
-
-                            <IconButton
-                              onClick={() => prepareToRemoveCard(card)}
-                              colorScheme={'red'}
-                              aria-label={'Delete card'}
-                              title={'Delete card'}
-                              variant={'outline'}
-                              icon={<Icon as={DeleteIcon}/>}/>
-                          </Stack>
-                        </Stack>
-                      </Stack>
-                    </CardBody>
-                  </ChakraCard>;
+                    prepareToRemoveCard={prepareToRemoveCard}
+                    card={card}/>;
                 })
               }
             </Stack>
