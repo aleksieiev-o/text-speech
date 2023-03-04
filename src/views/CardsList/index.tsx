@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import ListHeader from '../../components/ListHeader';
 import { Stack, useDisclosure, StackDivider } from '@chakra-ui/react';
@@ -11,11 +11,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import EmptyList from '../EmptyList';
 import CardListItem from './CardListItem';
+import { SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();
   const currentCollectionId = useCurrentCollectionId();
   const [tempCard, setTempCard] = useState<Card>({} as Card);
+  const { stop } = useContext(SpeechUtteranceContext);
   const { isOpen: isOpenUpdateCardModal, onOpen: onOpenUpdateCardModal, onClose: onCloseUpdateCardModal } = useDisclosure();
   const { isOpen: isOpenRemoveCardModal, onOpen: onOpenCRemoveCardModal, onClose: onCloseRemoveCardModal } = useDisclosure();
 
@@ -25,6 +27,10 @@ const CardsList: FC = observer((): ReactElement => {
 
   useEffect(() => {
     loadCardList();
+
+    return () => {
+      stop();
+    };
   }, []);
 
   const prepareToRemoveCard = (card: Card) => {

@@ -86,7 +86,7 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const voice: SpeechSynthesisVoice = voicesList.find((voice) => voice.lang === lang)!;
 
-    if (appPlayingStatus === PlayingStatus.SPEAKING) {
+    if (appPlayingStatus === PlayingStatus.SPEAKING || appPlayingStatus === PlayingStatus.PAUSED) {
       stop();
     }
 

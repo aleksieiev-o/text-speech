@@ -44,9 +44,9 @@ const CardListItem: FC<Props> = (props): ReactElement => {
   }, [appPlayingStatus, playingCardId]);
 
   const playControlHandler = (payload: StartPlayingDto): void => {
-    if (isSpeaking && !isPaused) {
+    if (isSpeaking && !isPaused && playingCardId === payload.id) {
       pause();
-    } else if (!isSpeaking && isPaused) {
+    } else if (!isSpeaking && isPaused && playingCardId === payload.id) {
       resume();
     } else {
       start(payload);
