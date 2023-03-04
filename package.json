@@ -15,7 +15,7 @@
   "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
-    "build": "env-cmd -f .env react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "eject": "react-scripts eject",
