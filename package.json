@@ -12,16 +12,14 @@
   "bugs": {
     "url": "https://github.com/aleksieiev-o/text-to-speech/issues"
   },
-  "homepage": "https://aleksieiev-o.github.io/text-to-speech",
+  "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "env-cmd -f .env react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "eject": "react-scripts eject",
-    "prepare": "husky install",
-    "predeploy": "env-cmd -f .env npm run build",
-    "deploy": "gh-pages -d build"
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
