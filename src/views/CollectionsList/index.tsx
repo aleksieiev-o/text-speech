@@ -9,19 +9,29 @@ import { Card, CardBody, Heading, Icon, IconButton, Link, Stack, StackDivider, u
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import CreateCollectionModal from '../../components/ListHeader/CreateCollection.modal';
+import UpdateCollectionModal from '../../components/ListHeader/UpdateCollection.modal';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
 import EmptyList from '../EmptyList';
 
 const CollectionsList: FC = observer((): ReactElement => {
   const collectionsStore = useCollectionsStore();
   const [tempCollection, setTempCollection] = useState<Collection>({} as Collection);
-  const { isOpen: isOpenCreateCollectionModal, onOpen: onOpenCreateCollectionModal, onClose: onCloseCreateCollectionModal } = useDisclosure();
-  const { isOpen: isOpenRemoveCollectionModal, onOpen: onOpenCRemoveCollectionModal, onClose: onCloseRemoveCollectionModal } = useDisclosure();
+  const { isOpen: isOpenUpdateCollectionModal, onOpen: onOpenUpdateCollectionModal, onClose: onCloseUpdateCollectionModal } = useDisclosure();
+  const { isOpen: isOpenRemoveCollectionModal, onOpen: onOpenRemoveCollectionModal, onClose: onCloseRemoveCollectionModal } = useDisclosure();
+
+  const prepareToEditCollection = (collection: Collection) => {
+    setTempCollection(collection);
+    onOpenUpdateCollectionModal();
+  };
+
+  const closeUpdateCollectionModalHandler = () => {
+    onCloseUpdateCollectionModal();
+    setTempCollection({} as Collection);
+  };
 
   const prepareToRemoveCollection = (collection: Collection) => {
     setTempCollection(collection);
-    onOpenCRemoveCollectionModal();
+    onOpenRemoveCollectionModal();
   };
 
   const closeRemoveCollectionModalHandler = () => {
@@ -47,7 +57,7 @@ const CollectionsList: FC = observer((): ReactElement => {
       overflow={'hidden'}>
         {collectionsStore.collections.length &&
           <ListHeader
-          onOpen={onOpenCreateCollectionModal}
+          onOpen={onOpenUpdateCollectionModal}
           removeButtonHandler={collectionsStore.removeAllCollections}/>
         }
 
@@ -82,6 +92,7 @@ const CollectionsList: FC = observer((): ReactElement => {
 
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
                           <IconButton
+                          onClick={() => prepareToEditCollection(collection)}
                           colorScheme={'telegram'}
                           aria-label={'Edit collection'}
                           title={'Edit collection'}
@@ -105,13 +116,17 @@ const CollectionsList: FC = observer((): ReactElement => {
             :
             <EmptyList
             emptyListMessage={'Collections list is empty'}
-            buttonHandler={onOpenCreateCollectionModal}
+            buttonHandler={onOpenUpdateCollectionModal}
             buttonText={'Create collection'}
             buttonIcon={AddIcon}/>
         }
       </Stack>
 
-      {isOpenCreateCollectionModal && <CreateCollectionModal isOpen={isOpenCreateCollectionModal} onClose={onCloseCreateCollectionModal}/>}
+      {isOpenUpdateCollectionModal &&
+        <UpdateCollectionModal
+          currentCollection={tempCollection}
+          isOpen={isOpenUpdateCollectionModal}
+          onClose={closeUpdateCollectionModalHandler}/>}
 
       {
         isOpenRemoveCollectionModal &&
