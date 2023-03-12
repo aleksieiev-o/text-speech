@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useContext, useRef } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -18,13 +18,19 @@ import { useLoading } from '../../hooks/useLoading';
 import { FormikHelpers, useFormik } from 'formik';
 import { useCardsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
-import { CreateCardRequestDto } from '../../store/CardsStore';
+import { Card, CreateCardRequestDto } from '../../store/CardsStore';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import { SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
+
+enum UpdateCardMode {
+  CREATE = 'create',
+  UPDATE = 'update',
+}
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  currentCard: Card;
 }
 
 const initialValues: CreateCardRequestDto = {
@@ -42,24 +48,47 @@ const validationSchema = object().shape({
 
 const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const cardsStore = useCardsStore();
-  const currentCollectionId = useCurrentCollectionId();
+  const currentCardId = useCurrentCollectionId();
   const { voicesList } = useContext(SpeechUtteranceContext);
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, currentCard } = props;
   const { isLoading, setIsLoading } = useLoading();
   const titleRef = useRef(null);
+  const [mode, setMode] = useState<UpdateCardMode>(UpdateCardMode.CREATE);
 
   const submitHandler = async (payload: CreateCardRequestDto, formikHelpers: FormikHelpers<CreateCardRequestDto>) => {
     setIsLoading(true);
 
     try {
-      await cardsStore.createCard({
-        parentId: currentCollectionId,
-        title: payload.title,
-        text: payload.text,
-        textLang: payload.textLang,
-      });
-      formikHelpers.setSubmitting(false);
-      onClose();
+      const {title, text, textLang} = payload;
+
+      const cardDto: CreateCardRequestDto = {
+        parentId: currentCardId,
+        title: title,
+        text: text,
+        textLang: textLang,
+      };
+
+      switch (mode) {
+        case UpdateCardMode.CREATE: {
+          await cardsStore.createCard(cardDto);
+          formikHelpers.setSubmitting(false);
+          onClose();
+          break;
+        }
+        case UpdateCardMode.UPDATE: {
+          if (currentCard.title === title && currentCard.text === text && currentCard.textLang === textLang) {
+            formikHelpers.setFieldError('title', 'Existing data is the same as new data. Please, change some field.');
+            formikHelpers.setFieldError('textLang', 'Existing data is the same as new data. Please, change some field.');
+            formikHelpers.setFieldError('text', 'Existing data is the same as new data. Please, change some field.');
+          } else {
+            await cardsStore.updateCard(currentCard.id, cardDto);
+            formikHelpers.setSubmitting(false);
+            onClose();
+          }
+          break;
+        }
+        default: break;
+      }
     } catch (e) {
       console.warn(e);
     } finally {
@@ -73,19 +102,32 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
     onSubmit: submitHandler,
     validateOnBlur: true,
   });
-  const { touched, dirty, errors, getFieldProps } = formik;
+  const { touched, dirty, errors, getFieldProps, setFieldValue } = formik;
+
+  const setInitialFiledValues = async () => {
+    await setFieldValue('title', currentCard.title || '');
+    await setFieldValue('text', currentCard.text || '');
+    await setFieldValue('textLang', currentCard.textLang || '');
+  };
+
+  useEffect(() => {
+    setMode(currentCard.id ? UpdateCardMode.UPDATE : UpdateCardMode.CREATE);
+    setInitialFiledValues();
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={titleRef} size={'3xl'}>
       <ModalOverlay/>
 
       <ModalContent>
-        <ModalHeader>Create card</ModalHeader>
+        <ModalHeader>
+          {mode === UpdateCardMode.UPDATE ? 'Update card' : 'Create card'}
+        </ModalHeader>
 
         <ModalCloseButton/>
 
         <ModalBody>
-          <form id={'create-card-form'} onSubmit={formik.handleSubmit}>
+          <form id={'update-card-form'} onSubmit={formik.handleSubmit}>
             <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.title && dirty && Boolean(errors.title)} mb={2}>
               <FormLabel>Title</FormLabel>
 
@@ -117,7 +159,9 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
         </ModalBody>
 
         <ModalFooter>
-          <Button form={'create-card-form'} isLoading={isLoading} colorScheme={'telegram'} variant={'outline'} type={'submit'} mr={4}>Create</Button>
+          <Button form={'update-card-form'} isLoading={isLoading} colorScheme={'telegram'} variant={'outline'} type={'submit'} mr={4}>
+            {mode === UpdateCardMode.UPDATE ? 'Update' : 'Create'}
+          </Button>
 
           <Button onClick={onClose} colorScheme={'gray'} variant={'outline'}>Close</Button>
         </ModalFooter>

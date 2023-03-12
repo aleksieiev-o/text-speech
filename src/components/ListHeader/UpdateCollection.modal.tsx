@@ -59,12 +59,12 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
           break;
         }
         case UpdateCollectionMode.UPDATE: {
-          if (currentCollection.title !== payload.title) {
+          if (currentCollection.title === payload.title) {
+            formikHelpers.setFieldError('title', 'Existing title is the same as new title. Please, change title.');
+          } else {
             await collectionsStore.updateCollection(currentCollection.id, payload);
             formikHelpers.setSubmitting(false);
             onClose();
-          } else {
-            formikHelpers.setFieldError('title', 'Existing title is the same as new title. Please, change title.');
           }
           break;
         }

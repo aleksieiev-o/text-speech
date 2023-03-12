@@ -33,6 +33,16 @@ const CardsList: FC = observer((): ReactElement => {
     };
   }, []);
 
+  const prepareToEditCard = (card: Card) => {
+    setTempCard(card);
+    onOpenUpdateCardModal();
+  };
+
+  const closeEditCardModalHandler = () => {
+    onCloseUpdateCardModal();
+    setTempCard({} as Card);
+  };
+
   const prepareToRemoveCard = (card: Card) => {
     setTempCard(card);
     onOpenCRemoveCardModal();
@@ -79,6 +89,7 @@ const CardsList: FC = observer((): ReactElement => {
                 cardsStore.currentCardsList.map((card: Card) => {
                   return <CardListItem
                     key={card.id}
+                    prepareToEditCard={prepareToEditCard}
                     prepareToRemoveCard={prepareToRemoveCard}
                     card={card}/>;
                 })
@@ -93,7 +104,10 @@ const CardsList: FC = observer((): ReactElement => {
         }
       </Stack>
 
-      {isOpenUpdateCardModal && <UpdateCardModal isOpen={isOpenUpdateCardModal} onClose={onCloseUpdateCardModal}/>}
+      {isOpenUpdateCardModal && <UpdateCardModal
+        currentCard={tempCard}
+        isOpen={isOpenUpdateCardModal}
+        onClose={closeEditCardModalHandler}/>}
 
       {
         isOpenRemoveCardModal &&

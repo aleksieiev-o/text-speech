@@ -11,11 +11,12 @@ import { PlayingStatus, SpeechUtteranceContext, StartPlayingDto } from '../../pr
 
 interface Props {
   card: Card;
+  prepareToEditCard: (card: Card) => void;
   prepareToRemoveCard: (card: Card) => void;
 }
 
 const CardListItem: FC<Props> = (props): ReactElement => {
-  const { card, prepareToRemoveCard } = props;
+  const { card, prepareToEditCard, prepareToRemoveCard } = props;
   const { start, stop, pause, resume, appPlayingStatus, playingCardId } = useContext(SpeechUtteranceContext);
 
   const isSpeaking = useMemo(() => playingCardId === card.id && appPlayingStatus === PlayingStatus.SPEAKING, [appPlayingStatus, playingCardId]);
@@ -106,6 +107,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
 
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
               <IconButton
+                onClick={() => prepareToEditCard(card)}
                 colorScheme={'telegram'}
                 aria-label={'Edit card'}
                 title={'Edit card'}
