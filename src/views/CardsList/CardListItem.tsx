@@ -88,7 +88,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
               <IconButton
                 onClick={() => playControlHandler({ id: card.id, text: card.text, lang: card.textLang })}
-                colorScheme={'twitter'}
+                colorScheme={'telegram'}
                 aria-label={playControlButtonProps.ariaLabel}
                 title={playControlButtonProps.title}
                 icon={playControlButtonProps.icon}
@@ -96,7 +96,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
 
               <IconButton
                 onClick={() => stopPlaying()}
-                colorScheme={'twitter'}
+                colorScheme={'telegram'}
                 aria-label={'Stop'}
                 title={'Stop'}
                 icon={<Icon as={StopIcon}/>}
@@ -106,7 +106,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
 
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
               <IconButton
-                colorScheme={'twitter'}
+                colorScheme={'telegram'}
                 aria-label={'Edit card'}
                 title={'Edit card'}
                 icon={<Icon as={EditIcon}/>}

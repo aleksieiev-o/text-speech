@@ -66,7 +66,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
           justifyContent={'flex-end'}>
             <Button
               onClick={onOpen}
-              colorScheme={'facebook'}
+              colorScheme={'telegram'}
               variant={'outline'}
               leftIcon={<Icon as={AddIcon}/>}>
               {isCollectionsListPath ? 'Create collection' : 'Create card'}

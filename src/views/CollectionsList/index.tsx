@@ -82,7 +82,7 @@ const CollectionsList: FC = observer((): ReactElement => {
 
                         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
                           <IconButton
-                          colorScheme={'twitter'}
+                          colorScheme={'telegram'}
                           aria-label={'Edit collection'}
                           title={'Edit collection'}
                           variant={'outline'}

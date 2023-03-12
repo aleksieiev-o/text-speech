@@ -35,7 +35,7 @@ const ActionConfirmationModal: FC<Props> = observer((props): ReactElement => {
   };
 
   const actionButtonColorScheme = {
-    [ActionConfirmationModalType.INFO]: 'facebook',
+    [ActionConfirmationModalType.INFO]: 'telegram',
     [ActionConfirmationModalType.WARNING]: 'orange',
     [ActionConfirmationModalType.DANGER]: 'red',
   }[modalType];

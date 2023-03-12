@@ -15,7 +15,7 @@ const HeaderUserInfo: FC = observer((): ReactElement => {
         <Text>{authorizationStore.user.email}</Text>
       </Stack>
 
-      <Avatar src={authorizationStore.user.photoURL || ''} bg={'facebook.600'} icon={<Icon as={PersonIcon}/>}/>
+      <Avatar src={authorizationStore.user.photoURL || ''} bg={'telegram.600'} icon={<Icon as={PersonIcon}/>}/>
     </Stack>
   );
 });

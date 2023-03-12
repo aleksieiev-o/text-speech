@@ -23,7 +23,7 @@ const EmptyList: FC<Props> = observer((props): ReactElement => {
 
       <Button
       onClick={buttonHandler}
-      colorScheme={'facebook'}
+      colorScheme={'telegram'}
       variant={'outline'}
       leftIcon={<Icon as={buttonIcon}/>}>
         {buttonText}
