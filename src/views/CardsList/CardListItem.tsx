@@ -1,5 +1,6 @@
 import React, { FC, ReactElement, useContext, useMemo } from 'react';
-import { Card as ChakraCard, CardBody, Heading, Icon, IconButton, Stack, Text } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Card as ChakraCard, CardBody, Heading, Icon, IconButton, Link, Stack, Text } from '@chakra-ui/react';
 import StopIcon from '@mui/icons-material/Stop';
 import PauseIcon from '@mui/icons-material/Pause';
 import EditIcon from '@mui/icons-material/Edit';
@@ -73,16 +74,11 @@ const CardListItem: FC<Props> = (props): ReactElement => {
           h={'full'}
           spacing={4}>
           <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
-            <Heading as={'h6'} noOfLines={1}>
-              {card.title || 'No title'}
-            </Heading>
-
-            {/*<Link as={RouterLink} to={card.id}>
-              TODO Доделать отображение карточки в виде отдельного экрана
+            <Link as={RouterLink} to={card.id}>
               <Heading as={'h6'} noOfLines={1}>
                 {card.title || 'No title'}
               </Heading>
-            </Link>*/}
+            </Link>
 
             <Text overflow={'hidden'} maxH={'72px'}>
               {card.text || 'No text'}
