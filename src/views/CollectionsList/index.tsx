@@ -85,7 +85,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                     <CardBody>
                       <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
                         <Link as={RouterLink} to={collection.id}>
-                          <Heading as={'h6'} noOfLines={1}>
+                          <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
                             {collection.title}
                           </Heading>
                         </Link>

@@ -15,6 +15,7 @@ export enum Theme {
 export interface Settings {
   locale: Locale;
   theme: Theme;
+  hidePreviewText: boolean;
 }
 
 interface ISettingsStore {
@@ -22,6 +23,7 @@ interface ISettingsStore {
   settingsStoreService: SettingsStoreService;
   locale: Locale;
   theme: Theme;
+  hidePreviewText: boolean;
   loadSettings: () => void;
   updateLocale: (locale: Locale) => void;
   updateTheme: (theme: Theme) => void;
@@ -32,6 +34,7 @@ export class SettingsStore implements ISettingsStore {
   settingsStoreService: SettingsStoreService;
   locale: Locale = Locale.EN_US;
   theme: Theme = Theme.LIGHT;
+  hidePreviewText = true;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -45,6 +48,7 @@ export class SettingsStore implements ISettingsStore {
       const settings = await this.settingsStoreService.loadSettings();
       this.locale = settings.locale;
       this.theme = settings.theme;
+      this.hidePreviewText = settings.hidePreviewText;
     } catch (e) {
       console.warn(e);
     }
@@ -56,6 +60,10 @@ export class SettingsStore implements ISettingsStore {
 
   async updateTheme(theme: Theme) {
     this.theme = await this.settingsStoreService.updateTheme(theme);
+  }
+
+  async updatePreviewText(hidePreviewText: boolean) {
+    this.hidePreviewText = await this.settingsStoreService.updatePreviewText(hidePreviewText);
   }
 
   async setDefaultSettings() {
@@ -73,5 +81,9 @@ export class SettingsStore implements ISettingsStore {
 
   get themePath(): string {
     return `${this.userUid}/settings/theme`;
+  }
+
+  get previewTextPath(): string {
+    return `${this.userUid}/settings/hidePreviewText`;
   }
 }

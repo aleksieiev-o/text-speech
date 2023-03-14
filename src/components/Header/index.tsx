@@ -37,7 +37,13 @@ const Header: FC = observer((): ReactElement => {
         justifyContent={'space-between'}
         boxShadow={'md'}
         p={4}>
-        <Heading as={'h4'} color={colorMode === ColorMode.LIGHT ? 'telegram.600' : 'white'} cursor={'default'}>{APP_NAME}</Heading>
+        <Heading
+          as={'h4'}
+          color={colorMode === ColorMode.LIGHT ? 'telegram.600' : 'white'}
+          fontSize={{ md: 32, base: 22 }}
+          cursor={'default'}>
+          {APP_NAME}
+        </Heading>
 
         {
           authorizationStore.isAuth &&

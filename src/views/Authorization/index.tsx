@@ -64,7 +64,7 @@ const Authorization: FC = observer((): ReactElement => {
 
       <Stack as={'section'} w={'full'} h={'full'} direction={'column'} alignItems={'center'} justifyContent={'center'} p={4} spacing={8}>
         <Box p={4} boxShadow={'xl'} maxW={'lg'} w={'full'}>
-          <Heading as={'h6'} mb={6} color={isSignInRoute ? 'telegram.600' : 'telegram.600'}>
+          <Heading as={'h5'} mb={6} color={isSignInRoute ? 'telegram.600' : 'telegram.600'}>
             {isSignInRoute ? 'Sign In' : 'Sign Up'}
           </Heading>
 

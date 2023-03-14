@@ -1,13 +1,16 @@
-import React, { FC, ReactElement, useContext, useMemo } from 'react';
+import React, { FC, ReactElement, useContext, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card as ChakraCard, CardBody, Heading, Icon, IconButton, Link, Stack, Text } from '@chakra-ui/react';
 import StopIcon from '@mui/icons-material/Stop';
 import PauseIcon from '@mui/icons-material/Pause';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { Card } from '../../store/CardsStore';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { PlayingStatus, SpeechUtteranceContext, StartPlayingDto } from '../../providers/SpeechUtteranceContext.provider';
+import { useSettingsStore } from '../../store/hooks';
 
 interface Props {
   card: Card;
@@ -18,6 +21,8 @@ interface Props {
 const CardListItem: FC<Props> = (props): ReactElement => {
   const { card, prepareToEditCard, prepareToRemoveCard } = props;
   const { start, stop, pause, resume, appPlayingStatus, playingCardId } = useContext(SpeechUtteranceContext);
+  const settingsStore = useSettingsStore();
+  const [cardTextVisible, setCardTextVisible] = useState<boolean>(settingsStore.hidePreviewText);
 
   const isSpeaking = useMemo(() => playingCardId === card.id && appPlayingStatus === PlayingStatus.SPEAKING, [appPlayingStatus, playingCardId]);
   const isPaused = useMemo(() => playingCardId === card.id && appPlayingStatus === PlayingStatus.PAUSED, [appPlayingStatus, playingCardId]);
@@ -75,17 +80,31 @@ const CardListItem: FC<Props> = (props): ReactElement => {
           spacing={4}>
           <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
             <Link as={RouterLink} to={card.id}>
-              <Heading as={'h6'} noOfLines={1}>
+              <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
                 {card.title || 'No title'}
               </Heading>
             </Link>
 
-            <Text overflow={'hidden'} maxH={'72px'}>
+            <Text
+              overflow={'hidden'}
+              maxH={'72px'}
+              color={cardTextVisible ?  'transparent' : ''}
+              textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
               {card.text || 'No text'}
             </Text>
           </Stack>
 
           <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+              <IconButton
+                onClick={() => setCardTextVisible(!cardTextVisible)}
+                colorScheme={'telegram'}
+                aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
+                title={cardTextVisible ? 'Show text' : 'Hide text'}
+                icon={<Icon as={cardTextVisible ? VisibilityIcon : VisibilityOffIcon}/>}
+                variant={'outline'}/>
+            </Stack>
+
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
               <IconButton
                 onClick={() => playControlHandler({ id: card.id, text: card.text, lang: card.textLang })}

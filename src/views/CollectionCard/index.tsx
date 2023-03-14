@@ -1,15 +1,18 @@
-import React, { FC, ReactElement, useMemo } from 'react';
+import React, { FC, ReactElement, useMemo, useState } from 'react';
 import Header from '../../components/Header';
-import { Box, Button, Card, CardBody, CardHeader, Container, Heading, Icon, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Card, CardBody, CardHeader, Container, Heading, Icon, IconButton, Stack, Text } from '@chakra-ui/react';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCardsStore, useSettingsStore } from '../../store/hooks';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const CollectionCard: FC = (): ReactElement => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const cardStore = useCardsStore();
   const settingsStore = useSettingsStore();
+  const [cardTextVisible, setCardTextVisible] = useState<boolean>(settingsStore.hidePreviewText);
 
   const currentCardId = pathname.split('/')[3];
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -48,7 +51,7 @@ const CollectionCard: FC = (): ReactElement => {
             <Card w={'xl'} boxShadow={'lg'} overflow={'hidden'}>
               <CardHeader boxShadow={'xs'}>
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
-                  <Heading size={'lg'}>
+                  <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
                     {currentCard.title || 'No title'}
                   </Heading>
 
@@ -75,27 +78,45 @@ const CollectionCard: FC = (): ReactElement => {
               <CardBody>
                 <Stack w={'full'} h={'full'} alignItems={'flex-start'} justifyContent={'center'} spacing={4}>
                   <Box>
-                    <Heading size={'sm'}>
-                      Text
-                    </Heading>
-                    <Text pt={2}>
+                    <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
+                      <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
+                        Text
+                      </Heading>
+
+                      <IconButton
+                        onClick={() => setCardTextVisible(!cardTextVisible)}
+                        colorScheme={'telegram'}
+                        size={'xs'}
+                        aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
+                        title={cardTextVisible ? 'Show text' : 'Hide text'}
+                        icon={<Icon as={cardTextVisible ? VisibilityIcon : VisibilityOffIcon}/>}
+                        variant={'outline'}/>
+                    </Stack>
+
+                    <Text
+                      overflow={'hidden'}
+                      pt={2}
+                      color={cardTextVisible ?  'transparent' : ''}
+                      textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
                       {currentCard.text || 'No text'}
                     </Text>
                   </Box>
 
                   <Box>
-                    <Heading size={'sm'}>
+                    <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
                       Created date
                     </Heading>
+
                     <Text pt={2}>
                       {transformDate(currentCard.createdDate)}
                     </Text>
                   </Box>
 
                   <Box>
-                    <Heading size={'sm'}>
+                    <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
                       Updated date
                     </Heading>
+
                     <Text pt={2}>
                       {transformDate(currentCard.updatedDate)}
                     </Text>

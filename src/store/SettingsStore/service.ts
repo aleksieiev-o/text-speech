@@ -7,6 +7,7 @@ interface ISettingsStoreService {
   loadSettings: () => Promise<Settings>;
   updateLocale: (locale: Locale) => Promise<Locale>;
   updateTheme: (theme: Theme) => Promise<Theme>;
+  updatePreviewText: (previewText: boolean) => Promise<boolean>;
 }
 
 export class SettingsStoreService implements ISettingsStoreService {
@@ -19,8 +20,9 @@ export class SettingsStoreService implements ISettingsStoreService {
   async loadSettings(): Promise<Settings> {
     const locale = await this.loadLocalOnce();
     const theme = await this.loadThemeOnce();
+    const hidePreviewText = await this.loadPreviewTextOnce();
 
-    return Promise.resolve({ locale, theme });
+    return Promise.resolve({ locale, theme, hidePreviewText });
   }
 
   async updateLocale(locale: Locale): Promise<Locale> {
@@ -31,6 +33,11 @@ export class SettingsStoreService implements ISettingsStoreService {
   async updateTheme(theme: Theme): Promise<Theme> {
     await set(ref(firebaseDataBase, this.settingsStore.themePath), theme);
     return await this.loadThemeOnce();
+  }
+
+  async updatePreviewText(hidePreviewText: boolean): Promise<boolean> {
+    await set(ref(firebaseDataBase, this.settingsStore.previewTextPath), hidePreviewText);
+    return await this.loadPreviewTextOnce();
   }
 
   private async loadLocalOnce(): Promise<Locale> {
@@ -44,6 +51,15 @@ export class SettingsStoreService implements ISettingsStoreService {
 
   private async loadThemeOnce(): Promise<Theme> {
     const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), this.settingsStore.themePath));
+    // TODO complete the check
+    // if (snapshot.exists()) {
+    //   return snapshot.val();
+    // }
+    return snapshot.val();
+  }
+
+  private async loadPreviewTextOnce(): Promise<boolean> {
+    const snapshot: DataSnapshot = await get(child(ref(firebaseDataBase), this.settingsStore.previewTextPath));
     // TODO complete the check
     // if (snapshot.exists()) {
     //   return snapshot.val();
