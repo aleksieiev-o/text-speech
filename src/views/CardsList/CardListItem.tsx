@@ -72,8 +72,8 @@ const CardListItem: FC<Props> = (props): ReactElement => {
       boxShadow={'md'}>
       <CardBody>
         <Stack
-          direction={'row'}
-          alignItems={'center'}
+          direction={{ md: 'row', base: 'column' }}
+          alignItems={{ md: 'center', base: 'flex-start' }}
           justifyContent={'space-between'}
           overflow={'hidden'}
           h={'full'}
@@ -94,8 +94,8 @@ const CardListItem: FC<Props> = (props): ReactElement => {
             </Text>
           </Stack>
 
-          <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
-            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+          <Stack w={{ md: 'auto', base: 'full' }} direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
+            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2} mr={{ md: '', base: 'auto' }}>
               <IconButton
                 onClick={() => setCardTextVisible(!cardTextVisible)}
                 colorScheme={'telegram'}

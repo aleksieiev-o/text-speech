@@ -47,8 +47,8 @@ const CollectionCard: FC = (): ReactElement => {
         </Stack>
 
         <Container centerContent={true} w={'full'} h={'full'} maxW={'6xl'} p={4}>
-          <Stack w={'full'} h={'full'} alignItems={'center'} justifyContent={'center'}>
-            <Card w={'xl'} boxShadow={'lg'} overflow={'hidden'}>
+          <Stack w={'full'} h={'full'} alignItems={'center'} justifyContent={{ md: 'center', base: 'flex-start'}}>
+            <Card maxW={'2xl'} boxShadow={'lg'} overflow={'hidden'}>
               <CardHeader boxShadow={'xs'}>
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
                   <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>

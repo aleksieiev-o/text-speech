@@ -83,14 +83,23 @@ const CollectionsList: FC = observer((): ReactElement => {
                     cursor={'default'}
                     boxShadow={'md'}>
                     <CardBody>
-                      <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
+                      <Stack
+                        direction={{ md: 'row', base: 'column' }}
+                        alignItems={{ md: 'center', base: 'flex-start' }}
+                        justifyContent={'space-between'}
+                        spacing={4}>
                         <Link as={RouterLink} to={collection.id}>
                           <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
                             {collection.title}
                           </Heading>
                         </Link>
 
-                        <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
+                        <Stack
+                          direction={'row'}
+                          w={{ md: 'auto', base: 'full' }}
+                          alignItems={'center'}
+                          justifyContent={{ md: 'space-between', base: 'flex-end' }}
+                          spacing={2}>
                           <IconButton
                           onClick={() => prepareToEditCollection(collection)}
                           colorScheme={'telegram'}
