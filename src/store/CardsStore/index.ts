@@ -32,7 +32,9 @@ interface ICardsStore {
   cardsStoreService: CardsStoreService;
   cardsList: Map<string, Array<Card>>;
   currentCardsList: Array<Card>;
+  currentCard: Card;
   loadAllCards: (parentId: string) => void;
+  loadCardById: (id: string, parentId: string) => void;
   createCard: (payload: CreateCardRequestDto) => void;
   removeCard: (id: string, parentId: string) => void;
   removeAllCards: (parentId: string) => void;
@@ -44,12 +46,14 @@ export class CardsStore implements ICardsStore {
   cardsStoreService: CardsStoreService;
   cardsList: Map<string, Array<Card>>;
   currentCardsList: Array<Card>;
+  currentCard: Card;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     this.cardsStoreService = new CardsStoreService(this);
     this.cardsList = new Map<string, Array<Card>>();
     this.currentCardsList = [];
+    this.currentCard = {} as Card;
 
     makeAutoObservable(this);
   }
@@ -61,6 +65,10 @@ export class CardsStore implements ICardsStore {
     }
 
     this.currentCardsList = this.cardsList.get(parentId) || [];
+  }
+
+  async loadCardById(id: string, parentId: string) {
+    this.currentCard = await this.cardsStoreService.loadCardByIdOnce(id, parentId);
   }
 
   async createCard(payload: CreateCardRequestDto) {

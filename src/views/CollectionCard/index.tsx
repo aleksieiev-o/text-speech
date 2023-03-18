@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useMemo, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import { Box, Card, CardBody, CardHeader, Container, Heading, Icon, IconButton, Stack, Text } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
@@ -12,26 +12,35 @@ import { observer } from 'mobx-react-lite';
 
 const CollectionCard: FC = observer((): ReactElement => {
   const { pathname } = useLocation();
-  const cardStore = useCardsStore();
+  const cardsStore = useCardsStore();
   const settingsStore = useSettingsStore();
   const [cardTextVisible, setCardTextVisible] = useState<boolean>(settingsStore.hidePreviewText);
   const { t } = useTranslation(['common']);
 
   const currentCollectionId = pathname.split('/')[2];
   const currentCardId = pathname.split('/')[3];
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const currentCard = useMemo(() => cardStore.currentCardsList.find((item) => item.id === currentCardId)!, [cardStore.currentCardsList]);
+
+  const loadCurrentCard = async () => {
+    await cardsStore.loadCardById(currentCardId, currentCollectionId);
+  };
+
+  useEffect(() => {
+    loadCurrentCard();
+  }, []);
 
   const transformDate = (dateRaw: string): string => {
-    const date = new Date(dateRaw);
-    return new Intl.DateTimeFormat(settingsStore.locale, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: false,
-    }).format(date);
+    if (dateRaw) {
+      const date = new Date(dateRaw);
+      return new Intl.DateTimeFormat(settingsStore.locale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false,
+      }).format(date);
+    }
+    return '';
   };
 
   return (
@@ -50,12 +59,12 @@ const CollectionCard: FC = observer((): ReactElement => {
               <CardHeader boxShadow={'xs'}>
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
                   <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
-                    {currentCard.title}
+                    {cardsStore.currentCard.title}
                   </Heading>
 
                   {/*<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
                     <IconButton
-                      onClick={() => prepareToEditCard(currentCard)}
+                      onClick={() => prepareToEditCard(cardsStore.currentCard)}
                       colorScheme={'telegram'}
                       aria-label={'Edit card'}
                       title={t('card_edit_btn_title', { ns: 'card' })!}
@@ -63,7 +72,7 @@ const CollectionCard: FC = observer((): ReactElement => {
                       variant={'outline'}/>
 
                     <IconButton
-                      onClick={() => prepareToRemoveCard(currentCard)}
+                      onClick={() => prepareToRemoveCard(cardsStore.currentCard)}
                       colorScheme={'red'}
                       aria-label={'Remove card'}
                       title={t('card_remove_btn_title', { ns: 'card' })!}
@@ -96,7 +105,7 @@ const CollectionCard: FC = observer((): ReactElement => {
                       pt={2}
                       color={cardTextVisible ?  'transparent' : ''}
                       textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
-                      {currentCard.text}
+                      {cardsStore.currentCard.text}
                     </Text>
                   </Box>
 
@@ -106,7 +115,7 @@ const CollectionCard: FC = observer((): ReactElement => {
                     </Heading>
 
                     <Text pt={2}>
-                      {transformDate(currentCard.createdDate)}
+                      {transformDate(cardsStore.currentCard.createdDate)}
                     </Text>
                   </Box>
 
@@ -116,7 +125,7 @@ const CollectionCard: FC = observer((): ReactElement => {
                     </Heading>
 
                     <Text pt={2}>
-                      {transformDate(currentCard.updatedDate)}
+                      {transformDate(cardsStore.currentCard.updatedDate)}
                     </Text>
                   </Box>
                 </Stack>
