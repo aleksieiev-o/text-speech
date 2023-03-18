@@ -11,6 +11,7 @@ import { Card } from '../../store/CardsStore';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { PlayingStatus, SpeechUtteranceContext, StartPlayingDto } from '../../providers/SpeechUtteranceContext.provider';
 import { useSettingsStore } from '../../store/hooks';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   card: Card;
@@ -23,6 +24,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
   const { start, stop, pause, resume, appPlayingStatus, playingCardId } = useContext(SpeechUtteranceContext);
   const settingsStore = useSettingsStore();
   const [cardTextVisible, setCardTextVisible] = useState<boolean>(settingsStore.hidePreviewText);
+  const { t } = useTranslation(['card']);
 
   const isSpeaking = useMemo(() => playingCardId === card.id && appPlayingStatus === PlayingStatus.SPEAKING, [appPlayingStatus, playingCardId]);
   const isPaused = useMemo(() => playingCardId === card.id && appPlayingStatus === PlayingStatus.PAUSED, [appPlayingStatus, playingCardId]);
@@ -31,19 +33,19 @@ const CardListItem: FC<Props> = (props): ReactElement => {
   const playControlButtonProps = useMemo((): { title: string, ariaLabel: string, icon: ReactElement } => {
     if (isSpeaking) {
       return {
-        title: 'Pause',
+        title: t('card_pause_btn_title', { ns: 'card' }),
         ariaLabel: 'Pause',
         icon: <Icon as={PauseIcon}/>,
       };
     } else if (isPaused) {
       return {
-        title: 'Resume',
+        title: t('card_resume_btn_title', { ns: 'card' }),
         ariaLabel: 'Resume',
         icon: <Icon as={PlayArrowIcon}/>,
       };
     }
     return {
-      title: 'Play',
+      title: t('card_play_btn_title', { ns: 'card' }),
       ariaLabel: 'Play',
       icon: <Icon as={PlayArrowIcon}/>,
     };
@@ -81,7 +83,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
           <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
             <Link as={RouterLink} to={card.id}>
               <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
-                {card.title || 'No title'}
+                {card.title}
               </Heading>
             </Link>
 
@@ -90,17 +92,18 @@ const CardListItem: FC<Props> = (props): ReactElement => {
               maxH={'72px'}
               color={cardTextVisible ?  'transparent' : ''}
               textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
-              {card.text || 'No text'}
+              {card.text}
             </Text>
           </Stack>
 
+          {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
           <Stack w={{ md: 'auto', base: 'full' }} direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2} mr={{ md: '', base: 'auto' }}>
               <IconButton
                 onClick={() => setCardTextVisible(!cardTextVisible)}
                 colorScheme={'telegram'}
+                title={cardTextVisible ? t('card_show_text_btn_title', { ns: 'card' })! : t('card_hide_text_btn_title', { ns: 'card' })!}
                 aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
-                title={cardTextVisible ? 'Show text' : 'Hide text'}
                 icon={<Icon as={cardTextVisible ? VisibilityIcon : VisibilityOffIcon}/>}
                 variant={'outline'}/>
             </Stack>
@@ -117,8 +120,8 @@ const CardListItem: FC<Props> = (props): ReactElement => {
               <IconButton
                 onClick={() => stopPlaying()}
                 colorScheme={'telegram'}
+                title={t('card_stop_btn_title', { ns: 'card' })!}
                 aria-label={'Stop'}
-                title={'Stop'}
                 icon={<Icon as={StopIcon}/>}
                 isDisabled={!isStopBtnDisabled}
                 variant={'outline'}/>
@@ -129,19 +132,20 @@ const CardListItem: FC<Props> = (props): ReactElement => {
                 onClick={() => prepareToEditCard(card)}
                 colorScheme={'telegram'}
                 aria-label={'Edit card'}
-                title={'Edit card'}
+                title={t('card_edit_btn_title', { ns: 'card' })!}
                 icon={<Icon as={EditIcon}/>}
                 variant={'outline'}/>
 
               <IconButton
                 onClick={() => prepareToRemoveCard(card)}
                 colorScheme={'red'}
-                aria-label={'Delete card'}
-                title={'Delete card'}
+                aria-label={'Remove card'}
+                title={t('card_remove_btn_title', { ns: 'card' })!}
                 variant={'outline'}
                 icon={<Icon as={DeleteIcon}/>}/>
             </Stack>
           </Stack>
+          {/* eslint-enable */}
         </Stack>
       </CardBody>
     </ChakraCard>

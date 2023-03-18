@@ -12,12 +12,14 @@ import AddIcon from '@mui/icons-material/Add';
 import UpdateCollectionModal from '../../components/ListHeader/UpdateCollection.modal';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../../components/ActionConfirmation.modal';
 import EmptyList from '../EmptyList';
+import { useTranslation } from 'react-i18next';
 
 const CollectionsList: FC = observer((): ReactElement => {
   const collectionsStore = useCollectionsStore();
   const [tempCollection, setTempCollection] = useState<Collection>({} as Collection);
   const { isOpen: isOpenUpdateCollectionModal, onOpen: onOpenUpdateCollectionModal, onClose: onCloseUpdateCollectionModal } = useDisclosure();
   const { isOpen: isOpenRemoveCollectionModal, onOpen: onOpenRemoveCollectionModal, onClose: onCloseRemoveCollectionModal } = useDisclosure();
+  const { t } = useTranslation(['common', 'collectionsList']);
 
   const prepareToEditCollection = (collection: Collection) => {
     setTempCollection(collection);
@@ -61,6 +63,7 @@ const CollectionsList: FC = observer((): ReactElement => {
           removeButtonHandler={collectionsStore.removeAllCollections}/>
         }
 
+        {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
         {
           collectionsStore.collections.length ?
             <Stack
@@ -104,7 +107,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                           onClick={() => prepareToEditCollection(collection)}
                           colorScheme={'telegram'}
                           aria-label={'Edit collection'}
-                          title={'Edit collection'}
+                          title={t('collections_list_edit_btn_title', { ns: 'collectionsList' })!}
                           variant={'outline'}
                           icon={<Icon as={EditIcon}/>}/>
 
@@ -112,7 +115,7 @@ const CollectionsList: FC = observer((): ReactElement => {
                           onClick={() => prepareToRemoveCollection(collection)}
                           colorScheme={'red'}
                           aria-label={'Remove collection'}
-                          title={'Remove collection'}
+                          title={t('collections_list_remove_btn_title', { ns: 'collectionsList' })!}
                           variant={'outline'}
                           icon={<Icon as={DeleteIcon}/>}/>
                         </Stack>
@@ -124,9 +127,9 @@ const CollectionsList: FC = observer((): ReactElement => {
             </Stack>
             :
             <EmptyList
-            emptyListMessage={'Collections list is empty'}
+            emptyListMessage={t('collections_list_empty_list', { ns: 'collectionsList' })}
             buttonHandler={onOpenUpdateCollectionModal}
-            buttonText={'Create collection'}
+            buttonText={t('collections_list_create_btn', { ns: 'collectionsList' })}
             buttonIcon={AddIcon}/>
         }
       </Stack>
@@ -144,11 +147,12 @@ const CollectionsList: FC = observer((): ReactElement => {
           isOpen={isOpenRemoveCollectionModal}
           onClose={closeRemoveCollectionModalHandler}
           modalType={ActionConfirmationModalType.DANGER}
-          modalTitle={'Remove collection confirmation'}
-          modalBodyDescription={`You are about to remove collection ${tempCollection.title}.`}
-          modalBodyQuestion={'Are you cure?'}
-          buttonText={'Remove'}/>
+          modalTitle={t('collections_list_remove_confirm_message', { ns: 'collectionsList' })}
+          modalBodyDescription={`${t('collections_list_remove_confirm_message', { ns: 'collectionsList' })}${tempCollection.title}.`}
+          modalBodyQuestion={t('common_confirm_question')!}
+          buttonText={t('common_remove_btn')}/>
       }
+      {/* eslint-enable */}
     </>
   );
 });

@@ -2,6 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, StackDivider, Text } from '@chakra-ui/react';
 import { observer } from 'mobx-react-lite';
 import { useLoading } from '../hooks/useLoading';
+import { useTranslation } from 'react-i18next';
 
 export enum ActionConfirmationModalType {
   INFO,
@@ -23,6 +24,7 @@ interface Props {
 const ActionConfirmationModal: FC<Props> = observer((props): ReactElement => {
   const { modalType,  modalTitle, modalBodyDescription, modalBodyQuestion, buttonText, isOpen, onClose, actionHandler } = props;
   const { isLoading, setIsLoading } = useLoading();
+  const { t } = useTranslation(['common']);
 
   const buttonActionHandler = async () => {
     setIsLoading(true);
@@ -43,6 +45,8 @@ const ActionConfirmationModal: FC<Props> = observer((props): ReactElement => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
+
+      {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <ModalContent>
         <ModalHeader>{modalTitle}</ModalHeader>
 
@@ -59,11 +63,22 @@ const ActionConfirmationModal: FC<Props> = observer((props): ReactElement => {
         </ModalBody>
 
         <ModalFooter>
-          <Button onClick={buttonActionHandler} isLoading={isLoading} colorScheme={actionButtonColorScheme} variant={'outline'} mr={4}>{buttonText}</Button>
+          <Button
+            onClick={buttonActionHandler}
+            isLoading={isLoading}
+            colorScheme={actionButtonColorScheme}
+            variant={'outline'}
+            title={buttonText}
+            mr={4}>
+            {buttonText}
+          </Button>
 
-          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'}>Close</Button>
+          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'} title={t('common_close_btn')!}>
+            {t('common_close_btn')}
+          </Button>
         </ModalFooter>
       </ModalContent>
+      {/* eslint-enable */}
     </Modal>
   );
 });

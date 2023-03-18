@@ -1,0 +1,10 @@
+{
+  "authorization_sign_in": "Войти",
+  "authorization_sign_up": "Регистрация",
+  "authorization_email_label": "Электронная почта",
+  "authorization_email_placeholder": "Введите адрес электронной почты",
+  "authorization_password_label": "Пароль",
+  "authorization_password_placeholder": "Введите пароль",
+  "authorization_have_acc_message": "У меня уже есть учетная запись",
+  "authorization_not_have_acc_message": "У меня еще нет учетной записи"
+}

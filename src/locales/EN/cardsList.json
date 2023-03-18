@@ -1,0 +1,20 @@
+{
+  "cards_list_create_btn": "Create card",
+  "cards_list_remove_all_btn": "Remove all cards",
+  "cards_list_remove_all_confirm_title": "Remove all cards confirmation",
+  "cards_list_remove_all_confirm_message": "You are about to remove all cards.",
+
+  "cards_list_remove_confirm_title": "Remove card confirmation",
+  "cards_list_remove_confirm_message": "You are about to remove card ",
+
+  "cards_list_empty_list": "Cards list is empty",
+
+  "cards_list_update_modal_title": "Update card",
+  "cards_list_create_modal_title": "Create card",
+
+  "cards_list_update_modal_card_title_placeholder": "Enter card title",
+  "cards_list_update_modal_card_lang_placeholder": "Select card text language",
+  "cards_list_update_modal_card_text_placeholder": "Enter card text",
+
+  "cards_list_update_modal_same_data_error": "Existing data is the same as new data. Please, change some field."
+}

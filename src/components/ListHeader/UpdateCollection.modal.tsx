@@ -20,6 +20,7 @@ import { FormikHelpers, useFormik } from 'formik';
 import { useCollectionsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { Collection } from '../../store/CollectionsStore';
+import { useTranslation } from 'react-i18next';
 
 enum UpdateCollectionMode {
   CREATE = 'create',
@@ -46,6 +47,7 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
   const { isLoading, setIsLoading } = useLoading();
   const titleRef = useRef(null);
   const [mode, setMode] = useState<UpdateCollectionMode>(UpdateCollectionMode.CREATE);
+  const { t } = useTranslation(['common', 'collectionsList']);
 
   const submitHandler = async (payload: CollectionRequestDto, formikHelpers: FormikHelpers<CollectionRequestDto>) => {
     setIsLoading(true);
@@ -60,7 +62,8 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
         }
         case UpdateCollectionMode.UPDATE: {
           if (currentCollection.title === payload.title) {
-            formikHelpers.setFieldError('title', 'Existing title is the same as new title. Please, change title.');
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            formikHelpers.setFieldError('title', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
           } else {
             await collectionsStore.updateCollection(currentCollection.id, payload);
             formikHelpers.setSubmitting(false);
@@ -98,9 +101,12 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={titleRef} size={'3xl'}>
       <ModalOverlay/>
 
+      {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <ModalContent>
         <ModalHeader>
-          {mode === UpdateCollectionMode.UPDATE ? 'Update collection' : 'Create collection'}
+          {mode === UpdateCollectionMode.UPDATE
+            ? t('collections_list_update_modal_title', { ns: 'collectionsList' })
+            : t('collections_list_create_modal_title', { ns: 'collectionsList' })}
         </ModalHeader>
 
         <ModalCloseButton/>
@@ -108,9 +114,15 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
         <ModalBody>
           <form id={'update-collection-form'} onSubmit={formik.handleSubmit}>
             <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.title && dirty && Boolean(errors.title)}>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>
+                {t('common_input_title_label')}
+              </FormLabel>
 
-              <Input ref={titleRef} placeholder={'Enter collection title'} type="text" {...getFieldProps('title')}/>
+              <Input
+                ref={titleRef}
+                placeholder={t('collections_list_update_modal_collection_title_placeholder', { ns: 'collectionsList' })!}
+                type="text"
+                {...getFieldProps('title')}/>
 
               {touched.title && dirty && Boolean(errors.title) && <FormErrorMessage>{touched.title && dirty && errors.title}</FormErrorMessage>}
             </FormControl>
@@ -118,13 +130,23 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
         </ModalBody>
 
         <ModalFooter>
-          <Button form={'update-collection-form'} isLoading={isLoading} colorScheme={'telegram'} variant={'outline'} type={'submit'} mr={4}>
-            {mode === UpdateCollectionMode.UPDATE ? 'Update' : 'Create'}
+          <Button
+            form={'update-collection-form'}
+            isLoading={isLoading}
+            colorScheme={'telegram'}
+            variant={'outline'}
+            type={'submit'}
+            title={mode === UpdateCollectionMode.UPDATE ? t('common_update_btn')! : t('common_create_btn')!}
+            mr={4}>
+            {mode === UpdateCollectionMode.UPDATE ? t('common_update_btn') : t('common_create_btn')}
           </Button>
 
-          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'}>Close</Button>
+          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'} title={t('common_close_btn')!}>
+            {t('common_close_btn')}
+          </Button>
         </ModalFooter>
       </ModalContent>
+      {/* eslint-enable */}
     </Modal>
   );
 });

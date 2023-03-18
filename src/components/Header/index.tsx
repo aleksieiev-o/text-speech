@@ -11,12 +11,15 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../ActionConfirmation.modal';
 import HeaderUserInfo from './HeaderUserInfo';
 import { ColorMode } from '../../theme';
+import SetAppLang from './SetAppLang';
+import { useTranslation } from 'react-i18next';
 
 const Header: FC = observer((): ReactElement => {
   const authorizationStore = useAuthorizationStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
   const navigate = useNavigate();
+  const { t } = useTranslation(['common']);
 
   const logoutHandler = async () => {
     try {
@@ -50,11 +53,14 @@ const Header: FC = observer((): ReactElement => {
           <Stack direction={'row'} alignItems={'center'} justifyContent={'center'} spacing={6}>
             <HeaderUserInfo/>
 
+            <SetAppLang/>
+
+            {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
             <IconButton
               onClick={toggleColorMode}
               colorScheme={'gray'}
               variant={'outline'}
-              title={colorMode === ColorMode.LIGHT ? 'Set dark theme' : 'Set light theme'}
+              title={colorMode === ColorMode.LIGHT ? t('common_set_dark_theme_title')! : t('common_set_light_theme_title')!}
               aria-label={colorMode === ColorMode.LIGHT ? 'Set dark theme' : 'Set light theme'}
               icon={<Icon as={colorMode === ColorMode.LIGHT ? DarkModeIcon : LightModeIcon}/>}/>
 
@@ -62,9 +68,10 @@ const Header: FC = observer((): ReactElement => {
               onClick={onOpen}
               colorScheme={'gray'}
               variant={'outline'}
-              title={'Log out'}
-              aria-label={'Log out'}
+              title={t('common_logout_btn')!}
+              aria-label={'Logout'}
               icon={<Icon as={LogoutIcon}/>}/>
+            {/* eslint-enable */}
           </Stack>
         }
       </Stack>
@@ -76,11 +83,12 @@ const Header: FC = observer((): ReactElement => {
           isOpen={isOpen}
           onClose={onClose}
           modalType={ActionConfirmationModalType.WARNING}
-          modalTitle={'Logout confirmation'}
-          modalBodyDescription={'You are about to log out.'}
-          modalBodyQuestion={'Are you cure?'}
-          buttonText={'Logout'}/>
+          modalTitle={t('common_logout_confirm_title')}
+          modalBodyDescription={t('common_logout_confirm_message')}
+          modalBodyQuestion={t('common_confirm_question')}
+          buttonText={t('common_logout_btn')}/>
       }
+      {/* eslint-enable */}
     </>
   );
 });

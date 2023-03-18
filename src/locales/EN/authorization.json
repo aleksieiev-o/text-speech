@@ -1,0 +1,10 @@
+{
+  "authorization_sign_in": "Sign In",
+  "authorization_sign_up": "Sign Up",
+  "authorization_email_label": "E-mail",
+  "authorization_email_placeholder": "Enter e-mail",
+  "authorization_password_label": "Password",
+  "authorization_password_placeholder": "Enter password",
+  "authorization_have_acc_message": "I already have an account.",
+  "authorization_not_have_acc_message": "I don't have an account."
+}

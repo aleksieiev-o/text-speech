@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useCardsStore, useSettingsStore } from '../../store/hooks';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useTranslation } from 'react-i18next';
 
 const CollectionCard: FC = (): ReactElement => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const CollectionCard: FC = (): ReactElement => {
   const cardStore = useCardsStore();
   const settingsStore = useSettingsStore();
   const [cardTextVisible, setCardTextVisible] = useState<boolean>(settingsStore.hidePreviewText);
+  const { t } = useTranslation(['common']);
 
   const currentCardId = pathname.split('/')[3];
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -34,6 +36,7 @@ const CollectionCard: FC = (): ReactElement => {
     <>
       <Header/>
 
+      {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <Stack w={'full'} h={'full'} direction={'column'} alignItems={'center'} justifyContent={'center'} overflowY={'auto'}>
         <Stack w={'full'} boxShadow={'md'} mb={4} p={4}>
           <Button
@@ -41,8 +44,9 @@ const CollectionCard: FC = (): ReactElement => {
             mr={'auto'}
             colorScheme={'gray'}
             variant={'outline'}
+            title={t('common_back_btn')!}
             leftIcon={<Icon as={ArrowBackIosIcon}/>}>
-            Back
+            {t('common_back_btn')}
           </Button>
         </Stack>
 
@@ -52,7 +56,7 @@ const CollectionCard: FC = (): ReactElement => {
               <CardHeader boxShadow={'xs'}>
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
                   <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
-                    {currentCard.title || 'No title'}
+                    {currentCard.title}
                   </Heading>
 
                   {/*<Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
@@ -60,15 +64,15 @@ const CollectionCard: FC = (): ReactElement => {
                       onClick={() => prepareToEditCard(currentCard)}
                       colorScheme={'telegram'}
                       aria-label={'Edit card'}
-                      title={'Edit card'}
+                      title={t('card_edit_btn_title', { ns: 'card' })!}
                       icon={<Icon as={EditIcon}/>}
                       variant={'outline'}/>
 
                     <IconButton
                       onClick={() => prepareToRemoveCard(currentCard)}
                       colorScheme={'red'}
-                      aria-label={'Delete card'}
-                      title={'Delete card'}
+                      aria-label={'Remove card'}
+                      title={t('card_remove_btn_title', { ns: 'card' })!}
                       variant={'outline'}
                       icon={<Icon as={DeleteIcon}/>}/>
                   </Stack>*/}
@@ -80,7 +84,7 @@ const CollectionCard: FC = (): ReactElement => {
                   <Box>
                     <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
                       <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
-                        Text
+                        {t('common_input_text_label')}
                       </Heading>
 
                       <IconButton
@@ -88,7 +92,7 @@ const CollectionCard: FC = (): ReactElement => {
                         colorScheme={'telegram'}
                         size={'xs'}
                         aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
-                        title={cardTextVisible ? 'Show text' : 'Hide text'}
+                        title={cardTextVisible ? t('card_show_text_btn_title', { ns: 'card' })! : t('card_hide_text_btn_title', { ns: 'card' })!}
                         icon={<Icon as={cardTextVisible ? VisibilityIcon : VisibilityOffIcon}/>}
                         variant={'outline'}/>
                     </Stack>
@@ -98,13 +102,13 @@ const CollectionCard: FC = (): ReactElement => {
                       pt={2}
                       color={cardTextVisible ?  'transparent' : ''}
                       textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
-                      {currentCard.text || 'No text'}
+                      {currentCard.text}
                     </Text>
                   </Box>
 
                   <Box>
                     <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
-                      Created date
+                      {t('card_created_date', { ns: 'card' })}
                     </Heading>
 
                     <Text pt={2}>
@@ -114,7 +118,7 @@ const CollectionCard: FC = (): ReactElement => {
 
                   <Box>
                     <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
-                      Updated date
+                      {t('card_updated_date', { ns: 'card' })}
                     </Heading>
 
                     <Text pt={2}>
@@ -127,6 +131,7 @@ const CollectionCard: FC = (): ReactElement => {
           </Stack>
         </Container>
       </Stack>
+      {/* eslint-enable */}
     </>
   );
 };

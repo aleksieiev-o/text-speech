@@ -1,0 +1,12 @@
+{
+  "card_pause_btn_title": "Pause",
+  "card_resume_btn_title": "Resume",
+  "card_play_btn_title": "Play",
+  "card_stop_btn_title": "Stop",
+  "card_show_text_btn_title": "Show text",
+  "card_hide_text_btn_title": "Hide text",
+  "card_edit_btn_title": "Edit card",
+  "card_remove_btn_title": "Remove card",
+  "card_created_date": "Created date",
+  "card_updated_date": "Updated date"
+}

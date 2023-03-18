@@ -21,6 +21,7 @@ import { observer } from 'mobx-react-lite';
 import { Card, CreateCardRequestDto } from '../../store/CardsStore';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import { SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
+import { useTranslation } from 'react-i18next';
 
 enum UpdateCardMode {
   CREATE = 'create',
@@ -54,6 +55,7 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const { isLoading, setIsLoading } = useLoading();
   const titleRef = useRef(null);
   const [mode, setMode] = useState<UpdateCardMode>(UpdateCardMode.CREATE);
+  const { t } = useTranslation(['common', 'cardsList']);
 
   const submitHandler = async (payload: CreateCardRequestDto, formikHelpers: FormikHelpers<CreateCardRequestDto>) => {
     setIsLoading(true);
@@ -77,9 +79,11 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
         }
         case UpdateCardMode.UPDATE: {
           if (currentCard.title === title && currentCard.text === text && currentCard.textLang === textLang) {
-            formikHelpers.setFieldError('title', 'Existing data is the same as new data. Please, change some field.');
-            formikHelpers.setFieldError('textLang', 'Existing data is the same as new data. Please, change some field.');
-            formikHelpers.setFieldError('text', 'Existing data is the same as new data. Please, change some field.');
+            /* eslint-disable @typescript-eslint/no-non-null-assertion */
+            formikHelpers.setFieldError('title', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
+            formikHelpers.setFieldError('textLang', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
+            formikHelpers.setFieldError('text', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
+            /* eslint-enable */
           } else {
             await cardsStore.updateCard(currentCard.id, cardDto);
             formikHelpers.setSubmitting(false);
@@ -119,9 +123,12 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
     <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={titleRef} size={'3xl'}>
       <ModalOverlay/>
 
+      {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <ModalContent>
         <ModalHeader>
-          {mode === UpdateCardMode.UPDATE ? 'Update card' : 'Create card'}
+          {mode === UpdateCardMode.UPDATE
+            ? t('cards_list_update_modal_title', { ns: 'cardsList' })
+            : t('cards_list_create_modal_title', { ns: 'cardsList' })}
         </ModalHeader>
 
         <ModalCloseButton/>
@@ -129,9 +136,11 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
         <ModalBody>
           <form id={'update-card-form'} onSubmit={formik.handleSubmit}>
             <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.title && dirty && Boolean(errors.title)} mb={2}>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>
+                {t('common_input_title_label')}
+              </FormLabel>
 
-              <Input ref={titleRef} placeholder={'Enter card title'} type="text" {...getFieldProps('title')}/>
+              <Input ref={titleRef} placeholder={t('cards_list_update_modal_card_title_placeholder', { ns: 'cardsList' })!} type="text" {...getFieldProps('title')}/>
 
               {touched.title && dirty && Boolean(errors.title) && <FormErrorMessage>{touched.title && dirty && errors.title}</FormErrorMessage>}
             </FormControl>
@@ -139,7 +148,7 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
             <FormControl isRequired={true} isReadOnly={isLoading} mb={2}>
               <FormLabel>Card text language</FormLabel>
 
-              <Select placeholder={'Select card text language'} {...getFieldProps('textLang')}>
+              <Select placeholder={t('cards_list_update_modal_card_lang_placeholder', { ns: 'cardsList' })!} {...getFieldProps('textLang')}>
                 {
                   voicesList.map((voice) => <option value={voice.lang} key={voice.voiceURI}>{voice.name}</option>)
                 }
@@ -149,9 +158,11 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
             </FormControl>
 
             <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.text && dirty && Boolean(errors.text)}>
-              <FormLabel>Text</FormLabel>
+              <FormLabel>
+                {t('common_input_text_label')}
+              </FormLabel>
 
-              <Textarea placeholder={'Enter card text'} rows={7} {...getFieldProps('text')}/>
+              <Textarea placeholder={t('cards_list_update_modal_card_text_placeholder', { ns: 'cardsList' })!} rows={7} {...getFieldProps('text')}/>
 
               {touched.text && dirty && Boolean(errors.text) && <FormErrorMessage>{touched.text && dirty && errors.text}</FormErrorMessage>}
             </FormControl>
@@ -159,13 +170,23 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
         </ModalBody>
 
         <ModalFooter>
-          <Button form={'update-card-form'} isLoading={isLoading} colorScheme={'telegram'} variant={'outline'} type={'submit'} mr={4}>
-            {mode === UpdateCardMode.UPDATE ? 'Update' : 'Create'}
+          <Button
+            form={'update-card-form'}
+            isLoading={isLoading}
+            colorScheme={'telegram'}
+            variant={'outline'}
+            type={'submit'}
+            title={mode === UpdateCardMode.UPDATE ? t('common_update_btn')! : t('common_create_btn')!}
+            mr={4}>
+            {mode === UpdateCardMode.UPDATE ? t('common_update_btn') : t('common_create_btn')}
           </Button>
 
-          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'}>Close</Button>
+          <Button onClick={onClose} colorScheme={'gray'} variant={'outline'} title={t('common_close_btn')!}>
+            {t('common_close_btn')}
+          </Button>
         </ModalFooter>
       </ModalContent>
+      {/* eslint-enable */}
     </Modal>
   );
 });

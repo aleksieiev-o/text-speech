@@ -1,0 +1,31 @@
+{
+  "common_set_light_theme_title": "Set light theme",
+  "common_set_dark_theme_title": "Set dark theme",
+  "common_open_settings_title": "Open settings",
+  "common_set_app_lang_title": "Set application language",
+
+  "common_confirm_question": "Are you cure?",
+  "common_close_btn": "Close",
+  "common_back_btn": "Back",
+  "common_create_btn": "Create",
+  "common_update_btn": "Update",
+  "common_remove_btn": "Remove",
+
+  "common_logout_btn": "Logout",
+  "common_logout_confirm_title": "Logout confirmation",
+  "common_logout_confirm_message": "You are about to log out.",
+
+  "common_speech_props_label": "Speech properties",
+  "common_speech_lang_label": "Speech language",
+  "common_speech_volume_label": "Speech volume",
+  "common_speech_rate_label": "Speech rate",
+  "common_speech_pitch_label": "Speech pitch",
+
+  "common_settings_label": "Settings",
+
+  "common_input_title_label": "Title",
+  "common_input_text_label": "Text",
+
+  "common_404_page_message": "There is nothing interesting here",
+  "common_404_page_btn": "Go home"
+}

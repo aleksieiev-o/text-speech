@@ -1,0 +1,31 @@
+{
+  "common_set_light_theme_title": "Установить светлую тему",
+  "common_set_dark_theme_title": "Установить темную тему",
+  "common_open_settings_title": "Открыть настройки",
+  "common_set_app_lang_title": "Установить язык приложения",
+
+  "common_confirm_question": "Вы уверены?",
+  "common_close_btn": "Закрыть",
+  "common_back_btn": "Назад",
+  "common_create_btn": "Создать",
+  "common_update_btn": "Обновить",
+  "common_remove_btn": "Удалить",
+
+  "common_logout_btn": "Выйти",
+  "common_logout_confirm_title": "Подтверждение выхода",
+  "common_logout_confirm_message": "Вы сейчас выйдете из учетной записи.",
+
+  "common_speech_props_label": "Свойства речи",
+  "common_speech_lang_label": "Язык речи",
+  "common_speech_volume_label": "Громкость речи",
+  "common_speech_rate_label": "Скорость речи",
+  "common_speech_pitch_label": "Тональность речи",
+
+  "common_settings_label": "Настройки",
+
+  "common_input_title_label": "Название",
+  "common_input_text_label": "Текст",
+
+  "common_404_page_message": "Здень нет ничего интересного",
+  "common_404_page_btn": "На главную"
+}

@@ -12,6 +12,7 @@ import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import EmptyList from '../EmptyList';
 import CardListItem from './CardListItem';
 import { SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
+import { useTranslation } from 'react-i18next';
 
 const CardsList: FC = observer((): ReactElement => {
   const cardsStore = useCardsStore();
@@ -20,6 +21,7 @@ const CardsList: FC = observer((): ReactElement => {
   const { stop } = useContext(SpeechUtteranceContext);
   const { isOpen: isOpenUpdateCardModal, onOpen: onOpenUpdateCardModal, onClose: onCloseUpdateCardModal } = useDisclosure();
   const { isOpen: isOpenRemoveCardModal, onOpen: onOpenCRemoveCardModal, onClose: onCloseRemoveCardModal } = useDisclosure();
+  const { t } = useTranslation(['common', 'cardsList']);
 
   const loadCardList = async () => {
     await cardsStore.loadAllCards(currentCollectionId);
@@ -73,6 +75,7 @@ const CardsList: FC = observer((): ReactElement => {
         onOpen={onOpenUpdateCardModal}
         removeButtonHandler={() => cardsStore.removeAllCards(currentCollectionId)}/>
 
+        {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
         {
           cardsStore.currentCardsListSize ?
             <Stack
@@ -97,9 +100,9 @@ const CardsList: FC = observer((): ReactElement => {
             </Stack>
             :
             <EmptyList
-            emptyListMessage={'Cards list is empty'}
+            emptyListMessage={t('cards_list_empty_list', {ns: 'cardsList' })}
             buttonHandler={onOpenUpdateCardModal}
-            buttonText={'Create card'}
+            buttonText={t('cards_list_create_btn', {ns: 'cardsList' })}
             buttonIcon={AddIcon}/>
         }
       </Stack>
@@ -116,11 +119,12 @@ const CardsList: FC = observer((): ReactElement => {
           isOpen={isOpenRemoveCardModal}
           onClose={closeRemoveCardModalHandler}
           modalType={ActionConfirmationModalType.DANGER}
-          modalTitle={'Remove card confirmation'}
-          modalBodyDescription={`You are about to remove card ${tempCard.title}.`}
-          modalBodyQuestion={'Are you cure?'}
-          buttonText={'Remove'}/>
+          modalTitle={t('cards_list_remove_confirm_title', {ns: 'cardsList' })}
+          modalBodyDescription={`${t('cards_list_remove_confirm_message', {ns: 'cardsList' })}${tempCard.title}.`}
+          modalBodyQuestion={t('common_confirm_question')!}
+          buttonText={t('common_remove_btn')}/>
       }
+      {/* eslint-enable */}
     </>
   );
 });

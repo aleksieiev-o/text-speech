@@ -1,0 +1,13 @@
+{
+  "collections_list_create_btn": "Создать коллекцию",
+  "collections_list_remove_all_btn": "Удалить все коллекции",
+  "collections_list_remove_all_confirm_title": "Подтверждение удаления всех коллекций",
+  "collections_list_remove_all_confirm_message": "Вы собираетесь удалить все коллекции.",
+
+  "collections_list_update_modal_title": "Обновить коллекцию",
+  "collections_list_create_modal_title": "Создать коллекцию",
+
+  "collections_list_update_modal_collection_title_placeholder": "Введите название коллекции",
+
+  "collections_list_update_modal_same_data_error": "Существующее название совпадает с новым названием. Пожалуйста, измените заголовок."
+}

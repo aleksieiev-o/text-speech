@@ -1,0 +1,22 @@
+{
+  "collections_list_create_btn": "Create collection",
+
+  "collections_list_remove_all_btn": "Remove all collections",
+  "collections_list_remove_all_confirm_title": "Remove all collections confirmation",
+  "collections_list_remove_all_confirm_message": "You are about to remove all collection.",
+
+  "collections_list_update_modal_title": "Update collection",
+  "collections_list_create_modal_title": "Create collection",
+
+  "collections_list_edit_btn_title": "Edit collection",
+
+  "collections_list_remove_btn_title": "Remove collection",
+  "collections_list_remove_confirm_title": "Remove collection confirmation",
+  "collections_list_remove_confirm_message": "You are about to remove collection ",
+
+  "collections_list_update_modal_collection_title_placeholder": "Enter collection title",
+
+  "collections_list_update_modal_same_data_error": "Existing title is the same as new title. Please, change title.",
+
+  "collections_list_empty_list": "Collections list is empty"
+}

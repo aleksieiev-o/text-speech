@@ -12,6 +12,7 @@ import { AuthRequestDto } from '../../store/AuthorizationStore';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useLoading } from '../../hooks/useLoading';
+import { useTranslation } from 'react-i18next';
 
 const initialValues: AuthRequestDto = {
   email: '',
@@ -29,6 +30,7 @@ const Authorization: FC = observer((): ReactElement => {
   const { isLoading, setIsLoading } = useLoading();
   const isSignInRoute = useAuthRouteCondition();
   const navigate = useNavigate();
+  const { t } = useTranslation(['authorization']);
 
   const submitHandler = async (payload: AuthRequestDto, formikHelpers: FormikHelpers<AuthRequestDto>) => {
     setIsLoading(true);
@@ -62,27 +64,41 @@ const Authorization: FC = observer((): ReactElement => {
     <>
       <Header />
 
+      {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <Stack as={'section'} w={'full'} h={'full'} direction={'column'} alignItems={'center'} justifyContent={'center'} p={4} spacing={8}>
         <Box p={4} boxShadow={'xl'} maxW={'lg'} w={'full'}>
           <Heading as={'h5'} mb={6} color={isSignInRoute ? 'telegram.600' : 'telegram.600'}>
-            {isSignInRoute ? 'Sign In' : 'Sign Up'}
+            {isSignInRoute
+              ? t('authorization_sign_in', { ns: 'authorization' })
+              : t('authorization_sign_up', { ns: 'authorization' })}
           </Heading>
 
           <form onSubmit={formik.handleSubmit}>
             <Stack w={'full'} h={'full'} direction={'column'} alignItems={'center'} justifyContent={'center'} spacing={4}>
               <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.email && dirty && Boolean(errors.email)}>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel>
+                  {t('authorization_email_label', { ns: 'authorization' })}
+                </FormLabel>
 
-                <Input placeholder={'Enter E-mail'} type="email" autoFocus={true} {...getFieldProps('email')} />
+                <Input
+                  placeholder={t('authorization_email_placeholder', { ns: 'authorization' })!}
+                  type="email"
+                  autoFocus={true}
+                  {...getFieldProps('email')} />
 
                 {touched.email && dirty && Boolean(errors.email) && <FormErrorMessage>{touched.email && dirty && errors.email}</FormErrorMessage>}
               </FormControl>
 
               <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.password && dirty && Boolean(errors.password)}>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>
+                  {t('authorization_password_label', { ns: 'authorization' })!}
+                </FormLabel>
 
                 <InputGroup>
-                  <Input placeholder={'Enter password'} type={showPassword ? 'text' : 'password'} {...getFieldProps('password')} />
+                  <Input
+                    placeholder={t('authorization_password_placeholder', { ns: 'authorization' })!}
+                    type={showPassword ? 'text' : 'password'}
+                    {...getFieldProps('password')} />
 
                   <InputRightElement>
                     <IconButton
@@ -99,20 +115,27 @@ const Authorization: FC = observer((): ReactElement => {
               </FormControl>
 
               <Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
-                <Text mr={2}>{isSignInRoute ? `I don't have an account.` : `I already have an account.`}</Text>
+                <Text mr={2}>{isSignInRoute
+                  ? t('authorization_not_have_acc_message', { ns: 'authorization' })!
+                  : t('authorization_have_acc_message', { ns: 'authorization' })!}</Text>
 
                 <Link as={RouterLink} to={isSignInRoute ? PublicRoutes.SIGN_UP : PublicRoutes.SIGN_IN} color={isSignInRoute ? 'telegram.600' : 'telegram.600'}>
-                  {isSignInRoute ? 'Sign Up' : 'Sign In'}
+                  {isSignInRoute
+                    ? t('authorization_sign_up', { ns: 'authorization' })
+                    : t('authorization_sign_in', { ns: 'authorization' })}
                 </Link>
               </Stack>
 
               <Button type={'submit'} isLoading={isLoading} colorScheme={isSignInRoute ? 'telegram' : 'telegram'} variant={'outline'} w={'full'}>
-                {isSignInRoute ? 'Sign In' : 'Sign Up'}
+                {isSignInRoute
+                  ? t('authorization_sign_in', { ns: 'authorization' })
+                  : t('authorization_sign_up', { ns: 'authorization' })}
               </Button>
             </Stack>
           </form>
         </Box>
       </Stack>
+      {/* eslint-enable */}
     </>
   );
 });

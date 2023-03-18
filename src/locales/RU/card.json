@@ -1,0 +1,12 @@
+{
+  "card_pause_btn_title": "Пауза",
+  "card_resume_btn_title": "Продолжить",
+  "card_play_btn_title": "Воспроизвести",
+  "card_stop_btn_title": "Остановить",
+  "card_show_text_btn_title": "Показать текст",
+  "card_hide_text_btn_title": "Скрыть текст",
+  "card_edit_btn_title": "Редактировать карту",
+  "card_remove_btn_title": "Удалить карту",
+  "card_created_date": "Дата создания",
+  "card_updated_date": "Дата обновления"
+}
