@@ -74,7 +74,10 @@ export class CardsStoreService implements ICardsStoreService {
   }
 
   async updateCard(id: string, payload: UpdateCardRequestDto): Promise<Card> {
-    await update(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}/${payload.parentId}/${id}`), payload);
+    await update(child(ref(firebaseDataBase), `${this.cardsStore.cardsPath}/${payload.parentId}/${id}`), {
+      ...payload,
+      updatedDate: new Date().toJSON(),
+    });
     return await this.loadCardByIdOnce(id, payload.parentId);
   }
 

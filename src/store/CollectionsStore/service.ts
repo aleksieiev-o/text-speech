@@ -76,7 +76,10 @@ export class CollectionsStoreService implements ICollectionsStoreService {
   }
 
   async updateCollection(id: string, payload: UpdateCollectionPayload): Promise<Collection> {
-    await update(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`), payload);
+    await update(child(ref(firebaseDataBase), `${this.collectionsStore.collectionsPath}/${id}`), {
+      ...payload,
+      updatedDate: new Date().toJSON(),
+    });
     return await this.loadCollectionByIdOnce(id);
   }
 }
