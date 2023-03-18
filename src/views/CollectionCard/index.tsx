@@ -1,21 +1,23 @@
 import React, { FC, ReactElement, useMemo, useState } from 'react';
 import Header from '../../components/Header';
-import { Box, Button, Card, CardBody, CardHeader, Container, Heading, Icon, IconButton, Stack, Text } from '@chakra-ui/react';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Box, Card, CardBody, CardHeader, Container, Heading, Icon, IconButton, Stack, Text } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
 import { useCardsStore, useSettingsStore } from '../../store/hooks';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useTranslation } from 'react-i18next';
+import { ProtectedRoutes } from '../../Router';
+import ButtonBack from '../../components/ButtonBack';
+import { observer } from 'mobx-react-lite';
 
-const CollectionCard: FC = (): ReactElement => {
-  const navigate = useNavigate();
+const CollectionCard: FC = observer((): ReactElement => {
   const { pathname } = useLocation();
   const cardStore = useCardsStore();
   const settingsStore = useSettingsStore();
   const [cardTextVisible, setCardTextVisible] = useState<boolean>(settingsStore.hidePreviewText);
   const { t } = useTranslation(['common']);
 
+  const currentCollectionId = pathname.split('/')[2];
   const currentCardId = pathname.split('/')[3];
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const currentCard = useMemo(() => cardStore.currentCardsList.find((item) => item.id === currentCardId)!, [cardStore.currentCardsList]);
@@ -39,15 +41,7 @@ const CollectionCard: FC = (): ReactElement => {
       {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <Stack w={'full'} h={'full'} direction={'column'} alignItems={'center'} justifyContent={'center'} overflowY={'auto'}>
         <Stack w={'full'} boxShadow={'md'} mb={4} p={4}>
-          <Button
-            onClick={() => navigate(-1)}
-            mr={'auto'}
-            colorScheme={'gray'}
-            variant={'outline'}
-            title={t('common_back_btn')!}
-            leftIcon={<Icon as={ArrowBackIosIcon}/>}>
-            {t('common_back_btn')}
-          </Button>
+          <ButtonBack to={`/collections/${currentCollectionId}` as ProtectedRoutes.COLLECTIONS}/>
         </Stack>
 
         <Container centerContent={true} w={'full'} h={'full'} maxW={'6xl'} p={4}>
@@ -134,6 +128,6 @@ const CollectionCard: FC = (): ReactElement => {
       {/* eslint-enable */}
     </>
   );
-};
+});
 
 export default CollectionCard;

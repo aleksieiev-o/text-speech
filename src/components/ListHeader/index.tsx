@@ -1,15 +1,15 @@
 import React, { FC, ReactElement, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useCardsStore, useCollectionsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, Stack, useDisclosure } from '@chakra-ui/react';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ActionConfirmationModal, { ActionConfirmationModalType } from '../ActionConfirmation.modal';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { ProtectedRoutes } from '../../Router';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
 import { useTranslation } from 'react-i18next';
+import ButtonBack from '../ButtonBack';
 
 interface Props {
   onOpen: () => void;
@@ -22,7 +22,6 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
   const collectionsStore = useCollectionsStore();
   const currentCollectionId = useCurrentCollectionId();
   const cardsStore = useCardsStore();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { t } = useTranslation(['common', 'collectionsList', 'cardsList']);
 
@@ -50,16 +49,7 @@ const ListHeader: FC<Props> = observer((props): ReactElement => {
         boxShadow={'md'}>
         {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
         {
-          !isCollectionsListPath &&
-          <Button
-            onClick={() => navigate(-1)}
-            mr={'auto'}
-            colorScheme={'gray'}
-            variant={'outline'}
-            title={t('common_back_btn')!}
-            leftIcon={<Icon as={ArrowBackIosIcon}/>}>
-            {t('common_back_btn')}
-          </Button>
+          !isCollectionsListPath && <ButtonBack to={ProtectedRoutes.COLLECTIONS}/>
         }
 
         {(isCollectionsListPath ? collectionsStore.collections.length : cardsStore.currentCardsList.length) &&
