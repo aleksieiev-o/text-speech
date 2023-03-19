@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/aleksieiev-o/text-to-speech/issues"
   },
-  "homepage": ".",
+  "homepage": "",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
