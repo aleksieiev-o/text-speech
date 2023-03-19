@@ -7,6 +7,7 @@ import Authorization from '../views/Authorization';
 import CollectionsList from '../views/CollectionsList';
 import CardsList from '../views/CardsList';
 import CollectionCard from '../views/CollectionCard';
+import Settings from '../views/Settings';
 import { Stack, Text } from '@chakra-ui/react';
 
 export enum PublicRoutes {
@@ -18,6 +19,7 @@ export enum ProtectedRoutes {
   COLLECTIONS = '/collections',
   COLLECTION_ID = '/collections/:collectionId',
   CARD_ID = '/collections/:collectionId/:cardId',
+  SETTINGS = '/settings',
 }
 
 const publicRoutes = createBrowserRouter([
@@ -30,6 +32,7 @@ const protectedRoutes = createBrowserRouter([
   { path: ProtectedRoutes.COLLECTIONS, element: <CollectionsList/> },
   { path: ProtectedRoutes.COLLECTION_ID, element: <CardsList/> },
   { path: ProtectedRoutes.CARD_ID, element: <CollectionCard/> },
+  { path: ProtectedRoutes.SETTINGS, element: <Settings/> },
   { path: '*', element: <Navigate to={ProtectedRoutes.COLLECTIONS} replace={true}/> },
 ]);
 

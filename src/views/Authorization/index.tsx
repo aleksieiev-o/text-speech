@@ -67,7 +67,7 @@ const Authorization: FC = observer((): ReactElement => {
       {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
       <Stack as={'section'} w={'full'} h={'full'} direction={'column'} alignItems={'center'} justifyContent={'center'} p={4} spacing={8}>
         <Box p={4} boxShadow={'xl'} maxW={'lg'} w={'full'}>
-          <Heading as={'h5'} mb={6} color={isSignInRoute ? 'telegram.600' : 'telegram.600'}>
+          <Heading as={'h5'} mb={6} color={'telegram.600'}>
             {isSignInRoute
               ? t('authorization_sign_in', { ns: 'authorization' })
               : t('authorization_sign_up', { ns: 'authorization' })}

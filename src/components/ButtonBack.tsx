@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProtectedRoutes } from '../Router';
 
 interface Props {
-  to: ProtectedRoutes
+  to: ProtectedRoutes | -1
 }
 
 const ButtonBack: FC<Props> = ({ to }): ReactElement => {
@@ -16,7 +16,7 @@ const ButtonBack: FC<Props> = ({ to }): ReactElement => {
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
   return (
     <Button
-      onClick={() => navigate(to)}
+      onClick={() => navigate(to as ProtectedRoutes)}
       mr={'auto'}
       colorScheme={'gray'}
       variant={'outline'}

@@ -53,7 +53,7 @@ const CollectionCard: FC = observer((): ReactElement => {
           <ButtonBack to={`/collections/${currentCollectionId}` as ProtectedRoutes.COLLECTIONS}/>
         </Stack>
 
-        <Container centerContent={true} w={'full'} h={'full'} maxW={'6xl'} p={4}>
+        <Container centerContent={true} w={'full'} h={'full'} maxW={'3xl'} p={4}>
           <Stack w={'full'} h={'full'} alignItems={'center'} justifyContent={{ md: 'center', base: 'flex-start'}}>
             <Card maxW={'2xl'} boxShadow={'lg'} overflow={'hidden'}>
               <CardHeader boxShadow={'xs'}>
