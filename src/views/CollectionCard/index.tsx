@@ -58,7 +58,7 @@ const CollectionCard: FC = observer((): ReactElement => {
             <Card maxW={'2xl'} boxShadow={'lg'} overflow={'hidden'}>
               <CardHeader boxShadow={'xs'}>
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
-                  <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
+                  <Heading as={'h5'} noOfLines={1} lineHeight={'normal'} fontSize={{ md: 24, base: 18 }}>
                     {cardsStore.currentCard.title}
                   </Heading>
 

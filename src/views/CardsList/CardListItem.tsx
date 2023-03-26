@@ -82,7 +82,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
           spacing={4}>
           <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
             <Link as={RouterLink} to={card.id}>
-              <Heading as={'h5'} noOfLines={1} fontSize={{ md: 24, base: 18 }}>
+              <Heading as={'h5'} noOfLines={1} lineHeight={'normal'} fontSize={{ md: 24, base: 18 }}>
                 {card.title}
               </Heading>
             </Link>
