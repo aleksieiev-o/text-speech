@@ -1,5 +1,6 @@
 {
   "collections_list_create_btn": "Создать коллекцию",
+
   "collections_list_remove_all_btn": "Удалить все коллекции",
   "collections_list_remove_all_confirm_title": "Подтверждение удаления всех коллекций",
   "collections_list_remove_all_confirm_message": "Вы собираетесь удалить все коллекции.",
@@ -7,7 +8,15 @@
   "collections_list_update_modal_title": "Обновить коллекцию",
   "collections_list_create_modal_title": "Создать коллекцию",
 
+  "collections_list_edit_btn_title": "Редактировать коллекцию",
+
+  "collections_list_remove_btn_title": "Удалить коллекцию",
+  "collections_list_remove_confirm_title": "Подтверждение удаления коллекции",
+  "collections_list_remove_confirm_message": "Вы собираетесь удалить коллекцию ",
+
   "collections_list_update_modal_collection_title_placeholder": "Введите название коллекции",
 
-  "collections_list_update_modal_same_data_error": "Существующее название совпадает с новым названием. Пожалуйста, измените заголовок."
+  "collections_list_update_modal_same_data_error": "Существующее название совпадает с новым названием. Пожалуйста, измените заголовок.",
+
+  "collections_list_empty_list": "Список коллекций пуст"
 }
