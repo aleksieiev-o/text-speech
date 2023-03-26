@@ -1,5 +1,5 @@
 import { RootStore } from '../index';
-import { CollectionRequestDto, CollectionsStoreService } from './service';
+import { CollectionsStoreService } from './service';
 import { makeAutoObservable } from 'mobx';
 
 export interface Collection {
@@ -8,19 +8,31 @@ export interface Collection {
   author: string;
   createdDate: string;
   updatedDate: string;
+  defaultLang: string;
+  voiceURI: string;
 }
 
-export type UpdateCollectionPayload = { title: string };
+export interface CreateCollectionRequestDto {
+  title: string;
+  defaultLang: string;
+  voiceURI: string;
+}
+
+export interface UpdateCollectionRequestDto {
+  title: string;
+  defaultLang?: string;
+  voiceURI?: string;
+}
 
 interface ICollectionsStore {
   rootStore: RootStore;
   collectionsStoreService: CollectionsStoreService;
   collections: Array<Collection>;
   loadAllCollections: () => void;
-  createCollection: (payload: CollectionRequestDto) => void;
+  createCollection: (payload: CreateCollectionRequestDto) => void;
   removeCollection: (id: string) => void;
   removeAllCollections: () => void;
-  updateCollection: (id: string, payload: UpdateCollectionPayload) => void;
+  updateCollection: (id: string, payload: UpdateCollectionRequestDto) => void;
   clearLocalCollections: () => void;
 }
 
@@ -41,8 +53,8 @@ export class CollectionsStore implements ICollectionsStore {
     this.collections = await this.collectionsStoreService.loadAllCollectionsOnce();
   }
 
-  async createCollection(payload: CollectionRequestDto) {
-    const collection = await this.collectionsStoreService.createCollection({ title: payload.title });
+  async createCollection(payload: CreateCollectionRequestDto) {
+    const collection = await this.collectionsStoreService.createCollection(payload);
     this.collections.push(collection);
   }
 
@@ -57,7 +69,7 @@ export class CollectionsStore implements ICollectionsStore {
     this.collections = [];
   }
 
-  async updateCollection(id: string, payload: UpdateCollectionPayload) {
+  async updateCollection(id: string, payload: UpdateCollectionRequestDto) {
     const updatedCollection: Collection = await this.collectionsStoreService.updateCollection(id, { title: payload.title });
     const updatedIdx = this.collections.findIndex((item) => item.id === id);
     this.collections[updatedIdx] = updatedCollection;
@@ -65,6 +77,10 @@ export class CollectionsStore implements ICollectionsStore {
 
   clearLocalCollections() {
     this.collections = [];
+  }
+
+  getCurrentCollection(id: string): Collection | undefined {
+    return this.collections.find((collection) => collection.id === id);
   }
 
   get userUid(): string {

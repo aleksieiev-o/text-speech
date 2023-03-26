@@ -14,7 +14,5 @@
 
   "cards_list_update_modal_card_title_placeholder": "Введите название карты",
   "cards_list_update_modal_card_lang_placeholder": "Выберите язык текста карты",
-  "cards_list_update_modal_card_text_placeholder": "Введите текст карты",
-
-  "cards_list_update_modal_same_data_error": "Существующие данные совпадают новым данным. Пожалуйста, измените какое-нибудь поле."
+  "cards_list_update_modal_card_text_placeholder": "Введите текст карты"
 }

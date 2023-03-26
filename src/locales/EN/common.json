@@ -27,5 +27,7 @@
   "common_input_text_label": "Text",
 
   "common_404_page_message": "There is nothing interesting here",
-  "common_404_page_btn": "Go home"
+  "common_404_page_btn": "Go home",
+
+  "common_update_same_data_error": "Existing data is the same as new data. Please, change some field."
 }

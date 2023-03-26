@@ -15,6 +15,7 @@
   "collections_list_remove_confirm_message": "You are about to remove collection ",
 
   "collections_list_update_modal_collection_title_placeholder": "Enter collection title",
+  "collections_list_update_modal_collection_default_lang_placeholder": "Select collection default language",
 
   "collections_list_update_modal_same_data_error": "Existing title is the same as new title. Please, change title.",
 

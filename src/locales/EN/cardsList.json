@@ -14,7 +14,5 @@
 
   "cards_list_update_modal_card_title_placeholder": "Enter card title",
   "cards_list_update_modal_card_lang_placeholder": "Select card text language",
-  "cards_list_update_modal_card_text_placeholder": "Enter card text",
-
-  "cards_list_update_modal_same_data_error": "Existing data is the same as new data. Please, change some field."
+  "cards_list_update_modal_card_text_placeholder": "Enter card text"
 }

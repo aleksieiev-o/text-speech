@@ -27,5 +27,7 @@
   "common_input_text_label": "Текст",
 
   "common_404_page_message": "Здень нет ничего интересного",
-  "common_404_page_btn": "На главную"
+  "common_404_page_btn": "На главную",
+
+  "common_update_same_data_error": "Существующие данные совпадают новым данным. Пожалуйста, измените какое-нибудь поле."
 }

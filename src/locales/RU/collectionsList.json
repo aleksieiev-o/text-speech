@@ -15,6 +15,7 @@
   "collections_list_remove_confirm_message": "Вы собираетесь удалить коллекцию ",
 
   "collections_list_update_modal_collection_title_placeholder": "Введите название коллекции",
+  "collections_list_update_modal_collection_default_lang_placeholder": "Выберите язык коллекции по умолчанию",
 
   "collections_list_update_modal_same_data_error": "Существующее название совпадает с новым названием. Пожалуйста, измените заголовок.",
 

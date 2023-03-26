@@ -16,7 +16,7 @@ import {
 import { object, string } from 'yup';
 import { useLoading } from '../../hooks/useLoading';
 import { FormikHelpers, useFormik } from 'formik';
-import { useCardsStore } from '../../store/hooks';
+import { useCardsStore, useCollectionsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
 import { Card, CreateCardRequestDto } from '../../store/CardsStore';
 import { useCurrentCollectionId } from '../../hooks/useCurrentCollectionId';
@@ -50,7 +50,9 @@ const validationSchema = object().shape({
 
 const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const cardsStore = useCardsStore();
-  const currentCardId = useCurrentCollectionId();
+  const collectionsStore = useCollectionsStore();
+  const currentCollectionId = useCurrentCollectionId();
+  const currentCollection = collectionsStore.getCurrentCollection(currentCollectionId);
   const { voicesList } = useContext(SpeechUtteranceContext);
   const { isOpen, onClose, currentCard } = props;
   const { isLoading, setIsLoading } = useLoading();
@@ -67,7 +69,7 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
       const {lang} = voicesList.find((voice) => voice.voiceURI === voiceURI)!;
 
       const cardDto: CreateCardRequestDto = {
-        parentId: currentCardId,
+        parentId: currentCollectionId,
         title,
         text,
         textLang: lang,
@@ -84,9 +86,9 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
         case UpdateCardMode.UPDATE: {
           if (currentCard.title === title && currentCard.text === text && currentCard.voiceURI === voiceURI) {
             /* eslint-disable @typescript-eslint/no-non-null-assertion */
-            formikHelpers.setFieldError('title', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
-            formikHelpers.setFieldError('voiceURI', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
-            formikHelpers.setFieldError('text', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
+            formikHelpers.setFieldError('title', t('common_update_same_data_error')!);
+            formikHelpers.setFieldError('voiceURI', t('common_update_same_data_error')!);
+            formikHelpers.setFieldError('text', t('common_update_same_data_error')!);
             /* eslint-enable */
           } else {
             await cardsStore.updateCard(currentCard.id, cardDto);
@@ -115,7 +117,7 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const setInitialFiledValues = async () => {
     await setFieldValue('title', currentCard.title || '');
     await setFieldValue('text', currentCard.text || '');
-    await setFieldValue('voiceURI', currentCard.voiceURI || '');
+    await setFieldValue('voiceURI', currentCard.voiceURI || currentCollection?.voiceURI || '');
   };
 
   useEffect(() => {

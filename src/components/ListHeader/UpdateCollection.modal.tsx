@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useRef, useState } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -11,16 +11,16 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
+  ModalOverlay, Select,
 } from '@chakra-ui/react';
-import { CollectionRequestDto } from '../../store/CollectionsStore/service';
 import { object, string } from 'yup';
 import { useLoading } from '../../hooks/useLoading';
 import { FormikHelpers, useFormik } from 'formik';
 import { useCollectionsStore } from '../../store/hooks';
 import { observer } from 'mobx-react-lite';
-import { Collection } from '../../store/CollectionsStore';
+import { Collection, CreateCollectionRequestDto } from '../../store/CollectionsStore';
 import { useTranslation } from 'react-i18next';
+import { SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
 
 enum UpdateCollectionMode {
   CREATE = 'create',
@@ -33,39 +33,55 @@ interface Props {
   currentCollection: Collection;
 }
 
-const initialValues: CollectionRequestDto = {
+const initialValues: CreateCollectionRequestDto = {
   title: '',
+  defaultLang: '',
+  voiceURI: '',
 };
 
 const validationSchema = object().shape({
   title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(100, 'Title must be maximum 100 characters'),
+  voiceURI: string().required('Default collection language is required'),
 });
 
 const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
   const collectionsStore = useCollectionsStore();
   const { isOpen, onClose, currentCollection } = props;
   const { isLoading, setIsLoading } = useLoading();
+  const { voicesList } = useContext(SpeechUtteranceContext);
   const titleRef = useRef(null);
   const [mode, setMode] = useState<UpdateCollectionMode>(UpdateCollectionMode.CREATE);
   const { t } = useTranslation(['common', 'collectionsList']);
 
-  const submitHandler = async (payload: CollectionRequestDto, formikHelpers: FormikHelpers<CollectionRequestDto>) => {
+  const submitHandler = async (payload: CreateCollectionRequestDto, formikHelpers: FormikHelpers<CreateCollectionRequestDto>) => {
     setIsLoading(true);
 
     try {
+      const {title, voiceURI} = payload;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const {lang} = voicesList.find((voice) => voice.voiceURI === voiceURI)!;
+
+      const collectionDto: CreateCollectionRequestDto = {
+        title,
+        defaultLang: lang,
+        voiceURI,
+      };
+
       switch (mode) {
         case UpdateCollectionMode.CREATE: {
-          await collectionsStore.createCollection(payload);
+          await collectionsStore.createCollection(collectionDto);
           formikHelpers.setSubmitting(false);
           onClose();
           break;
         }
         case UpdateCollectionMode.UPDATE: {
-          if (currentCollection.title === payload.title) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            formikHelpers.setFieldError('title', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
+          if (currentCollection.title === payload.title && currentCollection.voiceURI === voiceURI) {
+            /* eslint-disable @typescript-eslint/no-non-null-assertion */
+            formikHelpers.setFieldError('title', t('common_update_same_data_error')!);
+            formikHelpers.setFieldError('voiceURI', t('common_update_same_data_error')!);
+            /* eslint-enable */
           } else {
-            await collectionsStore.updateCollection(currentCollection.id, payload);
+            await collectionsStore.updateCollection(currentCollection.id, collectionDto);
             formikHelpers.setSubmitting(false);
             onClose();
           }
@@ -113,7 +129,7 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
 
         <ModalBody>
           <form id={'update-collection-form'} onSubmit={formik.handleSubmit}>
-            <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.title && dirty && Boolean(errors.title)}>
+            <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.title && dirty && Boolean(errors.title)} mb={2}>
               <FormLabel>
                 {t('common_input_title_label')}
               </FormLabel>
@@ -125,6 +141,18 @@ const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
                 {...getFieldProps('title')}/>
 
               {touched.title && dirty && Boolean(errors.title) && <FormErrorMessage>{touched.title && dirty && errors.title}</FormErrorMessage>}
+            </FormControl>
+
+            <FormControl isRequired={true} isReadOnly={isLoading}>
+              <FormLabel>Card text language</FormLabel>
+
+              <Select placeholder={t('collections_list_update_modal_collection_default_lang_placeholder', { ns: 'collectionsList' })!} {...getFieldProps('voiceURI')}>
+                {
+                  voicesList.map((voice) => <option value={voice.voiceURI} key={voice.voiceURI}>{voice.name}</option>)
+                }
+              </Select>
+
+              {touched.voiceURI && dirty && Boolean(errors.voiceURI) && <FormErrorMessage>{touched.voiceURI && dirty && errors.voiceURI}</FormErrorMessage>}
             </FormControl>
           </form>
         </ModalBody>
