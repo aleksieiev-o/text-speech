@@ -1,14 +1,29 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import Header from '../../components/Header';
-import { Box, Card, CardBody, CardHeader, Container, Heading, Icon, IconButton, Stack, Text } from '@chakra-ui/react';
+import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Heading,
+  Icon,
+  IconButton,
+  Stack,
+  Text
+} from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import { useCardsStore, useSettingsStore } from '../../store/hooks';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useTranslation } from 'react-i18next';
 import { ProtectedRoutes } from '../../Router';
 import ButtonBack from '../../components/ButtonBack';
 import { observer } from 'mobx-react-lite';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const CollectionCard: FC = observer((): ReactElement => {
   const { pathname } = useLocation();
@@ -54,8 +69,8 @@ const CollectionCard: FC = observer((): ReactElement => {
         </Stack>
 
         <Container centerContent={true} w={'full'} h={'full'} maxW={'3xl'} p={4}>
-          <Stack w={'full'} h={'full'} alignItems={'center'} justifyContent={{ md: 'center', base: 'flex-start'}}>
-            <Card maxW={'2xl'} boxShadow={'lg'} overflow={'hidden'}>
+          <Stack w={'full'} h={'full'} alignItems={'center'} justifyContent={'flex-start'}>
+            <Card w={{ md: '3xl', base: 'full' }} boxShadow={'lg'} overflow={'hidden'}>
               <CardHeader boxShadow={'xs'}>
                 <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={4}>
                   <Heading as={'h5'} noOfLines={1} lineHeight={'normal'} fontSize={{ md: 24, base: 18 }}>
@@ -85,28 +100,35 @@ const CollectionCard: FC = observer((): ReactElement => {
               <CardBody>
                 <Stack w={'full'} h={'full'} alignItems={'flex-start'} justifyContent={'center'} spacing={4}>
                   <Box>
-                    <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
-                      <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
-                        {t('common_input_text_label')}
-                      </Heading>
+                    <Accordion
+                      onChange={() => setCardTextVisible(!cardTextVisible)}
+                      defaultIndex={[cardTextVisible ? -1 : 0]}
+                      allowToggle={true}
+                      colorScheme={'telegram'}>
+                      <AccordionItem>
+                        <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'}>
+                          <AccordionButton
+                            as={IconButton}
+                            title={cardTextVisible ? t('card_show_text_btn_title', { ns: 'card' })! : t('card_hide_text_btn_title', { ns: 'card' })!}
+                            aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
+                            background={'transparent'}
+                            p={0}
+                            w={'auto'}>
+                            <Icon as={cardTextVisible ? ExpandMoreIcon : ExpandLessIcon}/>
+                          </AccordionButton>
 
-                      <IconButton
-                        onClick={() => setCardTextVisible(!cardTextVisible)}
-                        colorScheme={'telegram'}
-                        size={'xs'}
-                        aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
-                        title={cardTextVisible ? t('card_show_text_btn_title', { ns: 'card' })! : t('card_hide_text_btn_title', { ns: 'card' })!}
-                        icon={<Icon as={cardTextVisible ? VisibilityIcon : VisibilityOffIcon}/>}
-                        variant={'outline'}/>
-                    </Stack>
+                          <Heading as={'h6'} fontSize={{ md: 18, base: 16 }}>
+                            {t('common_input_text_label')}
+                          </Heading>
+                        </Stack>
 
-                    <Text
-                      overflow={'hidden'}
-                      pt={2}
-                      color={cardTextVisible ?  'transparent' : ''}
-                      textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
-                      {cardsStore.currentCard.text}
-                    </Text>
+                        <AccordionPanel overflow={'hidden'} p={0} mt={4}>
+                          <Text overflow={'hidden'}>
+                            {cardsStore.currentCard.text}
+                          </Text>
+                        </AccordionPanel>
+                      </AccordionItem>
+                    </Accordion>
                   </Box>
 
                   <Box>

@@ -1,12 +1,12 @@
 import React, { FC, ReactElement, useContext, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card as ChakraCard, CardBody, Heading, Icon, IconButton, Link, Stack, Text } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Card as ChakraCard, CardBody, Heading, Icon, IconButton, Link, Stack, Text } from '@chakra-ui/react';
 import StopIcon from '@mui/icons-material/Stop';
 import PauseIcon from '@mui/icons-material/Pause';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card } from '../../store/CardsStore';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { PlayingStatus, SpeechUtteranceContext, StartPlayingDto } from '../../providers/SpeechUtteranceContext.provider';
@@ -73,6 +73,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
       cursor={'default'}
       boxShadow={'md'}>
       <CardBody>
+        {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
         <Stack
           direction={{ md: 'row', base: 'column' }}
           alignItems={{ md: 'center', base: 'flex-start' }}
@@ -81,33 +82,40 @@ const CardListItem: FC<Props> = (props): ReactElement => {
           h={'full'}
           spacing={4}>
           <Stack direction={'column'} alignItems={'flex-start'} justifyContent={'flex-start'} spacing={2}>
-            <Link as={RouterLink} to={card.id}>
-              <Heading as={'h5'} noOfLines={1} lineHeight={'normal'} fontSize={{ md: 24, base: 18 }}>
-                {card.title}
-              </Heading>
-            </Link>
+            <Accordion
+              onChange={() => setCardTextVisible(!cardTextVisible)}
+              defaultIndex={[cardTextVisible ? -1 : 0]}
+              allowToggle={true}
+              colorScheme={'telegram'}>
+              <AccordionItem>
+                <Stack direction={'row'} alignItems={'center'} justifyContent={'flex-start'}>
+                  <AccordionButton
+                    as={IconButton}
+                    title={cardTextVisible ? t('card_show_text_btn_title', { ns: 'card' })! : t('card_hide_text_btn_title', { ns: 'card' })!}
+                    aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
+                    background={'transparent'}
+                    p={0}
+                    w={'auto'}>
+                    <Icon as={cardTextVisible ? ExpandMoreIcon : ExpandLessIcon}/>
+                  </AccordionButton>
 
-            <Text
-              overflow={'hidden'}
-              maxH={'72px'}
-              color={cardTextVisible ?  'transparent' : ''}
-              textShadow={cardTextVisible ?  '#000 0 0 7px' : ''}>
-              {card.text}
-            </Text>
+                  <Link as={RouterLink} to={card.id}>
+                    <Heading as={'h5'} noOfLines={1} lineHeight={'normal'} fontSize={{ md: 24, base: 18 }}>
+                      {card.title}
+                    </Heading>
+                  </Link>
+                </Stack>
+
+                <AccordionPanel overflow={'hidden'} pt={0} pb={0} pr={2} pl={2} mt={4}>
+                  <Text overflow={'hidden'}>
+                    {card.text}
+                  </Text>
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
           </Stack>
 
-          {/* eslint-disable @typescript-eslint/no-non-null-assertion */}
-          <Stack w={{ md: 'auto', base: 'full' }} direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={6}>
-            <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2} mr={{ md: '', base: 'auto' }}>
-              <IconButton
-                onClick={() => setCardTextVisible(!cardTextVisible)}
-                colorScheme={'telegram'}
-                title={cardTextVisible ? t('card_show_text_btn_title', { ns: 'card' })! : t('card_hide_text_btn_title', { ns: 'card' })!}
-                aria-label={cardTextVisible ? 'Show text' : 'Hide text'}
-                icon={<Icon as={cardTextVisible ? VisibilityIcon : VisibilityOffIcon}/>}
-                variant={'outline'}/>
-            </Stack>
-
+          <Stack w={{ md: 'auto', base: 'full' }} direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
               <IconButton
                 onClick={() => playControlHandler({ id: card.id, text: card.text, lang: card.textLang })}
