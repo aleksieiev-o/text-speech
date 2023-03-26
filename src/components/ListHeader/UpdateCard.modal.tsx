@@ -39,12 +39,13 @@ const initialValues: CreateCardRequestDto = {
   title: '',
   text: '',
   textLang: '',
+  voiceURI: '',
 };
 
 const validationSchema = object().shape({
-  title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(100, 'E-mail must be maximum 100 characters'),
+  title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(100, 'Title must be maximum 100 characters'),
   text: string().required('Text is required').min(1, 'Text must be at least 1 character').max(240, 'Text must be maximum 200 characters'),
-  textLang: string().required('Card text language is required'),
+  voiceURI: string().required('Card text language is required'),
 });
 
 const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
@@ -61,13 +62,16 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
     setIsLoading(true);
 
     try {
-      const {title, text, textLang} = payload;
+      const {title, text, voiceURI} = payload;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const {lang} = voicesList.find((voice) => voice.voiceURI === voiceURI)!;
 
       const cardDto: CreateCardRequestDto = {
         parentId: currentCardId,
-        title: title,
-        text: text,
-        textLang: textLang,
+        title,
+        text,
+        textLang: lang,
+        voiceURI,
       };
 
       switch (mode) {
@@ -78,10 +82,10 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
           break;
         }
         case UpdateCardMode.UPDATE: {
-          if (currentCard.title === title && currentCard.text === text && currentCard.textLang === textLang) {
+          if (currentCard.title === title && currentCard.text === text && currentCard.voiceURI === voiceURI) {
             /* eslint-disable @typescript-eslint/no-non-null-assertion */
             formikHelpers.setFieldError('title', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
-            formikHelpers.setFieldError('textLang', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
+            formikHelpers.setFieldError('voiceURI', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
             formikHelpers.setFieldError('text', t('cards_list_update_modal_same_data_error', { ns: 'cardsList' })!);
             /* eslint-enable */
           } else {
@@ -111,7 +115,7 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
   const setInitialFiledValues = async () => {
     await setFieldValue('title', currentCard.title || '');
     await setFieldValue('text', currentCard.text || '');
-    await setFieldValue('textLang', currentCard.textLang || '');
+    await setFieldValue('voiceURI', currentCard.voiceURI || '');
   };
 
   useEffect(() => {
@@ -148,13 +152,13 @@ const UpdateCardModal: FC<Props> = observer((props): ReactElement => {
             <FormControl isRequired={true} isReadOnly={isLoading} mb={2}>
               <FormLabel>Card text language</FormLabel>
 
-              <Select placeholder={t('cards_list_update_modal_card_lang_placeholder', { ns: 'cardsList' })!} {...getFieldProps('textLang')}>
+              <Select placeholder={t('cards_list_update_modal_card_lang_placeholder', { ns: 'cardsList' })!} {...getFieldProps('voiceURI')}>
                 {
-                  voicesList.map((voice) => <option value={voice.lang} key={voice.voiceURI}>{voice.name}</option>)
+                  voicesList.map((voice) => <option value={voice.voiceURI} key={voice.voiceURI}>{voice.name}</option>)
                 }
               </Select>
 
-              {touched.textLang && dirty && Boolean(errors.textLang) && <FormErrorMessage>{touched.textLang && dirty && errors.textLang}</FormErrorMessage>}
+              {touched.voiceURI && dirty && Boolean(errors.voiceURI) && <FormErrorMessage>{touched.voiceURI && dirty && errors.voiceURI}</FormErrorMessage>}
             </FormControl>
 
             <FormControl isRequired={true} isReadOnly={isLoading} isInvalid={touched.text && dirty && Boolean(errors.text)}>

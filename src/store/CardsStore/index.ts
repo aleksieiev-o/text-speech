@@ -7,6 +7,7 @@ export interface CreateCardRequestDto {
   title: string;
   text: string;
   textLang: string;
+  voiceURI: string;
 }
 
 export interface UpdateCardRequestDto {
@@ -14,6 +15,7 @@ export interface UpdateCardRequestDto {
   title?: string;
   text?: string;
   textLang?: string;
+  voiceURI?: string;
 }
 
 export interface Card {
@@ -23,6 +25,7 @@ export interface Card {
   text: string;
   author: string;
   textLang: string;
+  voiceURI: string;
   createdDate: string;
   updatedDate: string;
 }

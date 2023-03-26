@@ -9,7 +9,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Card } from '../../store/CardsStore';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { PlayingStatus, SpeechUtteranceContext, StartPlayingDto } from '../../providers/SpeechUtteranceContext.provider';
+import { PlayingStatus, SpeechUtteranceContext } from '../../providers/SpeechUtteranceContext.provider';
 import { useSettingsStore } from '../../store/hooks';
 import { useTranslation } from 'react-i18next';
 
@@ -51,13 +51,13 @@ const CardListItem: FC<Props> = (props): ReactElement => {
     };
   }, [appPlayingStatus, playingCardId]);
 
-  const playControlHandler = (payload: StartPlayingDto): void => {
-    if (isSpeaking && !isPaused && playingCardId === payload.id) {
+  const playControlHandler = (card: Card): void => {
+    if (isSpeaking && !isPaused && playingCardId === card.id) {
       pause();
-    } else if (!isSpeaking && isPaused && playingCardId === payload.id) {
+    } else if (!isSpeaking && isPaused && playingCardId === card.id) {
       resume();
     } else {
-      start(payload);
+      start(card);
     }
   };
 
@@ -118,7 +118,7 @@ const CardListItem: FC<Props> = (props): ReactElement => {
           <Stack w={{ md: 'auto', base: 'full' }} direction={'row'} alignItems={'center'} justifyContent={'flex-start'} spacing={2}>
             <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} spacing={2}>
               <IconButton
-                onClick={() => playControlHandler({ id: card.id, text: card.text, lang: card.textLang })}
+                onClick={() => playControlHandler(card)}
                 colorScheme={'telegram'}
                 aria-label={playControlButtonProps.ariaLabel}
                 title={playControlButtonProps.title}

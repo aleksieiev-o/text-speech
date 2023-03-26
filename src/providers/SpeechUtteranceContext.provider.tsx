@@ -1,4 +1,5 @@
 import React, { createContext, Dispatch, FC, ReactElement, SetStateAction, useEffect, useState } from 'react';
+import { Card } from '../store/CardsStore';
 
 interface Props {
   children: ReactElement;
@@ -15,17 +16,11 @@ interface UseAppPlayingStatus {
   setAppPlayingStatus: Dispatch<SetStateAction<PlayingStatus>>;
 }
 
-export interface StartPlayingDto {
-  id: string;
-  text: string;
-  lang: string;
-}
-
 interface SpeechUtteranceContextState {
   voicesList: Array<SpeechSynthesisVoice>;
   appPlayingStatus: PlayingStatus;
   playingCardId: string;
-  start: (payload: StartPlayingDto) => void;
+  start: (payload: Card) => void;
   stop: () => void;
   pause: () => void;
   resume: () => void;
@@ -81,10 +76,10 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
     setPlayingCardId('');
   };
 
-  const start = (payload: StartPlayingDto): void => {
-    const {text, lang} = payload;
+  const start = (card: Card): void => {
+    const {text, textLang, voiceURI} = card;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const voice: SpeechSynthesisVoice = voicesList.find((voice) => voice.lang === lang)!;
+    const voice: SpeechSynthesisVoice = voicesList.find((voice) => voice.voiceURI === voiceURI)!;
 
     if (appPlayingStatus === PlayingStatus.SPEAKING || appPlayingStatus === PlayingStatus.PAUSED) {
       stop();
@@ -96,15 +91,15 @@ const SpeechUtteranceContextProvider: FC<Props> = ({ children }): ReactElement =
 
     utterance.text = text;
     utterance.voice = voice;
-    utterance.lang = lang;
-    utterance.volume = 1; // TODO add to StartPlayingDto
-    utterance.rate = 1; // TODO add to StartPlayingDto
-    utterance.pitch = 1; // TODO add to StartPlayingDto
+    utterance.lang = textLang;
+    utterance.volume = 1; // TODO add to Card
+    utterance.rate = 1; // TODO add to Card
+    utterance.pitch = 1; // TODO add to Card
 
     speech.speak(utterance);
 
     setAppPlayingStatus(PlayingStatus.SPEAKING);
-    setPlayingCardId(payload.id);
+    setPlayingCardId(card.id);
   };
 
   const pause = (): void => {
