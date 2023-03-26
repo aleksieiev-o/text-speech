@@ -2,6 +2,11 @@ import { RootStore } from '../index';
 import { CollectionsStoreService } from './service';
 import { makeAutoObservable } from 'mobx';
 
+export enum ParentBrowser {
+  CHROME = 'Chrome',
+  FIREFOX = 'Firefox',
+}
+
 export interface Collection {
   id: string;
   title: string;
@@ -10,6 +15,7 @@ export interface Collection {
   updatedDate: string;
   defaultLang: string;
   voiceURI: string;
+  parentBrowser: ParentBrowser;
 }
 
 export interface CreateCollectionRequestDto {

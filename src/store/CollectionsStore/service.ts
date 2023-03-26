@@ -1,4 +1,4 @@
-import { Collection, CollectionsStore, CreateCollectionRequestDto, UpdateCollectionRequestDto } from './index';
+import { Collection, CollectionsStore, CreateCollectionRequestDto, ParentBrowser, UpdateCollectionRequestDto } from './index';
 import { child, DataSnapshot, get, ref, set, push, remove, update } from 'firebase/database';
 import { firebaseDataBase } from '../../firebase';
 
@@ -55,6 +55,7 @@ export class CollectionsStoreService implements ICollectionsStoreService {
       voiceURI,
       createdDate: new Date().toJSON(),
       updatedDate: new Date().toJSON(),
+      parentBrowser: this.collectionsStore.rootStore.bowserBrowser.name as ParentBrowser,
     };
 
     await set(collectionRef, collection);
