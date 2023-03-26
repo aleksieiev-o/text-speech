@@ -42,7 +42,7 @@ const initialValues: CreateCardRequestDto = {
 };
 
 const validationSchema = object().shape({
-  title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(30, 'E-mail must be maximum 30 characters'),
+  title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(100, 'E-mail must be maximum 100 characters'),
   text: string().required('Text is required').min(1, 'Text must be at least 1 character').max(240, 'Text must be maximum 200 characters'),
   textLang: string().required('Card text language is required'),
 });

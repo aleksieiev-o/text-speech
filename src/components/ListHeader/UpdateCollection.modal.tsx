@@ -38,7 +38,7 @@ const initialValues: CollectionRequestDto = {
 };
 
 const validationSchema = object().shape({
-  title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(30, 'Title must be maximum 30 characters'),
+  title: string().required('Title is required').min(1, 'Title must be at least 1 character').max(100, 'Title must be maximum 100 characters'),
 });
 
 const UpdateCollectionModal: FC<Props> = observer((props): ReactElement => {
