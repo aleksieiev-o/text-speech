@@ -13,7 +13,7 @@ const Settings: FC = observer((): ReactElement => {
   const settingsStore = useSettingsStore();
   const [userName, setUserName] = useState<string>(authorizationStore.user.displayName || '');
   const [userEmail, setUserEmail] = useState<string>(authorizationStore.user.email || '');
-  const [userPhone, setUserPhone] = useState<string>(authorizationStore.user.phoneNumber || '');
+  // const [userPhone, setUserPhone] = useState<string>(authorizationStore.user.phoneNumber || '');
 
   return (
     <>
